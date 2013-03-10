@@ -1,13 +1,12 @@
 {% extends '::base.html.twig' %}
 
-
 {% block stylesheets %}
-{% stylesheets '@InicioBundle/Resources/public/css/normalizar.css'
-               '@InicioBundle/Resources/public/css/comun.css'
-               '@InicioBundle/Resources/public/css/frontend.css'
-               output='css/frontend.css' %}
-<link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
-{% endstylesheets %}
+    {% stylesheets '@InicioBundle/Resources/public/css/normalizar.css'
+                   '@InicioBundle/Resources/public/css/comun.css'
+                   '@InicioBundle/Resources/public/css/frontend.css'
+                   output='css/frontend.css' %}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+    {% endstylesheets %}
 {% endblock %}
 
 {#

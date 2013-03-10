@@ -1,0 +1,33 @@
+{% extends '::frontend.html.twig' %}
+
+{% block title 'Contacto' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/inicio/css/contacto.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+
+{% block article %}
+    <h1>Formulario de contacto</h1>
+    
+    {% if app.session.hasFlash('contacto-aviso') %}
+        <div class="contacto-aviso">
+            {{ app.session.flash('contacto-aviso') }}
+        </div>
+    {% else %}    
+        <p>¿ Necesita ponerse en contacto con PFC ?, envíe el siguiente formulario.</p>        
+        <form action="{{ path('contacto') }}" method="post" {{ form_enctype(form) }} class="contacto">
+            {{ form_errors(form) }}
+
+            {{ form_row(form.nombre)    }}
+            {{ form_row(form.email)     }}
+            {{ form_row(form.asunto)    }}
+            {{ form_row(form.mensaje)   }}
+
+            {{ form_rest(form) }}
+
+            <input type="submit" value="Enviar" />
+        </form>       
+    {% endif %}
+{% endblock article %}

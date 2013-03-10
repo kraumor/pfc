@@ -14,8 +14,9 @@
             <footer>
                 &copy; {{ 'now'|date('Y') }}
                 <a href="{{ path('portada')                                }}">portada</a>
-                <a href="{{ path('inicio_hola'    , { 'name'  : 'k ase' }) }}">{{ "hola"  | trans }}</a>
+                <a href="{{ path('inicio_hola'    , { 'name'  : 'k ase' }) }}">{{ "hola"           | trans }}</a>
                 <a href="{{ path('pagina_estatica', { 'pagina': 'sobre' }) }}">{{ "Sobre Nosotros" | trans }}</a>
+                <a href="{{ path('contacto')                               }}">{{ "Contacto"       | trans }}</a>
             </footer>
             {% block javascripts %}{% endblock %}
         </div>

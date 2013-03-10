@@ -13,7 +13,13 @@ _pagina_estatica:
         _controller:  FrameworkBundle:Redirect:redirect
         route:        pagina_estatica
         permanent:    true
-    
+
+contacto:
+    pattern:  /contacto
+    defaults: { _controller: InicioBundle:Sitio:contacto }
+    requirements:
+        _method:  GET|POST
+        
 portada:
     pattern:  /
     defaults: { _controller: InicioBundle:Default:portada }       

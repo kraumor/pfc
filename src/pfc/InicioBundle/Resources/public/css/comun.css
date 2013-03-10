@@ -142,7 +142,7 @@ form input.corto {
 form > div:first-child > ul:first-child, /* mensajes de error globales */
 form div > * > ul:first-child,           /* mensajes de error de cada campo */
 form label + ul {
-    background: #C00;
+    background: lightcoral;
     color: #FFF;
     list-style: none;
     margin: 0 0 1em;

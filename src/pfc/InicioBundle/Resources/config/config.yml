@@ -1,0 +1,3 @@
+parameters:
+    # email de contacto (el To pq al fer reply envii aqui, i treu hardcode del controlador)
+    pfc_inicio.emails.contacto: contacto@email.com
