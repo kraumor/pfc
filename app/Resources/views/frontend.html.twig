@@ -1,0 +1,64 @@
+{% extends '::base.html.twig' %}
+
+
+{% block stylesheets %}
+{% stylesheets '@InicioBundle/Resources/public/css/normalizar.css'
+               '@InicioBundle/Resources/public/css/comun.css'
+               '@InicioBundle/Resources/public/css/frontend.css'
+               output='css/frontend.css' %}
+<link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+{% endstylesheets %}
+{% endblock %}
+
+{#
+{% block javascripts %}
+{% javascripts '@OfertaBundle/Resources/public/js/lt_ie9/*' output='js/lt_ie9.js' %}
+<!--[if lt IE 9]>
+    <script src="{{ asset_url }}"></script>
+<![endif]-->
+{% endjavascripts %}  
+{% javascripts '@OfertaBundle/Resources/public/js/frontend/*' output='js/frontend.js' %}
+<script src="{{ asset_url }}" type="text/javascript"></script>
+{% endjavascripts %}
+{% endblock %}
+
+#}
+
+{% block body %}
+<header>
+    <h1><a href="{{ path('portada') }}">PFC</a></h1>
+    {#
+    <nav>
+        <ul>
+            <li><a href="#">{{ "xOferta del día" | trans }}</a></li>
+            <li><a href="#">{{ "xOfertas recientes" | trans }}</a></li>
+            <li><a href="#">{{ "xMis ofertas" | trans }}</a></li>
+        </ul>
+    </nav>
+    #}
+</header>
+
+<article>
+    {% block article %}{% endblock %}
+</article>
+<aside>
+    {% block aside %}{% endblock %}
+</aside>
+
+{#
+{% block anuncio %}{% endblock %}
+
+<article {{ block('id') in ['portada', 'oferta'] ? ' class="oferta"' : '' }}>
+    {% block article %}{% endblock %}
+</article>
+
+
+<aside>
+    {% block aside %}
+    <section id="login">
+        {% render 'UsuarioBundle:Default:cajaLogin' with { 'id': block('id') }, { 'standalone': true } %}
+    </section>
+    {% endblock %}
+</aside>
+#}
+{% endblock %}

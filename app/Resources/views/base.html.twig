@@ -1,13 +1,23 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}baseTitle{% endblock %} | PFC</title>
         {% block stylesheets %}{% endblock %}
+        {% block rss %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        <div id="contenedor">
+            {% block body %}{% endblock %}
+            <footer>
+                &copy; {{ 'now'|date('Y') }}
+                <a href="{{ path('portada')                                }}">portada</a>
+                <a href="{{ path('inicio_hola'    , { 'name'  : 'k ase' }) }}">{{ "hola"  | trans }}</a>
+                <a href="{{ path('pagina_estatica', { 'pagina': 'sobre' }) }}">{{ "Sobre Nosotros" | trans }}</a>
+            </footer>
+            {% block javascripts %}{% endblock %}
+        </div>
     </body>
 </html>

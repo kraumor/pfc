@@ -1,0 +1,3 @@
+homepage:
+    resource: "@InicioBundle/Resources/config/routing.yml"
+    prefix:   / 

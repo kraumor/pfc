@@ -1,0 +1,19 @@
+inicio_hola:
+    pattern:  /hola/{name}
+    defaults: { _controller: InicioBundle:Default:index }
+    
+pagina_estatica:
+    pattern:  /sitio/{pagina}
+    defaults: { _controller: InicioBundle:Sitio:estatica }
+    
+# soluciona el trailing slash problem    
+_pagina_estatica:
+    pattern:  /sitio/{pagina}/
+    defaults: 
+        _controller:  FrameworkBundle:Redirect:redirect
+        route:        pagina_estatica
+        permanent:    true
+    
+portada:
+    pattern:  /
+    defaults: { _controller: InicioBundle:Default:portada }       
