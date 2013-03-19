@@ -23,3 +23,23 @@ contacto:
 portada:
     pattern:  /
     defaults: { _controller: InicioBundle:Default:portada }       
+    
+#A partir de Symfony 2.1, debes tener configuradas las direcciones URL para las 3 rutas    
+usuario_login:
+    pattern:   /login
+    defaults:  { _controller: InicioBundle:Sitio:login }
+
+usuario_login_check:
+    pattern:   /login_check
+
+usuario_logout:
+    pattern:   /logout  
+    
+        
+usuario_perfil:
+    pattern:  /perfil
+    defaults: { _controller: InicioBundle:Sitio:perfil }         
+    
+usuario_registro:
+    pattern:  /registro
+    defaults: { _controller: InicioBundle:Sitio:registro }    

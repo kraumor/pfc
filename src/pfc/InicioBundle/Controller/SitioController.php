@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use pfc\InicioBundle\Entity\Contacto;
 use pfc\InicioBundle\Form\ContactoType;
 //use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\SecurityContext;
 
 class SitioController extends Controller
 {
@@ -59,6 +60,59 @@ class SitioController extends Controller
                 return $this->redirect($this->generateUrl('contacto'));                  
             }
         }
-        return $this->render('InicioBundle:Sitio:contacto.html.twig', array('form' => $form->createView()));
-    }        
+        return $this->render('InicioBundle:Sitio:contacto.html.twig', array(
+            'form' => $form->createView()));
+    }
+    
+    public function perfilAction()
+    {        
+        $usuario_id = 1 ;
+        
+        $em = $this->getDoctrine()->getManager();
+        $usuario = $em->getRepository('InicioBundle:Usuario')->find($usuario_id);
+        
+        $gravatarUrl = $this->container->getParameter('pfc_inicio.gravatarUrl');
+        $gravatarHash = md5(strtolower(trim($usuario->getEmail()))); 
+        $avatar=$gravatarUrl.$gravatarHash;
+        
+        return $this->render('InicioBundle:Sitio:perfil.html.twig', array(
+             'usuario'  => $usuario 
+            ,'avatar'   => $avatar  ));
+    }
+    
+    public function loginAction()
+    {    
+        $request = $this->getRequest();
+        $session = $request->getSession();
+ 
+        // get the login error if there is one
+        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
+        } else {
+            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
+            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
+        }
+ 
+        return $this->render('InicioBundle:Sitio:login.html.twig', array(
+            'last_username' => $session->get(SecurityContext::LAST_USERNAME),
+            'error'         => $error ));
+    }    
+    
+    public function cajaLoginAction()
+    {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+ 
+        $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR
+                            ,$session->get(SecurityContext::AUTHENTICATION_ERROR) );
+ 
+        return $this->render('InicioBundle:Sitio:cajaLogin.html.twig', array(
+            'last_username' => $session->get(SecurityContext::LAST_USERNAME),
+            'error'         => $error ));
+    }    
+    
+    public function registroAction()
+    {
+        return $this->render('InicioBundle:Sitio:registro.html.twig');
+    }    
 }

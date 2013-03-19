@@ -5,8 +5,7 @@ namespace pfc\InicioBundle\Entity;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\MinLength;
-use Symfony\Component\Validator\Constraints\MaxLength;
+use Symfony\Component\Validator\Constraints\Length;
 
 class Contacto
 {
@@ -66,8 +65,16 @@ class Contacto
         $metadata->addPropertyConstraint('email', new Email(array('message' => 'formato no válido')));
 
         $metadata->addPropertyConstraint('asunto', new NotBlank(array('message' => 'no dejar en blanco')));
-        $metadata->addPropertyConstraint('asunto', new MaxLength(50));
-
-        $metadata->addPropertyConstraint('mensaje', new MinLength(10));
+        $metadata->addPropertyConstraint('asunto', new Length(array(
+             'max'        => 50
+            ,'maxMessage' => 'max. {{ limit }} caracteres'
+            )));
+        
+        $metadata->addPropertyConstraint('mensaje', new Length(array(
+             'min'        => 10
+//            ,'max'        => 1000
+            ,'minMessage' => 'min. {{ limit }} caracteres'
+//            ,'maxMessage' => 'max. {{ limit }} caracteres'
+            )));
     }    
 }

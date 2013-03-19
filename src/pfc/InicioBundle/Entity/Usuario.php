@@ -2,6 +2,7 @@
 
 namespace pfc\InicioBundle\Entity;
 
+use \Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 //use Doctrine\Common\Collections\ArrayCollection;
 
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="pfc\InicioBundle\Entity\UsuarioRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class Usuario
+class Usuario implements UserInterface
 {
     /**
      * @var integer
@@ -57,6 +58,20 @@ class Usuario
      * @ORM\Column(name="fecha_baja", type="datetime", nullable=true)
      */
     private $fechaBaja;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="conexiones", type="integer", nullable=true)
+     */
+    private $conexiones;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="ultima_conexion", type="datetime", nullable=true)
+     */
+    private $ultimaConexion;
 
     /**
      * @var string
@@ -211,6 +226,59 @@ class Usuario
     {
         return $this->fechaBaja;
     }
+
+    /**
+     * Set conexiones
+     *
+     * @param integer $conexiones
+     * @return Usuario
+     */
+    public function setConexiones($conexiones)
+    {
+        $this->conexiones = $conexiones;
+    
+        return $this;
+    }
+
+    /**
+     * Get conexiones
+     *
+     * @return integer
+     */
+    public function getConexiones()
+    {
+        return $this->conexiones;
+    }
+    
+    public function addConexiones($num=1)
+    {
+        $this->conexiones += $num;
+    
+        return $this;
+    }
+    
+    /**
+     * Set ultimaConexion
+     *
+     * @param \DateTime $ultimaConexion
+     * @return Usuario
+     */
+    public function setUltimaConexion($ultimaConexion)
+    {
+        $this->ultimaConexion = $ultimaConexion;
+    
+        return $this;
+    }
+
+    /**
+     * Get ultimaConexion
+     *
+     * @return \DateTime 
+     */
+    public function getUltimaConexion()
+    {
+        return $this->ultimaConexion;
+    }
     
     /**
      * Set nombre
@@ -306,7 +374,12 @@ class Usuario
     
     public function __construct()
     {
-        $this->setFechaAlta(new \DateTime());
+        $fecha=new \DateTime();
+        
+        $this->setSalt(md5(uniqid(null, true)));
+        $this->setFechaAlta($fecha);
+        $this->setConexiones(0);        
+        $this->nuevaConexion($fecha);
         
         //$this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
         //$this->viajeId = new ArrayCollection();
@@ -316,5 +389,40 @@ class Usuario
     {
         return $this->getNombre();
     }
-            
+
+    public function eraseCredentials() {
+        
+    }
+    
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize()
+    {
+        return serialize(array($this->id, ));
+    }
+
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+        list ($this->id, ) = unserialize($serialized);
+    }    
+
+    public function getRoles() {
+        return array('ROLE_USUARIO');
+    }
+
+    public function getUsername() {
+        return $this->getEmail();
+    }
+               
+    public function nuevaConexion($fecha)
+    {
+        $this->addConexiones();
+        $this->setUltimaConexion($fecha);
+    
+        return $this;
+    }
 }

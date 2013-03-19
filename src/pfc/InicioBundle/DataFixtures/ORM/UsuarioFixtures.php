@@ -7,8 +7,16 @@ use \Doctrine\Common\DataFixtures\AbstractFixture;
 use \Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class UsuarioFixtures extends AbstractFixture implements OrderedFixtureInterface
+//****
+use Doctrine\Common\DataFixtures\FixtureInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+//***
+class UsuarioFixtures extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
+    private $container;
+    
+    
     public function getOrder()
     {
         return 1;
@@ -23,14 +31,19 @@ class UsuarioFixtures extends AbstractFixture implements OrderedFixtureInterface
            ,array('email' => 'd@d.d', 'password' => 'd', 'salt' => 'a', 'fechaAlta' => '2002-04-05 12:34:56', 'fechaBaja' => null, 'nombre' => 'D', 'apellidos' => 'DD DDD', 'fechaNacimiento' => '1980-01-01 12:12:12', 'viajeId' => '4')
            ,array('email' => 'e@e.e', 'password' => 'e', 'salt' => 'a', 'fechaAlta' => '2002-05-05 12:34:56', 'fechaBaja' => null, 'nombre' => 'E', 'apellidos' => 'EE EEE', 'fechaNacimiento' => '1990-01-01 12:12:12', 'viajeId' => '5')
            ,array('email' => 'f@f.f', 'password' => 'f', 'salt' => 'a', 'fechaAlta' => '2002-01-05 12:34:56', 'fechaBaja' => null, 'nombre' => 'F', 'apellidos' => 'FF FFF', 'fechaNacimiento' => '1950-01-01 12:12:12', 'viajeId' => '6')
-           ,array('email' => 'g@g.g', 'password' => 'g', 'salt' => 'a', 'fechaAlta' => '2002-06-05 12:34:56', 'fechaBaja' => null, 'nombre' => 'G', 'apellidos' => 'GG GGG', 'fechaNacimiento' => '1940-01-01 12:12:12', 'viajeId' => '7')
+           ,array('email' => 'g@g.g', 'password' => 'a', 'salt' => 'b', 'fechaAlta' => '2002-06-05 12:34:56', 'fechaBaja' => null, 'nombre' => 'G', 'apellidos' => 'GG GGG', 'fechaNacimiento' => '1940-01-01 12:12:12', 'viajeId' => '7')
         );
  
         foreach ($usuarios as $u) {
+            
             $usuario = new Usuario();
+
+            $encoder = $this->container->get('security.encoder_factory')->getEncoder($usuario);
+            $password = $encoder->encodePassword($u['password'],$u['salt']);
  
             $usuario->setEmail($u['email'])
-                    ->setPassword($u['password'])
+                  //->setPassword($u['password'])
+                    ->setPassword($password)
                     ->setSalt($u['salt'])
                     ->setFechaAlta(new \DateTime($u['fechaAlta']))
                   //->setFechaBaja(new \DateTime($u['fechaBaja']))
@@ -43,5 +56,10 @@ class UsuarioFixtures extends AbstractFixture implements OrderedFixtureInterface
         }
  
         $manager->flush();
+    }
+
+    public function setContainer(ContainerInterface $container = null) {
+
+        $this->container = $container;
     }
 }

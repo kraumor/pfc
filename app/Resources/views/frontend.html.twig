@@ -41,7 +41,11 @@
     {% block article %}{% endblock %}
 </article>
 <aside>
-    {% block aside %}{% endblock %}
+    {% block aside %}
+    <section id="login">
+        {% render(controller('InicioBundle:Sitio:cajaLogin')) %}
+    </section>
+    {% endblock %}
 </aside>
 
 {#
