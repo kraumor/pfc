@@ -5,6 +5,8 @@ namespace pfc\InicioBundle\Entity;
 use \Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 //use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Usuario
@@ -12,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="pfc\InicioBundle\Entity\UsuarioRepository")
  * @ORM\HasLifecycleCallbacks
+ * @DoctrineAssert\UniqueEntity("email")
  */
 class Usuario implements UserInterface
 {
@@ -24,13 +27,17 @@ class Usuario implements UserInterface
      */
     private $id;
 
+//pendi:descomentar y bajar dentro de la anotacion
+//     * @Assert\Email(checkMX=true)
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255)
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
     private $email;
 
+//pendi:descomentar y bajar dentro de la anotacion
+//     * @Assert\Length(min = 6)
     /**
      * @var string
      *
@@ -77,6 +84,7 @@ class Usuario implements UserInterface
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=100)
+     * @Assert\NotBlank()
      */
     private $nombre;
 
@@ -91,6 +99,7 @@ class Usuario implements UserInterface
      * @var \DateTime
      *
      * @ORM\Column(name="fecha_nacimiento", type="datetime", nullable=true)
+     * @Assert\Date()
      */
     private $fechaNacimiento;
     
@@ -161,12 +170,14 @@ class Usuario implements UserInterface
     /**
      * Set salt
      *
-     * @param string $salt
      * @return Usuario
      */
-    public function setSalt($salt)
+    public function setSalt()
     {
-        $this->salt = $salt;
+//pendi: descomentar para generar salt aleatorio        
+//        $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+//        $this->salt = md5(time());
+        $this->salt = 'salt';
     
         return $this;
     }
@@ -381,7 +392,6 @@ class Usuario implements UserInterface
         $this->setConexiones(0);        
         $this->nuevaConexion($fecha);
         
-        //$this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
         //$this->viajeId = new ArrayCollection();
     }
 

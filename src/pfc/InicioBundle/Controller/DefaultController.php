@@ -3,7 +3,7 @@
 namespace pfc\InicioBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-//use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -14,7 +14,9 @@ class DefaultController extends Controller
         $x->modify('+2 months');
         $vector = array (  'gravatarurl'  => 'http://www.gravatar.com/avatar/'
                           ,'gravatarhash' => md5(strtolower(trim("contacto@email.com ")))
-                          ,'data'         => $x->format('l, Y-F-d H:i:s') );
+                          ,'data'         => $x->format('l, Y-F-d H:i:s') 
+                          ,'x'         => $this->get('security.context')->getToken()->getUser()
+                        );
 
         //$respuesta = new Response('Texto muestra.');
         //$respuesta = $this->render('::base.html.twig');

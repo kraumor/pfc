@@ -10,7 +10,7 @@
 
 {% block article %}
     <h1>Formulario de contacto</h1>
-    
+   
     {% if app.session.hasFlash('contacto-aviso') %}
         <div class="contacto-aviso">
             {{ app.session.flash('contacto-aviso') }}

@@ -1,0 +1,27 @@
+{% extends '::frontend.html.twig' %}
+
+{% block title 'Perfil' %}
+
+{% block article %}
+    <h1>{{ block('title')                               }}</h1>
+    
+    {#
+    #}
+    <hr />
+    avatar         <h2><img src="{{ avatar }}" />                        </h2>
+    id             <h2>{{ usuario.id                                   }}</h2>
+    email          <h2>{{ usuario.email                                }}</h2>
+    password       <h2>{{ usuario.password                             }}</h2>
+    salt           <h2>{{ usuario.salt                                 }}</h2>
+    fechaAlta      <h2>{{ usuario.fechaAlta       | date('d/m/Y')      }}</h2>
+    {#
+    fechaBaja      <h2>{{ usuario.fechaBaja       | date('d/m/Y')      }}</h2>
+    #}    
+    fechaBaja      <h2>{{ usuario.fechaBaja != null ? usuario.fechaBaja | date("d/m/Y") : "-"   }}</h2>
+    conexiones     <h2>{{ usuario.conexiones                           }}</h2>
+    ultimaConexion <h2>{{ usuario.ultimaConexion  | date('d/m/Y H:i:s')}}</h2>
+    nombre         <h2>{{ usuario.nombre                               }}</h2>
+    apellidos      <h2>{{ usuario.apellidos                            }}</h2>
+    fechaNacimiento<h2>{{ usuario.fechaNacimiento | date('d/m/Y')      }}</h2>
+
+{% endblock article %}

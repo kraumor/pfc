@@ -1,10 +1,22 @@
 {# el usuario está logueado #}
 {% if is_granted('ROLE_USUARIO') %}
+
+    {% for mensaje in app.session.flashbag.get('info') %}
+        <p class="info">{{ mensaje }}</p>
+    {% endfor %}
+        
     {#<p>Conectado como {{ app.user.nombre ~ ' ' ~ app.user.apellidos }}</p>#}
-    <p>Conectado como {{ app.user }}</p>
+    <p>
+        <img src="{{ avatar }}" />
+        Conectado como
+        <a href="{{ path('usuario_perfil')  }}">
+            <b>{{ app.user }}</b>
+        </a>
+    </p>
  
     <a href="{{ path('usuario_perfil')  }}">Ver mi perfil</a>
     <a href="{{ path('usuario_logout')  }}">Cerrar sesión</a>
+    
 {# el usuario todavía no ha hecho login #}
 {% else %} 
     <h2>Accede a tu cuenta</h2>
@@ -25,4 +37,6 @@
         <input type="checkbox" id="remember_me" name="_remember_me" checked />
         <label for="remember_me">No cerrar sesión</label>    
     </form>
+    
+    <a class="boton" href="{{ path('usuario_registro') }}">Regístrate</a>
 {% endif %}

@@ -1,5 +1,5 @@
-inicio_hola:
-    pattern:  /hola/{name}
+inicio_prova:
+    pattern:  /prova/{name}
     defaults: { _controller: InicioBundle:Default:index }
     
 pagina_estatica:
@@ -39,6 +39,10 @@ usuario_logout:
 usuario_perfil:
     pattern:  /perfil
     defaults: { _controller: InicioBundle:Sitio:perfil }         
+#pendi:borrar    
+usuario_perfilm:
+    pattern:  /perfilm
+    defaults: { _controller: InicioBundle:Sitio:perfilm }         
     
 usuario_registro:
     pattern:  /registro

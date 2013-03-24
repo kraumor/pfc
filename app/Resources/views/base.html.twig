@@ -6,7 +6,7 @@
         <title>{% block title %}baseTitle{% endblock %} | PFC</title>
         {% block stylesheets %}{% endblock %}
         {% block rss %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('PFC_icons/1_Desktop_Icons/icon_016.png') }}" />
     </head>
     <body>
         <div id="contenedor">
@@ -14,7 +14,7 @@
             <footer>
                 &copy; {{ 'now'|date('Y') }}
                 <a href="{{ path('portada')                                }}">portada</a>
-                <a href="{{ path('inicio_hola'    , { 'name'  : 'adios' }) }}">{{ "hola"           | trans }}</a>
+                <a href="{{ path('inicio_prova'   , { 'name'  : 'adios' }) }}">{{ "proves"         | trans }}</a>
                 <a href="{{ path('pagina_estatica', { 'pagina': 'sobre' }) }}">{{ "Sobre Nosotros" | trans }}</a>
                 <a href="{{ path('contacto')                               }}">{{ "Contacto"       | trans }}</a>
                 <a href="{{ path('usuario_login')                          }}">{{ "Login"          | trans }}</a>

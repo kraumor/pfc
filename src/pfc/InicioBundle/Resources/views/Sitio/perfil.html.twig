@@ -4,16 +4,53 @@
 
 {% block article %}
     <h1>{{ block('title')                               }}</h1>
-    avatar         <img src="{{ avatar }}" /><br />
-    id             <h2>{{ usuario.id                                   }}</h2>
-    email          <h2>{{ usuario.email                                }}</h2>
-    password       <h2>{{ usuario.password                             }}</h2>
-    salt           <h2>{{ usuario.salt                                 }}</h2>
-    fechaAlta      <h2>{{ usuario.fechaAlta       | date('d/m/Y')      }}</h2>
-    fechaBaja      <h2>{{ usuario.fechaBaja       | date('d/m/Y')      }}</h2>
-    conexiones     <h2>{{ usuario.conexiones                           }}</h2>
-    ultimaConexion <h2>{{ usuario.ultimaConexion  | date('d/m/Y H:i:s')}}</h2>
-    nombre         <h2>{{ usuario.nombre                               }}</h2>
-    apellidos      <h2>{{ usuario.apellidos                            }}</h2>
-    fechaNacimiento<h2>{{ usuario.fechaNacimiento | date('d/m/Y')      }}</h2>
+    
+    {% for mensaje in app.session.flashbag.get('info') %}
+        <p class="info">{{ mensaje }}</p>
+    {% endfor %}    
+    
+    
+    <form action="{{ path('usuario_perfil') }}" method="post" {{ form_enctype(formulario) }}>
+    
+    <div class="errors">
+        {{ form_errors(formulario) }}
+    </div>
+
+    {#
+    <div>
+        {{ form_row(formulario.nombre) }}
+        {{ form_row(formulario.apellidos) }}
+    </div>
+
+    <div>
+        {{ form_row(formulario.fecha_nacimiento) }}
+    </div>
+
+    <div>
+        <label for="usuario_modificar_password_ant" class="required">Contraseña vieja</label>
+        <input type="password" id="usuario_modificar_password_ant" name="usuario_modificar[password][ant]" />
+    </div>        
+    #}
+        
+        
+    {#
+    #}
+    {{ form_rest(formulario) }}
+        
+    <input class="boton" type="submit" value="Guardar cambios" />
+    
+    <hr />
+    
+    
+    <div><p><a href="{{ gravatarUrl }}" title="cambie su avatar en Gravatar.com"><img src="{{ avatar }}" /></a></p></div>
+    <div><p><label>Email           </label>{{ usuario.email            }}</p></div>
+    <div><p><label>Fecha alta      </label>{{ usuario.fechaAlta       | date('d/m/Y')      }}</p></div>
+    <div><p><label>Conexiones      </label>{{ usuario.conexiones       }}</p></div>
+    <div><p><label>Última conexión </label>{{ usuario.ultimaConexion | date('d/m/Y H:i:s')  }}</p></div>
+
+    
+    </form>    
+    {#
+    #}
+
 {% endblock article %}

@@ -3,7 +3,38 @@
 {% block title 'Registro' %}
 
 {% block article %}
-    <h1>{{ block('title')}}</h1>
+    <h1>{{ block('title')}}</h1>    
+    <form action="{{ path('usuario_registro') }}" method="post" {{ form_enctype(formulario) }}>
+        
+{# 
+        {{ form_widget(formulario) }}
+        {{ form_errors(formulario) }}
+
+        {{ form_row(formulario) }}
+#}
+{#           
+        <fieldset>
+           <legend><h2>Datos de acceso</h2></legend>
+           {{ form_row(formulario.email) }}
+           {{ form_row(formulario.password) }}
+        </fieldset>
+            
+        <fieldset>
+           <legend><h2>Otros datos</h2></legend>
+           {{ form_row(formulario.nombre) }}
+           {{ form_row(formulario.apellidos) }}
+           {{ form_row(formulario.fecha_nacimiento) | date('d/m/Y H:i:s') }}
+        </fieldset>
+#}
+
+ 
+{# 
+#}
+        {{ form_rest(formulario) }}
+
+            
+        <input class="boton" type="submit" value="Registrarme" />
+    </form>
 {% endblock article %}
  
 {% block aside %}{% endblock %}    

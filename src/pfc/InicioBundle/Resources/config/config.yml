@@ -1,4 +1,5 @@
 parameters:
     # email de contacto (el To pq al fer reply envii aqui, i treu hardcode del controlador)
     pfc_inicio.emails.contacto: contacto@email.com
-    pfc_inicio.gravatarUrl:     http://www.gravatar.com/avatar/
+    pfc_inicio.gravatarUrl:     http://www.gravatar.com
+    pfc_inicio.default_avatar:  /../bundles/inicio/images/default_avatar.png
