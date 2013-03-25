@@ -8,8 +8,8 @@
     {% for mensaje in app.session.flashbag.get('info') %}
         <p class="info">{{ mensaje }}</p>
     {% endfor %}    
-    
-    
+
+        
     <form action="{{ path('usuario_perfil') }}" method="post" {{ form_enctype(formulario) }}>
     
     <div class="errors">
@@ -52,5 +52,16 @@
     </form>    
     {#
     #}
+    <hr />    
+    <p>
+    Se desactiva la cuenta (impidiéndole loguearse).
+    <form action="{{ path('usuario_perfil') }}" method="post" >
+        {{ operacion }}=
+        <input type="number" name="resultado" value=""/>
+        <input type="hidden" name="operacion" value="{{ operacion }}" />
+        <input type="hidden" name="desactivar_cuenta" value="true" />
+        <input class="boton" type="submit" value="Desactivar cuenta" />
+    </form>    
+    </p>
 
 {% endblock article %}

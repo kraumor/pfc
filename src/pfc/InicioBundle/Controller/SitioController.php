@@ -116,66 +116,88 @@ class SitioController extends Controller
         $usuario = $this->getUser();
         
         $formulario = $this->createForm(new UsuarioModificarType(), $usuario);
-        
-        $peticion = $this->getRequest();
-
-            //peticion POST: actualizar
-            if ($peticion->getMethod() == 'POST') {
                 
+        $peticion = $this->getRequest();
+        
+        //peticion POST: recibe formulario
+        if ($peticion->getMethod() == 'POST') {
+
+            $desactivar=$peticion->request->get('desactivar_cuenta',false);
+            $operacion=$peticion->request->get('operacion','0+0');
+            $resultado_respondido=$peticion->request->get('resultado',0);
+            list($num1, $num2) = explode('+', $operacion);
+            $resultado_real=$num1+$num2;
+            $operacion_ok=($resultado_real==$resultado_respondido);
+            
+//                return new Response('X<pre>'.$resultado_real.'res'.$resultado_respondido.' '.print_r($operacion,true).'</pre>');
+            if($desactivar && $operacion_ok){
+                
+                $usuario->setFechaBaja(new \DateTime);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($usuario);
+                $em->flush();
+                
+                return $this->redirect($this->generateUrl('usuario_logout'));
+            }
+            else{
+                //return new Response('X<pre>'.$desactivar.print_r($peticion->getContent(),true).'</pre>');
+
                 $emailOriginal = $formulario->getData()->getEmail();
                 $passwordOriginal = $formulario->getData()->getPassword();
-                
+
                 $formulario->bind($peticion);
-                
-//                $usuario->setEmail($emailOriginal);
-//                $usuario->setPassword($passwordOriginal);
-//                $usuario->setApellidos('++');
-//                $usuario->setFechaBaja(new \Datetime());
-//                $usuario->setViajeId(1);
+
+    //                $usuario->setEmail($emailOriginal);
+    //                $usuario->setPassword($passwordOriginal);
+    //                $usuario->setApellidos('++');
+    //                $usuario->setFechaBaja(new \Datetime());
+    //                $usuario->setViajeId(1);
 
                 if ($formulario->isValid()) {
-//                    if (null == $usuario->getPassword()) {
-//                    $usuario->setPassword($passwordOriginal);
-//                    }
-//                    else {
-//                        $encoder = $this->get('security.encoder_factory')->getEncoder($usuario);
-//                        $passwordCodificado = $encoder->encodePassword(
-//                            $usuario->getPassword(),
-//                            $usuario->getSalt()
-//                        );
-//                        $usuario->setPassword($passwordCodificado);
-//                    }
-//                    $encoder = $this->get('security.encoder_factory')->getEncoder($usuario);
-//                    $passwordCodificado = $encoder->encodePassword($usuario->getPassword(),$usuario->getSalt());
-//                    $usuario->setPassword($passwordCodificado);                    
-//
+    //                    if (null == $usuario->getPassword()) {
+    //                    $usuario->setPassword($passwordOriginal);
+    //                    }
+    //                    else {
+    //                        $encoder = $this->get('security.encoder_factory')->getEncoder($usuario);
+    //                        $passwordCodificado = $encoder->encodePassword(
+    //                            $usuario->getPassword(),
+    //                            $usuario->getSalt()
+    //                        );
+    //                        $usuario->setPassword($passwordCodificado);
+    //                    }
+    //                    $encoder = $this->get('security.encoder_factory')->getEncoder($usuario);
+    //                    $passwordCodificado = $encoder->encodePassword($usuario->getPassword(),$usuario->getSalt());
+    //                    $usuario->setPassword($passwordCodificado);                    
+    //
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($usuario);
                     $em->flush();
-                    
+
                     $flashBag = $this->get('session')->getFlashBag();
                     $flashBag->add('info', 'OK');
 
                     return $this->redirect($this->generateUrl('usuario_perfil'));
-                
-//
-//                    $this->get('session')->setFlash('info','Los datos de tu perfil se han actualizado correctamente');
-//                    return $this->redirect($this->generateUrl('usuario_perfil'));
-//                return new Response('OK<pre>'.$formulario->count().$emailOriginal.print_r($usuario,true).'</pre>');
+
+    //
+    //                    $this->get('session')->setFlash('info','Los datos de tu perfil se han actualizado correctamente');
+    //                    return $this->redirect($this->generateUrl('usuario_perfil'));
+    //                return new Response('OK<pre>'.$formulario->count().$emailOriginal.print_r($usuario,true).'</pre>');
                 }
                 $flashBag = $this->get('session')->getFlashBag();
-                $flashBag->add('error', 'KO');
+                $flashBag->add('info', 'KO');
 
                 return $this->redirect($this->generateUrl('usuario_perfil'));
-//                return new Response('KO<pre>'.$formulario->count().$emailOriginal.print_r($usuario,true).'</pre>');
+    //                return new Response('KO<pre>'.$formulario->count().$emailOriginal.print_r($usuario,true).'</pre>');
             }
-            //peticion GET: mostrar
-            return $this->render('InicioBundle:Sitio:perfil.html.twig', array(
-                     'avatar'     => $this->getAvatar()
-                    ,'gravatarUrl'=> $this->container->getParameter('pfc_inicio.gravatarUrl')
-                    ,'usuario'    => $usuario
-                    ,'formulario' => $formulario->createView()
-            ));
+        }
+        //peticion GET: mostrar
+        return $this->render('InicioBundle:Sitio:perfil.html.twig', array(
+                 'avatar'     => $this->getAvatar()
+                ,'gravatarUrl'=> $this->container->getParameter('pfc_inicio.gravatarUrl')
+                ,'usuario'    => $usuario
+                ,'formulario' => $formulario->createView()
+                ,'operacion'  => rand(9,990).'+'.rand(1,9)
+        ));
     }
     
     public function perfilmAction()

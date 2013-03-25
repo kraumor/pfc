@@ -12,10 +12,19 @@ class DefaultController extends Controller
         $x=new \DateTime;
         $x=new \DateTime('2000-01-01 12:12:12');
         $x->modify('+2 months');
+        
+        $user1=$this->get('security.context')->getToken()->getUser();
+        $data1=  is_null($user1->getFechaAlta())? 1:2;
+        $data2=  is_null($user1->getFechaBaja())? 1:2;
+        
+        
         $vector = array (  'gravatarurl'  => 'http://www.gravatar.com/avatar/'
                           ,'gravatarhash' => md5(strtolower(trim("contacto@email.com ")))
                           ,'data'         => $x->format('l, Y-F-d H:i:s') 
-                          ,'x'         => $this->get('security.context')->getToken()->getUser()
+                          ,'user1'        => $user1
+                          ,'request'      => print_r($this->getRequest(),true)
+                          ,'data1'        => $data1
+                          ,'data2'        => $data2
                         );
 
         //$respuesta = new Response('Texto muestra.');

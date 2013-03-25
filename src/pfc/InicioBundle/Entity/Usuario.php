@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 //use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Symfony\Component\Validator\Constraints as Assert;
+use \Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * Usuario
@@ -16,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks
  * @DoctrineAssert\UniqueEntity("email")
  */
-class Usuario implements UserInterface
+class Usuario implements UserInterface , AdvancedUserInterface
 {
     /**
      * @var integer
@@ -96,9 +97,9 @@ class Usuario implements UserInterface
     private $apellidos;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="fecha_nacimiento", type="datetime", nullable=true)
+     * @ORM\Column(name="fecha_nacimiento", type="date", nullable=true)
      * @Assert\Date()
      */
     private $fechaNacimiento;
@@ -434,5 +435,21 @@ class Usuario implements UserInterface
         $this->setUltimaConexion($fecha);
     
         return $this;
+    }
+
+    public function isAccountNonExpired() {
+        return true;        
+    }
+
+    public function isAccountNonLocked() {
+        return true;
+    }
+
+    public function isCredentialsNonExpired() {
+        return true;
+    }
+
+    public function isEnabled() {
+        return is_null($this->getFechaBaja());
     }
 }
