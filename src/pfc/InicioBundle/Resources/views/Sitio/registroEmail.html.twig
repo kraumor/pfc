@@ -227,7 +227,7 @@ Contraseña: (sólo usted la sabe)
                                     <div align="left" class="article-content ">
                                         <multiline label="Description">...pero le queda un último paso para que su cuenta esté totalmente operativa.</multiline>
                                         <br /><br />
-                                        <multiline label="Description">En el apartado <a href="localhost/{{ path('activar_cuenta') }}">ACTIVAR CUENTA</a> debe introducir el siguiente código:</multiline>
+                                        <multiline label="Description">En el apartado <a href="{{ app.request.host }}{{ path('pagina_estatica', {'pagina':'activar'}) }}?{{ codigo }}">ACTIVAR CUENTA</a> debe introducir el siguiente código:</multiline>
                                         <br /><br />
                                     </div>
                                 </td>
@@ -297,7 +297,6 @@ Contraseña: (sólo usted la sabe)
 ...pero le queda el último paso para que su cuenta esté totalmente operativa.
 
 En el apartado ACTIVAR CUENTA debe introducir el siguiente código:
-En el apartado <a href="#">ACTIVAR CUENTA</a> debe introducir el siguiente código:
 
 {{ codigo }}
 -->            

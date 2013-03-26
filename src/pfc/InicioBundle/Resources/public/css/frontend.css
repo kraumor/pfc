@@ -433,3 +433,4 @@ form p.ayuda {
     text-align: center;
     width: 50%;
 }
+.flash-message { text-align: center; padding: 10px; background: #ccf9f4; border: 1px solid; color: #4F8A10; margin-bottom: 10px; }

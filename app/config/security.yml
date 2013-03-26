@@ -39,10 +39,9 @@ security:
 #            switch_user: { role: ROLE_USUARIO }                
     
     access_control:
-        - { path: ^/login,    roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/registro, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/perfil,   roles: ROLE_USUARIO }
-#        - { path: ^/activar, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login     ,roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/registro  ,roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/perfil    ,roles: ROLE_USUARIO }
      
     providers:
         chain_provider:
@@ -59,7 +58,6 @@ security:
     
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
-#        pfc\InicioBundle\Entity\Usuario: plaintext
         pfc\InicioBundle\Entity\Usuario: { algorithm: sha512, iterations: 1 }               
             
 #jms_security_extra:

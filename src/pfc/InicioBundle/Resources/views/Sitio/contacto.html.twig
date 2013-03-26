@@ -11,10 +11,8 @@
 {% block article %}
     <h1>Formulario de contacto</h1>
    
-    {% if app.session.hasFlash('contacto-aviso') %}
-        <div class="contacto-aviso">
-            {{ app.session.flash('contacto-aviso') }}
-        </div>
+    {% for flashMessage in app.session.flashbag.get('contacto-aviso') %}
+        <div class="contacto-aviso">{{ flashMessage }}</div>
     {% else %}    
         <p>¿ Necesita ponerse en contacto con PFC ?, envíe el siguiente formulario.</p>        
         <form action="{{ path('contacto') }}" method="post" {{ form_enctype(form) }} class="contacto">
@@ -29,5 +27,5 @@
 
             <input type="submit" value="Enviar" />
         </form>       
-    {% endif %}
+    {% endfor %}
 {% endblock article %}

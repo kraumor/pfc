@@ -21,7 +21,7 @@
                 <a href="{{ path('usuario_perfil')                         }}">{{ "perfil"         | trans }}</a>
                 <a href="{{ path('usuario_registro')                       }}">{{ "registro"       | trans }}</a>
                 <a href="{{ path('usuario_logout')                         }}">{{ "Salir"          | trans }}</a>
-                <a href="{{ path('activar_cuenta')                         }}">{{ "activar"        | trans }}</a>
+                <a href="{{ path('pagina_estatica', { 'pagina': 'activar'})}}">{{ "activar"        | trans }}</a>
             </footer>
             {% block javascripts %}{% endblock %}
         </div>

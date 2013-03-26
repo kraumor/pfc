@@ -20,15 +20,9 @@ class UsuarioType extends AbstractType
                     ,'first_options'    => array('label' => 'Contraseña')
                     ,'second_options'   => array('label' => 'Repetir contraseña')
                     ))                    
-//                ->add('salt')
-//                ->add('fecha_alta')
-//                ->add('fecha_baja')
-//                ->add('conexiones')
-//                ->add('ultima_conexion')
                 ->add('nombre')
                 ->add('apellidos')
                 ->add('fecha_nacimiento', 'birthday',array('widget' => 'choice'))
-//                ->add('viaje_id')
         ;
     }
 

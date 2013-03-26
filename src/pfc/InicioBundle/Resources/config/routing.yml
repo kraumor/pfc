@@ -14,21 +14,12 @@ _pagina_estatica:
         route:        pagina_estatica
         permanent:    true
     
-#    pattern:  /activar/{codigo}
-activar_cuenta:
-    pattern:  /activar
-    defaults: { _controller: InicioBundle:Sitio:activarCuenta }
-
 contacto:
     pattern:  /contacto
     defaults: { _controller: InicioBundle:Sitio:contacto }
     requirements:
         _method:  GET|POST
         
-portada:
-    pattern:  /
-    defaults: { _controller: InicioBundle:Default:portada }       
-    
 #A partir de Symfony 2.1, debes tener configuradas las direcciones URL para las 3 rutas    
 usuario_login:
     pattern:   /login
@@ -45,10 +36,15 @@ usuario_perfil:
     pattern:  /perfil
     defaults: { _controller: InicioBundle:Sitio:perfil }         
 #pendi:borrar    
-usuario_perfilm:
-    pattern:  /perfilm
+usuario_perfilx:
+    pattern:  /perfilx
     defaults: { _controller: InicioBundle:Sitio:perfilm }         
     
 usuario_registro:
-    pattern:  /registro
-    defaults: { _controller: InicioBundle:Sitio:registro }    
+    pattern:  /registro/{codigo}
+    defaults: { _controller: InicioBundle:Sitio:registro , codigo:null}    
+    
+portada:
+    pattern:  /
+    defaults: { _controller: InicioBundle:Default:portada }       
+    

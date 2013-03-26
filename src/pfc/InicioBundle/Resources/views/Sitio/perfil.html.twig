@@ -1,12 +1,12 @@
 {% extends '::frontend.html.twig' %}
 
 {% block title 'Perfil' %}
-
+    
 {% block article %}
     <h1>{{ block('title')                               }}</h1>
     
     {% for mensaje in app.session.flashbag.get('info1') %}
-        <p class="info">{{ mensaje }}</p>
+        <p class="flash-message">{{ mensaje }}</p>
     {% endfor %}    
 
         
@@ -54,7 +54,7 @@
     #}
     <hr />    
     {% for mensaje in app.session.flashbag.get('info2') %}
-        <p class="info">{{ mensaje }}</p>
+        <p class="flash-message">{{ mensaje }}</p>
     {% endfor %}        
     <p>
     Esta acción dará de baja la cuenta (impidiéndole loguearse).

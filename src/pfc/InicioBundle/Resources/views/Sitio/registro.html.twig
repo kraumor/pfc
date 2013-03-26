@@ -6,7 +6,10 @@
     <h1>{{ block('title')}}</h1>   
     
     {% for flashMessage in app.session.flashbag.get('info') %}
-        <div class="info">{{ flashMessage }}</div>
+        <div class="flash-message">{{ flashMessage }}</div>
+        {% if codigo is not null %}
+            <a href="{{ link~codigo }}"><h3>ACTIVAR CUENTA</h3></a>
+        {% endif %}
     {% endfor %}    
     
     <form action="{{ path('usuario_registro') }}" method="post" {{ form_enctype(formulario) }}>
