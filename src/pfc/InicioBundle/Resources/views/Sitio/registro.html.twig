@@ -3,7 +3,12 @@
 {% block title 'Registro' %}
 
 {% block article %}
-    <h1>{{ block('title')}}</h1>    
+    <h1>{{ block('title')}}</h1>   
+    
+    {% for flashMessage in app.session.flashbag.get('info') %}
+        <div class="info">{{ flashMessage }}</div>
+    {% endfor %}    
+    
     <form action="{{ path('usuario_registro') }}" method="post" {{ form_enctype(formulario) }}>
         
 {# 

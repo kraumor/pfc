@@ -42,6 +42,7 @@ security:
         - { path: ^/login,    roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/registro, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/perfil,   roles: ROLE_USUARIO }
+#        - { path: ^/activar, roles: IS_AUTHENTICATED_ANONYMOUSLY }
      
     providers:
         chain_provider:

@@ -5,7 +5,7 @@
 {% block article %}
     <h1>{{ block('title')                               }}</h1>
     
-    {% for mensaje in app.session.flashbag.get('info') %}
+    {% for mensaje in app.session.flashbag.get('info1') %}
         <p class="info">{{ mensaje }}</p>
     {% endfor %}    
 
@@ -53,8 +53,11 @@
     {#
     #}
     <hr />    
+    {% for mensaje in app.session.flashbag.get('info2') %}
+        <p class="info">{{ mensaje }}</p>
+    {% endfor %}        
     <p>
-    Se desactiva la cuenta (impidiéndole loguearse).
+    Esta acción dará de baja la cuenta (impidiéndole loguearse).
     <form action="{{ path('usuario_perfil') }}" method="post" >
         {{ operacion }}=
         <input type="number" name="resultado" value=""/>

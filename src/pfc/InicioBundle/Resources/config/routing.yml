@@ -13,6 +13,11 @@ _pagina_estatica:
         _controller:  FrameworkBundle:Redirect:redirect
         route:        pagina_estatica
         permanent:    true
+    
+#    pattern:  /activar/{codigo}
+activar_cuenta:
+    pattern:  /activar
+    defaults: { _controller: InicioBundle:Sitio:activarCuenta }
 
 contacto:
     pattern:  /contacto

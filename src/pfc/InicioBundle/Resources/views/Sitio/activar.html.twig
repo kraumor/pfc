@@ -1,0 +1,25 @@
+{% extends '::frontend.html.twig' %}
+
+{% block title %}Activar Cuenta{% endblock %}
+
+{% block article %}
+    
+    {% for flashMessage in app.session.flashbag.get('info') %}
+        <div class="info">{{ flashMessage }}</div>
+    {% endfor %}    
+        
+    <h2>Introducir código para activar la cuenta.</h2> 
+    
+{# 
+#}
+    <form action="{{ path('activar_cuenta') }}" method="post" {{ form_enctype(form) }}>
+        
+        {{ form_row(form.codigo, {'label': 'Código:'}) }}
+        {{ form_rest(form) }}
+            
+        <input class="boton" type="submit" value="Activar Cuenta" />        
+    </form>
+        
+{% endblock article %}
+
+{% block aside %}aside{% endblock aside %}

@@ -4,10 +4,11 @@
 
 {% block article %}
     article
-        {% for mensaje in app.session.flashbag.get('info') %}
+    {% for mensaje in app.session.flashbag.get('info') %}
         <p class="info">{{ mensaje }}</p>
     {% endfor %}
 {% endblock article %}
+        
 {% block aside %}aside{% endblock aside %}
 
 {#

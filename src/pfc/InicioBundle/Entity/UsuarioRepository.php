@@ -12,19 +12,22 @@ use Doctrine\ORM\EntityRepository;
  */
 class UsuarioRepository extends EntityRepository
 {
-//    public function findTodasLasCompras($usuario)
-//    {
-//        $em = $this->getEntityManager();
-// 
-//        $consulta = $em->createQuery('
-//            SELECT v, o, t
-//              FROM OfertaBundle:Venta v
-//              JOIN v.oferta o
-//              JOIN o.tienda t
-//             WHERE v.usuario = :id
-//          ORDER BY v.fecha DESC');
-//        $consulta->setParameter('id', $usuario);
-// 
-//        return $consulta->getResult();
-//    }    
+    public function findUsuarioRegistrado($id,$fechaBaja,$password)
+    {
+        $em = $this->getEntityManager();
+ 
+        $consulta = $em->createQuery('
+            SELECT u
+              FROM InicioBundle:Usuario u
+             WHERE u.id         = :id
+               AND u.fechaBaja = :fechaBaja
+               AND u.password   = :password
+          ');
+        $consulta->setParameter('id'        ,$id)
+                 ->setParameter('fechaBaja' ,$fechaBaja)
+                 ->setParameter('password'  ,$password)
+                ;
+ 
+        return $consulta->getResult();
+    }    
 }
