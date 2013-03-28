@@ -14,6 +14,10 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class SitioController extends Controller {
 
+    public function portadaAction() {
+        return $this->render('InicioBundle:Sitio:portada.html.twig');
+    }
+
     /**
      * Muestra las páginas estáticas del sitio web
      */
@@ -25,17 +29,7 @@ class SitioController extends Controller {
 
             switch ($pagina){
                 case "activar":
-//                    $codigo=$this->getRequest()->getUri();                // http://localhost/pfc/web/app_dev.php/sitio/activar?codigo=asd%25q%2Fwe
-//                    $codigo=$this->getRequest()->getBasePath();           // /pfc/web
-//                    $codigo=$this->getRequest()->getBaseUrl();            // /pfc/web/app_dev.php
-//                    $codigo=$this->getRequest()->getClientIp();           // 127.0.0.1
-//                    $codigo=$this->getRequest()->getHost();               // localhost
-//                    $codigo=$this->getRequest()->getPathInfo();           // /sitio/activar
-//                    $codigo=$this->getRequest()->getQueryString();        // codigo=asd%25q%2Fwe
-//                    $codigo=$this->getRequest()->getRequestUri();         // /pfc/web/app_dev.php/sitio/activar?codigo=asd%q/we
-//                    $codigo=$this->getRequest()->getSchemeAndHttpHost();  // http://localhost         
                     $codigo=$this->getRequest()->getQueryString();
-
                     $respuesta=$this->forward('InicioBundle:Sitio:activarCuenta',array('codigo' => $codigo));
                     break;
                 default:
@@ -97,9 +91,6 @@ class SitioController extends Controller {
             //busca usuario en BBDD
             $em=$this->getDoctrine()->getManager();
             //$usuario = $em->getRepository('InicioBundle:Usuario')->findUsuarioRegistrado($a,$b2,$c);
-            //$usuario = $em->getRepository('InicioBundle:Usuario')->findOneBy(array('id'=>$a));
-            //$usuario = $em->getRepository('InicioBundle:Usuario')->findOneBy(array('fechaBaja' => $b2 ));
-            //$usuario = $em->getRepository('InicioBundle:Usuario')->findOneBy(array('password'=>$c));
             $usuario=$em->getRepository('InicioBundle:Usuario')->findOneBy(array('id' => $a,'fechaBaja' => $b2,'password' => $c));
             //$arr=array($a,$b2,$c);
             //return new Response('REPOSITORY<pre>'.print_r($usuario, true) . '</pre>');
@@ -149,8 +140,6 @@ class SitioController extends Controller {
                 $message=\Swift_Message::newInstance()
                         ->setSubject('Solicitud de contacto desde PFC')
                         ->setFrom(array($FromEmail => $FromNombre))
-                        //->setTo('contacto@email.com')
-                        //->setTo($contacto->getEmail())
                         ->setTo(array($ToEmail => $ToNombre))
                         ->setBody($this->renderView('InicioBundle:Sitio:contactoEmail.txt.twig',array('contacto' => $contacto)));
                 $this->get('mailer')->send($message);
@@ -249,13 +238,13 @@ class SitioController extends Controller {
         ));
     }
 
-    public function perfilmAction() {
+    public function perfilxAction() {
         $usuario=$this->getUser();
 
         $em=$this->getDoctrine()->getManager();
         $usuario=$em->getRepository('InicioBundle:Usuario')->find($usuario);
 
-        return $this->render('InicioBundle:Sitio:perfilm.html.twig',array(
+        return $this->render('InicioBundle:Sitio:perfilx.html.twig',array(
                     'usuario' => $usuario
                     ,'avatar' => $this->getAvatar(50)));
     }
@@ -310,17 +299,19 @@ class SitioController extends Controller {
 
             if($formulario->isValid()){
 
+                //codifica password
                 $encoder=$this->get('security.encoder_factory')->getEncoder($usuario);
                 $usuario->setSalt();
                 $passwordCodificado=$encoder->encodePassword($usuario->getPassword(),$usuario->getSalt());
                 $usuario->setPassword($passwordCodificado);
 
+                //establece fechaBaja para que no pueda loguear
                 $formato='Y-m-d H:i:s';
-                $f1=date($formato,$usuario->getFechaAlta()->getTimestamp());  // string
-                $f2=\DateTime::createFromFormat($formato,$f1);               // \Datetime                
+                $f1=date($formato,$usuario->getFechaAlta()->getTimestamp());
+                $f2=\DateTime::createFromFormat($formato,$f1);
                 $usuario->setFechaBaja($f2);
-                //$usuario->setFechaBaja(null);
 
+                //guarda datos en BBDD (registra la cuenta)
                 $em=$this->getDoctrine()->getManager();
                 $em->persist($usuario);
                 $em->flush();
@@ -332,7 +323,7 @@ class SitioController extends Controller {
                 $codigo=$clave.$this->encriptar($datos,$clave);
                 $codigo=base64_encode($codigo);
                 $codigo=urlencode($codigo);   //TUWPv8TO5kUoAEICtrrfm6S0kzQBXbcMdALBRt3Nl4kwTRBgH6kijnhPVaOIifOoG06szxlW1%2FxZpToMPYOuY3H777NPMutQOz7nx6E9lZQ2%2BX0qkpaYwK3iv9xGcedOJ7witOztuCr5La5EQXtK86Pl8SYpulFQXSbVot8yOfCcbg%3D%3D
-                // enviar el email
+                //envia el email confirmacion con el codigo
                 $message=\Swift_Message::newInstance()
                         ->setSubject('Registro cuenta en PFC')
                         ->setFrom(array($this->container->getParameter('pfc_inicio.emails.contacto') => $this->container->getParameter('pfc_inicio.proyecto')))
@@ -345,14 +336,11 @@ class SitioController extends Controller {
                 $this->get('mailer')->send($message);
 
                 //mensaje flash
-                //$this->get('session')->setFlash('info','¡Enhorabuena! Te has registrado correctamente.');
                 $this->get('session')->getFlashBag()->add('info',
                         //$datos.
                         'Se le ha enviado un correo con el código de activación de cuenta.'
                         //.$codigo
                 );
-
-                //loguear al nuevo usuario
 
                 return $this->redirect($this->generateUrl('usuario_registro',array('codigo' => $codigo)));
             }

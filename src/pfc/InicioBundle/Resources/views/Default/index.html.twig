@@ -1,12 +1,42 @@
-Hola {{ name }}!
-<br />
-Gravatar {{ vector.gravatarhash }}
-<img src="{{ vector.gravatarurl~vector.gravatarhash }}" />
-<p>{{ vector.data }}</p>
-<p>+{{ vector.fecha }}+</p>
-{#
-<p>{{ vector.user1 }}</p>
-<p>{{ vector.data1 }}</p>
-<p>{{ vector.data2 }}</p>
-<p><pre>{{ vector.request }}</pre></p>
-#}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta charset="UTF-8" />
+        <title>{% block title %}baseTitle{% endblock %} | PFC</title>
+        {% block stylesheets %}
+            <style type="text/css">
+                .ent a {border:1px solid; background-color:beige ;display:block;width:4em;float:left;text-align:center;text-decoration:none;}
+            </style>
+        {% endblock %}
+        {% block rss %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('PFC_icons/1_Desktop_Icons/icon_016.png') }}" />
+    </head>
+    <body>
+        {% block facebook %}{% endblock %}
+        <div id="contenedor">
+            <header>
+                {% block header %}
+                    <a href="{{ path('portada')                                }}">PORTADA </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="{{ path('proves')                                 }}">proves </a>
+                    <p>
+                        <span class="ent"><a href="{{ path('proves', { 'pag': 'x0'})}}">x0                  </a></span>
+                        <span class="ent"><a href="{{ path('proves', { 'pag': 'x1'})}}">x1                  </a></span>
+                    </p>
+                    <div style="clear:both;" />
+                {% endblock header %}
+            </header>
+            <hr />
+                {% block body %}
+                    body
+                {% endblock %}
+            <hr />
+            <footer>
+                {% block footer %}
+                    footer
+                {% endblock footer %}
+            </footer>
+            {% block javascripts %}{% endblock %}
+        </div>
+    </body>
+</html>

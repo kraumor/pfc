@@ -20,7 +20,7 @@ class UsuarioRepository extends EntityRepository
             SELECT u
               FROM InicioBundle:Usuario u
              WHERE u.id         = :id
-               AND u.fechaBaja = :fechaBaja
+               AND u.fechaBaja  = :fechaBaja
                AND u.password   = :password
           ');
         $consulta->setParameter('id'        ,$id)

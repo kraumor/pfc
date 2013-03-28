@@ -12,7 +12,7 @@ use \Symfony\Component\Security\Core\User\AdvancedUserInterface;
 /**
  * Usuario
  *
- * @ORM\Table()
+ * @ORM\Table(name="pfc_usuario")
  * @ORM\Entity(repositoryClass="pfc\InicioBundle\Entity\UsuarioRepository")
  * @ORM\HasLifecycleCallbacks
  * @DoctrineAssert\UniqueEntity("email")

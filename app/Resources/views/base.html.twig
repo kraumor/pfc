@@ -13,16 +13,16 @@
             {% block body %}{% endblock %}
             <footer>
                 &copy; {{ 'now'|date('Y') }}
-                <a href="{{ path('portada')                                }}">portada</a>
-                <a href="{{ path('inicio_prova'   , { 'name'  : 'adios' }) }}">{{ "proves"         | trans }}</a>
-                <a href="{{ path('pagina_estatica', { 'pagina': 'sobre' }) }}">{{ "Sobre Nosotros" | trans }}</a>
-                <a href="{{ path('contacto')                               }}">{{ "Contacto"       | trans }}</a>
-                <a href="{{ path('usuario_login')                          }}">{{ "Login"          | trans }}</a>
-                <a href="{{ path('usuario_perfil')                         }}">{{ "perfil"         | trans }}</a>
-                <a href="{{ path('usuario_registro')                       }}">{{ "registro"       | trans }}</a>
-                <a href="{{ path('usuario_logout')                         }}">{{ "Salir"          | trans }}</a>
-                <a href="{{ path('pagina_estatica', { 'pagina': 'activar'})}}">{{ "activar"        | trans }}</a>
-            </footer>
+                <a href="{{ path('portada')                                     }}">Portada                 </a>
+                <a href="{{ path('pagina_estatica',{'pagina':'sobre'})          }}">Sobre Nosotros          </a>
+                <a href="{{ path('contacto')                                    }}">Contacto                </a>
+                <a href="{{ path('usuario_registro')                            }}">Registro                </a>
+                <a href="{{ path('pagina_estatica',{'pagina':'activar'})        }}">Activar                 </a>
+                <a href="{{ path('usuario_login')                               }}">Login                   </a>
+                <a href="{{ path('usuario_perfil')                              }}">Perfil                  </a>
+                <a href="{{ path('usuario_logout')                              }}">Cerrar                  </a>
+            </footer>               
+                <a href="{{ path('proves')                                      }}">proves                  </a>
             {% block javascripts %}{% endblock %}
         </div>
     </body>

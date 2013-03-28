@@ -1,50 +1,49 @@
-inicio_prova:
-    pattern:  /prova/{name}
-    defaults: { _controller: InicioBundle:Default:index }
+proves:
+    pattern:    /p/{pag}
+    defaults:   { _controller: InicioBundle:Default:index , pag:index}
     
 pagina_estatica:
-    pattern:  /sitio/{pagina}
-    defaults: { _controller: InicioBundle:Sitio:estatica }
+    pattern:    /sitio/{pagina}
+    defaults:   { _controller: InicioBundle:Sitio:estatica }
     
 # soluciona el trailing slash problem    
 _pagina_estatica:
-    pattern:  /sitio/{pagina}/
+    pattern:    /sitio/{pagina}/
     defaults: 
         _controller:  FrameworkBundle:Redirect:redirect
         route:        pagina_estatica
         permanent:    true
     
 contacto:
-    pattern:  /contacto
+    pattern:    /contacto
     defaults: { _controller: InicioBundle:Sitio:contacto }
     requirements:
         _method:  GET|POST
         
-#A partir de Symfony 2.1, debes tener configuradas las direcciones URL para las 3 rutas    
 usuario_login:
-    pattern:   /login
-    defaults:  { _controller: InicioBundle:Sitio:login }
+    pattern:    /login
+    defaults:   { _controller: InicioBundle:Sitio:login }
 
 usuario_login_check:
-    pattern:   /login_check
+    pattern:    /login_check
 
 usuario_logout:
-    pattern:   /logout  
+    pattern:    /logout  
     
         
 usuario_perfil:
-    pattern:  /perfil
-    defaults: { _controller: InicioBundle:Sitio:perfil }         
+    pattern:    /perfil
+    defaults:   { _controller: InicioBundle:Sitio:perfil }         
 #pendi:borrar    
 usuario_perfilx:
-    pattern:  /perfilx
-    defaults: { _controller: InicioBundle:Sitio:perfilm }         
+    pattern:    /perfilx
+    defaults:   { _controller: InicioBundle:Sitio:perfilx }         
     
 usuario_registro:
-    pattern:  /registro/{codigo}
-    defaults: { _controller: InicioBundle:Sitio:registro , codigo:null}    
+    pattern:    /registro/{codigo}
+    defaults:   { _controller: InicioBundle:Sitio:registro , codigo:null}    
     
 portada:
-    pattern:  /
-    defaults: { _controller: InicioBundle:Default:portada }       
+    pattern:    /
+    defaults:   { _controller: InicioBundle:Sitio:portada }       
     
