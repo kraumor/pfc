@@ -1,26 +1,9 @@
 security:
     firewalls:
-#        firewall_1:
-#            # ...
-#            http_basic:
-#                provider:  nombre-del-proveedor
-#        
-#        firewall_2:
-#            # ...
-#            http_digest:
-#                provider:  nombre-del-proveedor
-#        
-#        firewall_3:
-#            # ...
-#            x509:
-#                provider:  nombre-del-proveedor
-#        
+        
         firewall_4:
             pattern:     ^/*
             anonymous:   ~
-#            http_basic:
-#                realm: "Area Segura"            
-#            form_login:  ~
             form_login:  
                 login_path: usuario_login
                 check_path: usuario_login_check 
@@ -28,15 +11,9 @@ security:
                 key:      "%secret%"
 #                name:     NameOfTheCookie
                 lifetime: 60
-#            default_target_path: /sobre
-#            always_use_default_target_path:  true   
-#            logout:  ~    
             logout:
                 path:   usuario_logout
                 target: /   
-             #ROLE_ALLOWED_TO_SWITCH
-#            switch_user: true                
-#            switch_user: { role: ROLE_USUARIO }  
     
     access_control:
         - { path: ^/login     ,roles: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -51,15 +28,14 @@ security:
         in_memory:
             memory:
                 users:
-#                    foo: { password: test , roles: 'ROLE_USUARIO' }
                     - { name: x ,  password: x , roles: 'ROLE_USUARIO' }
         user_db:
             entity: { class: pfc\InicioBundle\Entity\Usuario, property: email }      
     
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
-        pfc\InicioBundle\Entity\Usuario: { algorithm: sha512, iterations: 1 }               
-            
+        pfc\InicioBundle\Entity\Usuario: { algorithm: sha512, iterations: 1 }          
+        
 #jms_security_extra:
 #    secure_all_services: false
 #    expressions: true

@@ -2,12 +2,12 @@
 
 namespace pfc\InicioBundle\Entity;
 
-use \Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
-//use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
-use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use \Symfony\Component\Security\Core\User\UserInterface;
 use \Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 
 /**
  * Usuario
@@ -22,11 +22,11 @@ class Usuario implements UserInterface , AdvancedUserInterface
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\Column(name="id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
 //pendi:descomentar y bajar dentro de la anotacion
 //     * @Assert\Email(checkMX=true)
@@ -35,7 +35,7 @@ class Usuario implements UserInterface , AdvancedUserInterface
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
-    private $email;
+    protected $email;
 
 //pendi:descomentar y bajar dentro de la anotacion
 //     * @Assert\Length(min = 6)
@@ -44,42 +44,42 @@ class Usuario implements UserInterface , AdvancedUserInterface
      *
      * @ORM\Column(name="password", type="string", length=255)
      */
-    private $password;
+    protected $password;
 
     /**
      * @var string
      *
      * @ORM\Column(name="salt", type="string", length=255)
      */
-    private $salt;
+    protected $salt;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="fecha_alta", type="datetime")
      */
-    private $fechaAlta;
+    protected $fechaAlta;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="fecha_baja", type="datetime", nullable=true)
      */
-    private $fechaBaja;
+    protected $fechaBaja;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="conexiones", type="integer", nullable=true)
      */
-    private $conexiones;
+    protected $conexiones;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="ultima_conexion", type="datetime", nullable=true)
      */
-    private $ultimaConexion;
+    protected $ultimaConexion;
 
     /**
      * @var string
@@ -87,14 +87,14 @@ class Usuario implements UserInterface , AdvancedUserInterface
      * @ORM\Column(name="nombre", type="string", length=100)
      * @Assert\NotBlank()
      */
-    private $nombre;
+    protected $nombre;
 
     /**
      * @var string
      *
      * @ORM\Column(name="apellidos", type="string", length=255, nullable=true)
      */
-    private $apellidos;
+    protected $apellidos;
 
     /**
      * @var \Date
@@ -102,14 +102,12 @@ class Usuario implements UserInterface , AdvancedUserInterface
      * @ORM\Column(name="fecha_nacimiento", type="date", nullable=true)
      * @Assert\Date()
      */
-    private $fechaNacimiento;
+    protected $fechaNacimiento;
     
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="viaje_id", type="integer", nullable=true)
+     * @ORM\OneToMany(targetEntity="Viaje", mappedBy="usuario")
      */
-    private $viajeId;
+    protected $viajes;
 
 
     /**
@@ -362,28 +360,51 @@ class Usuario implements UserInterface , AdvancedUserInterface
     }
 
     /**
-     * Set viajeId
+     * Set viajes
      *
-     * @param integer $viajeId
+     * @param integer $viajes
      * @return Usuario
      */
-    public function setViajeId($viajeId)
+    public function setViajes($viajes)
     {
-        $this->viajeId = $viajeId;
+        $this->viajes = $viajes;
     
         return $this;
     }
 
     /**
-     * Get viajeId
+     * Get viajes
      *
-     * @return integer 
+     * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getViajeId()
+    public function getViajes()
     {
-        return $this->viajeId;
+        return $this->viajes;
     }
     
+    /**
+     * Add viaje
+     *
+     * @param \pfc\InicioBundle\Entity\Viaje $viaje
+     * @return Usuario
+     */
+    public function addViaje(\pfc\InicioBundle\Entity\Viaje $viaje)
+    {
+        $this->viajes[] = $viaje;
+    
+        return $this;
+    }
+
+    /**
+     * Remove viaje
+     *
+     * @param \pfc\InicioBundle\Entity\Viaje $viaje
+     */
+    public function removeViaje(\pfc\InicioBundle\Entity\Viaje $viaje)
+    {
+        $this->viajes->removeElement($viaje);
+    }
+
     public function __construct()
     {
         $fecha=new \DateTime();
@@ -393,7 +414,7 @@ class Usuario implements UserInterface , AdvancedUserInterface
         $this->setConexiones(0);        
         $this->nuevaConexion($fecha);
         
-        //$this->viajeId = new ArrayCollection();
+        $this->viajes = new ArrayCollection();
     }
 
     public function __toString()
