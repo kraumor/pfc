@@ -77,4 +77,18 @@ class DefaultController extends Controller {
 
         return $respuesta;
     }
+    
+    public function viajexAction() {
+
+        $em=$this->getDoctrine()->getManager();
+
+//return new response($usuario);
+//        $viajes=$em->getRepository('InicioBundle:Usuario')->find($usuario->getId());
+//        $viajes=$em->getRepository('InicioBundle:Usuario')->findViajesRecientes($usuario->getId());
+        $viajes=$em->getRepository('InicioBundle:Viaje')->findAll();
+
+        return $this->render('InicioBundle:Default:viajex.html.twig',array(
+                    'viajes' => $viajes
+        ));
+    }
 }

@@ -1,0 +1,41 @@
+{% extends '::frontend.html.twig' %}
+
+{% block title 'Mostrar Viaje' %}
+
+{% block article -%}
+    <h1>Viaje</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{{ entity.fecha|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('viaje') }}">volver</a>
+        </li>
+        <li>
+            <a href="{{ path('viaje_editar', { 'id': entity.id }) }}">Editar</a>
+        </li>
+        <li>
+            <form action="{{ path('viaje_borrar', { 'id': entity.id }) }}" method="post">
+                <input type="hidden" name="_method" value="DELETE" />
+                {{ form_widget(delete_form) }}
+                <button type="submit">Borrar</button>
+            </form>
+        </li>
+    </ul>
+{% endblock %}
+{% block aside %}{% endblock %}

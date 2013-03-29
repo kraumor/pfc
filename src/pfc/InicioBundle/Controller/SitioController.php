@@ -230,17 +230,6 @@ class SitioController extends Controller {
         ));
     }
 
-    public function perfilxAction() {
-        $usuario=$this->getUser();
-
-        $em=$this->getDoctrine()->getManager();
-        $usuario=$em->getRepository('InicioBundle:Usuario')->find($usuario);
-
-        return $this->render('InicioBundle:Sitio:perfilx.html.twig',array(
-                    'usuario' => $usuario
-                    ,'avatar' => $this->getAvatar(50)));
-    }
-
     public function loginAction() {
         $request=$this->getRequest();
         $session=$request->getSession();
@@ -270,6 +259,20 @@ class SitioController extends Controller {
                     'last_username' => $session->get(SecurityContext::LAST_USERNAME)
                     ,'error' => $error
                     ,'avatar' => $this->getAvatar(20)
+        ));
+    }
+    
+    public function cajaAction() {
+        $request=$this->getRequest();
+        $session=$request->getSession();
+
+        $error=$request->attributes->get(SecurityContext::AUTHENTICATION_ERROR
+                ,$session->get(SecurityContext::AUTHENTICATION_ERROR));
+
+        return $this->render('InicioBundle:Sitio:caja.html.twig',array(
+                    'last_username' => $session->get(SecurityContext::LAST_USERNAME)
+                    ,'error' => $error
+                    ,'avatar' => $this->getAvatar(35)
         ));
     }
 

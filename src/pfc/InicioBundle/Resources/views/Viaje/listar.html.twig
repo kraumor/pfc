@@ -1,0 +1,46 @@
+{% extends '::frontend.html.twig' %}
+
+{% block title 'Viajes' %}
+
+{% block article -%}
+    <h1>Lista de Viajes</h1>
+
+    <ul>
+        <li>
+            <a href="{{ path('viaje_nuevo') }}">Crear viaje</a>
+        </li>
+    </ul>
+    
+    {% for entity in entities %}
+        <table class="records_list">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Fecha</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ loop.revindex }}</td>
+                    <td><a href="{{ path('viaje_mostrar', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                    <td>{{ entity.nombre }}</td>
+                    <td>{% if entity.fecha %}{{ entity.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
+                    <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('viaje_mostrar', { 'id': entity.id }) }}">Mostrar</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('viaje_editar', { 'id': entity.id }) }}">Editar</a>
+                        </li>
+                    </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    {% endfor %}
+
+{% endblock %}

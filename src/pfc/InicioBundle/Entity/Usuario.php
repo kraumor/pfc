@@ -84,7 +84,7 @@ class Usuario implements UserInterface , AdvancedUserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=100)
+     * @ORM\Column(name="nombre", type="string", length=50)
      * @Assert\NotBlank()
      */
     protected $nombre;

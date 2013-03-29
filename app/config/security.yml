@@ -16,10 +16,10 @@ security:
                 target:     /   
     
     access_control:
-        - { path: ^/login            ,roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/registro         ,roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/(login|registro) ,roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/perfil           ,roles: ROLE_USUARIO }     
         - { path: ^/extranet/*       ,roles: ROLE_USUARIO }     
+        - { path: ^/viaje/*          ,roles: ROLE_USUARIO }     
      
     providers:
         chain_provider:

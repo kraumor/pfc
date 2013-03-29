@@ -1,25 +1,11 @@
 {# el usuario está logueado #}
 {% if is_granted('ROLE_USUARIO') %}
 
-    {% for mensaje in app.session.flashbag.get('info') %}
-        <p class="info">{{ mensaje }}</p>
-    {% endfor %}
-        
-    {#<p>Conectado como {{ app.user.nombre ~ ' ' ~ app.user.apellidos }}</p>#}
-    <p>
-        <img src="{{ avatar }}" />
-        Conectado como
-        <a href="{{ path('usuario_perfil')  }}">
-            <b>{{ app.user }}</b>
-        </a>
-    </p>
- 
-    <a href="{{ path('usuario_perfil')  }}">Ver mi perfil</a>
-    <a href="{{ path('usuario_logout')  }}">Cerrar sesión</a>
+    <a href="{{ path('viaje')           }}">mis viajes</a>
     
 {# el usuario todavía no ha hecho login #}
 {% else %} 
-    <h2>Accede a tu cuenta</h2>
+    <h2><a href="{{ path('usuario_login')  }}">Acceder</a></h2>
 
     <form action="{{ path('usuario_login_check') }}" method="post">
         {% if error.message is defined %}

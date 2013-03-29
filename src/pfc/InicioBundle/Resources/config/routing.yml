@@ -1,10 +1,10 @@
-proves:
-    pattern:    /p/{pag}
-    defaults:   { _controller: InicioBundle:Default:index , pag:index}
+portada:
+    pattern:    /
+    defaults:   { _controller: "InicioBundle:Sitio:portada" }       
     
 pagina_estatica:
     pattern:    /sitio/{pagina}
-    defaults:   { _controller: InicioBundle:Sitio:estatica }
+    defaults:   { _controller: "InicioBundle:Sitio:estatica" }
     
 # soluciona el trailing slash problem    
 _pagina_estatica:
@@ -16,17 +16,17 @@ _pagina_estatica:
     
 contacto:
     pattern:    /contacto
-    defaults: { _controller: InicioBundle:Sitio:contacto }
+    defaults:   { _controller: "InicioBundle:Sitio:contacto" }
     requirements:
         _method:  GET|POST
         
 usuario_registro:
     pattern:    /registro/{codigo}
-    defaults:   { _controller: InicioBundle:Sitio:registro , codigo:null}    
+    defaults:   { _controller: "InicioBundle:Sitio:registro" , codigo:null}    
     
 usuario_login:
     pattern:    /login
-    defaults:   { _controller: InicioBundle:Sitio:login }
+    defaults:   { _controller: "InicioBundle:Sitio:login" }
 
 usuario_login_check:
     pattern:    /login_check
@@ -34,19 +34,14 @@ usuario_login_check:
 usuario_logout:
     pattern:    /logout  
     
-        
 usuario_perfil:
     pattern:    /perfil
-    defaults:   { _controller: InicioBundle:Sitio:perfil }         
-#pendi:borrar    
-usuario_perfilx:
-    pattern:    /perfilx
-    defaults:   { _controller: InicioBundle:Sitio:perfilx }         
+    defaults:   { _controller: "InicioBundle:Sitio:perfil" }         
     
-portada:
-    pattern:    /
-    defaults:   { _controller: InicioBundle:Sitio:portada }       
+InicioBundle_viaje:
+    resource:   "@InicioBundle/Resources/config/routing/viaje.yml"
+    prefix:     /viaje    
     
-extranet_portada:
-    pattern:    /extranet
-    defaults:   { _controller: InicioBundle:Extranet:portada }    
+#pendi:borrar       
+InicioBundle_proves:
+    resource:   "@InicioBundle/Resources/config/routing/proves.yml"

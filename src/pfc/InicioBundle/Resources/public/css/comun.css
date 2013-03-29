@@ -59,7 +59,7 @@ p {
 }
 
 img {
-    outline: 3px solid #E6E2DF;
+    outline: 1px solid lightgrey;
 }
 
 span.si { color: #060; }
@@ -287,7 +287,7 @@ header a:hover {
     color: #FF0A85 !important;
 }
 
-header h1 {border:1px solid;
+header h1 {border:0px solid;
     position: absolute;
     left: 20px;
     line-height: 60px;
@@ -300,19 +300,19 @@ header h1 a {
     text-decoration: none;
 }
 
-nav ul {border:5px lightcoral solid;
+nav ul {border:0px lightcoral solid;
     list-style: none;
     position: absolute;
     left: 200px;
     right: 20px;
 }
-nav ul li {border:1px solid;
-    float: left;
+nav ul li {border:0px solid;
+    float: right;
     line-height: 40px;
     margin: 0;
     padding-left: 2.5em;
 }
-nav ul li a {border:1px solid;
+nav ul li a {border:0px solid;
     color: #FFF !important;
     font-size: 18px;
 }

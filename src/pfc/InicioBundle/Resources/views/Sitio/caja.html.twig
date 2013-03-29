@@ -1,0 +1,21 @@
+{# el usuario está logueado #}
+{% if is_granted('ROLE_USUARIO') %}
+
+    <nav>
+        <ul>
+            <li><a href="{{ path('usuario_logout')  }}">Cerrar</a></li>
+            <li><img src="{{ avatar }}" /></li>
+            <li><a href="{{ path('usuario_perfil')  }}"><b>{{ app.user }}</b></a></li>
+        </ul>
+    </nav>
+    
+{# el usuario todavía no ha hecho login #}
+{% else %} 
+
+    <nav>
+        <ul>
+            <li><a href="{{ path('usuario_login')  }}">Acceder</a></li>
+        </ul>
+    </nav>
+
+{% endif %}

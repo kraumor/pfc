@@ -50,13 +50,13 @@ aside {border:5px salmon solid;
    Cabecera y menú de navegación
    ======================================================================== */
 nav ul {
-    left: 180px;
+    right: 10px;
 }
 nav ul li:last-child {
    float: right;
 }
 nav ul li select {
-   max-width: 200px;
+   max-width: 20px;
    font-size: 16px;
 }
 

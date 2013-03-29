@@ -13,12 +13,13 @@ class ExtranetController extends Controller {
 
         $em=$this->getDoctrine()->getManager();
         $usuario=$this->get('security.context')->getToken()->getUser();
-        
+
 //return new response($usuario);
 //        $viajes=$em->getRepository('InicioBundle:Usuario')->find($usuario->getId());
-        $viajes=$em->getRepository('InicioBundle:Usuario')->findViajesRecientes($usuario->getId());
+//        $viajes=$em->getRepository('InicioBundle:Usuario')->findViajesRecientes($usuario->getId());
+        $viajes=$em->getRepository('InicioBundle:Viaje')->findAll();
 
-        return $this->render('InicioBundle:Extranet:portada.html.twig',array(
+        return $this->render('InicioBundle:Viaje:portada.html.twig',array(
                     'viajes' => $viajes
         ));
     }

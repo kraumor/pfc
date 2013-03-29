@@ -1,0 +1,9 @@
+#pendi:borrar   
+
+proves:
+    pattern:      /p/{pag}
+    defaults:     { _controller: "InicioBundle:Default:index" , pag:index}
+    
+viajex:
+    pattern:      /viajex
+    defaults:     { _controller: "InicioBundle:Default:viajex" }      

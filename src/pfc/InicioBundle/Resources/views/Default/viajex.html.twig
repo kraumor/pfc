@@ -1,8 +1,6 @@
-{% extends '::extranet.html.twig' %}
+{% extends '::frontend.html.twig' %}
  
-{% block id 'portada' %}
-
-{% block title %}Administración de {{ app.user.nombre }}{% endblock %}
+{% block title %}viajexx{% endblock %}
  
 {#
 #}
@@ -13,12 +11,10 @@
 <table>
     <thead>
         <tr>
+            <th>#</th>
             <th>Nombre</th>
             <th>Fecha</th>
-            <th>X</th>
-            <th>X</th>
-            <th>X</th>
-            <th>X</th>
+            <th>Usuario</th>
         </tr>
     </thead>
  
@@ -36,8 +32,10 @@
             {% endif %}
 #}
  
+            <td>{{ loop.index }}</td>
             <td>{{ viaje.nombre }}</td>
             <td>{{ viaje.fecha | date('d/m/Y H:i:s') }}</td>
+            <td>{{ viaje.usuario }}</td>
 
         </tr>
         {% endfor %}

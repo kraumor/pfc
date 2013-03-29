@@ -1,0 +1,30 @@
+viaje:
+    pattern:      /
+    defaults:     { _controller: "InicioBundle:Viaje:listar" }
+
+viaje_mostrar:
+    pattern:      /{id}/mostrar
+    defaults:     { _controller: "InicioBundle:Viaje:mostrar" }
+
+viaje_nuevo:
+    pattern:      /nuevo
+    defaults:     { _controller: "InicioBundle:Viaje:nuevo" }
+
+viaje_crear:
+    pattern:      /crear
+    defaults:     { _controller: "InicioBundle:Viaje:crear" }
+    requirements: { _method: post }
+
+viaje_editar:
+    pattern:      /{id}/editar
+    defaults:     { _controller: "InicioBundle:Viaje:editar" }
+
+viaje_actualizar:
+    pattern:      /{id}/actualizar
+    defaults:     { _controller: "InicioBundle:Viaje:actualizar" }
+    requirements: { _method: post|put }
+
+viaje_borrar:
+    pattern:      /{id}/borrar
+    defaults:     { _controller: "InicioBundle:Viaje:borrar" }
+    requirements: { _method: post|delete }
