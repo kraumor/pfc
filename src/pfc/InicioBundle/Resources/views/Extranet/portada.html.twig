@@ -1,0 +1,50 @@
+{% extends '::extranet.html.twig' %}
+ 
+{% block id 'portada' %}
+
+{% block title %}Administración de {{ app.user.nombre }}{% endblock %}
+ 
+{#
+#}
+
+{% block article %}
+<h1>Todos tus viajes</h1>
+ 
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Fecha</th>
+            <th>X</th>
+            <th>X</th>
+            <th>X</th>
+            <th>X</th>
+        </tr>
+    </thead>
+ 
+    <tbody>
+        {% for viaje in viajes %}
+        <tr>
+{#
+            <td>{{ viaje.revisada ? 'si' : 'no' }}</td>
+ 
+            {% if viaje.revisada %}
+            <td>{{ viaje.fechaPublicacion | localizeddate('medium', 'short') }}</td>
+            <td>{{ viaje.fechaExpiracion  | localizeddate('medium', 'short') }}</td>
+            {% else %}
+            <td colspan="2">Pendiente de revisión</td>
+            {% endif %}
+#}
+ 
+            <td>{{ viaje.nombre }}</td>
+            <td>{{ viaje.fecha | date('d/m/Y H:i:s') }}</td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{#
+{% block aside %}aside{% endblock aside %}
+#}

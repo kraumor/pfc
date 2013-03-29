@@ -273,7 +273,7 @@ footer {border:5px green solid;
 header {border:5px red solid;
     background: grey;
     color: #FFF;
-    border-bottom: 1px solid #CCC;
+/*    border-bottom: 1px solid #CCC;*/
     height: 60px;
     margin-bottom: 0em;
     overflow: hidden;
@@ -287,7 +287,7 @@ header a:hover {
     color: #FF0A85 !important;
 }
 
-header h1 {
+header h1 {border:1px solid;
     position: absolute;
     left: 20px;
     line-height: 60px;
@@ -306,13 +306,13 @@ nav ul {border:5px lightcoral solid;
     left: 200px;
     right: 20px;
 }
-nav ul li {
+nav ul li {border:1px solid;
     float: left;
-    line-height: 60px;
+    line-height: 40px;
     margin: 0;
     padding-left: 2.5em;
 }
-nav ul li a {
+nav ul li a {border:1px solid;
     color: #FFF !important;
     font-size: 18px;
 }
@@ -349,7 +349,7 @@ aside section {
    ======================================================================== */
 footer {
     color: #999;
-    border-top: 1px solid #CCC;
+/*    border-top: 1px solid #CCC;*/
     font-size: 13px;
     padding: 1em;
     position: relative;    

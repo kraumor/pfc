@@ -190,31 +190,23 @@ class SitioController extends Controller {
                 return $this->redirect($this->generateUrl('usuario_logout'));
             }
             else{
-
-                $emailOriginal=$formulario->getData()->getEmail();
                 $passwordOriginal=$formulario->getData()->getPassword();
 
                 $formulario->bind($peticion);
-
-//                $usuario->setEmail($emailOriginal);
-//                $usuario->setPassword($passwordOriginal);
-
+                
+                //pendi:error si contraseñas difieren salta error operacion
                 if($formulario->isValid()){
-//                    if (null == $usuario->getPassword()) {
-//                    $usuario->setPassword($passwordOriginal);
-//                    }
-//                    else {
-//                        $encoder = $this->get('security.encoder_factory')->getEncoder($usuario);
-//                        $passwordCodificado = $encoder->encodePassword(
-//                            $usuario->getPassword(),
-//                            $usuario->getSalt()
-//                        );
-//                        $usuario->setPassword($passwordCodificado);
-//                    }
-//                    $encoder = $this->get('security.encoder_factory')->getEncoder($usuario);
-//                    $passwordCodificado = $encoder->encodePassword($usuario->getPassword(),$usuario->getSalt());
-//                    $usuario->setPassword($passwordCodificado);                    
-//
+                    if (null == $usuario->getPassword()) {
+                        $usuario->setPassword($passwordOriginal);
+                    }
+                    else {
+                        $encoder = $this->get('security.encoder_factory')->getEncoder($usuario);
+                        $passwordCodificado = $encoder->encodePassword(
+                            $usuario->getPassword(),
+                            $usuario->getSalt()
+                        );
+                        $usuario->setPassword($passwordCodificado);
+                    }
                     $em=$this->getDoctrine()->getManager();
                     $em->persist($usuario);
                     $em->flush();

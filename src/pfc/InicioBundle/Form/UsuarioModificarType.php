@@ -14,20 +14,14 @@ class UsuarioModificarType extends AbstractType
                 ->add('nombre'   ,null,array('required' => true))
                 ->add('apellidos',null,array('required' => false))
                 ->add('fecha_nacimiento', 'birthday',array('widget' => 'choice'))            
-//                ->add('conexiones','number',array( 'attr' => array( 'readonly' => 'readonly' ) ))
-                
-                
-//                ->add('fecha_baja')
-//                ->add('ultima_conexion')
-//                ->add('password', 'repeated', array(
-//                     'type'             => 'password'
-//                    ,'invalid_message'  => 'Las dos contraseñas deben coincidir.'
-//                    ,'options'          => array('attr' => array('class' => 'password-field'))
-//                    ,'required'         => false
-//                    ,'first_options'    => array('label' => 'Contraseña')
-//                    ,'second_options'   => array('label' => 'Repetir contraseña')
-//                    ))       
-//                ->add('viaje_id')
+                ->add('password', 'repeated', array(
+                     'type'             => 'password'
+                    ,'invalid_message'  => 'Las dos contraseñas deben coincidir.'
+                    ,'options'          => array('attr' => array('class' => 'password-field'))
+                    ,'required'         => false
+                    ,'first_options'    => array('label' => 'Contraseña')
+                    ,'second_options'   => array('label' => 'Repetir contraseña')
+                    ))       
         ;
     }
 

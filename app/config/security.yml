@@ -2,23 +2,24 @@ security:
     firewalls:
         
         firewall_4:
-            pattern:     ^/*
-            anonymous:   ~
+            pattern:        ^/*
+            anonymous:      ~
             form_login:  
                 login_path: usuario_login
                 check_path: usuario_login_check 
             remember_me:
-                key:      "%secret%"
-#                name:     NameOfTheCookie
-                lifetime: 60
+                key:        "%secret%"
+#                name:       NameOfTheCookie
+                lifetime:   60
             logout:
-                path:   usuario_logout
-                target: /   
+                path:       usuario_logout
+                target:     /   
     
     access_control:
-        - { path: ^/login     ,roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/registro  ,roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/perfil    ,roles: ROLE_USUARIO }     
+        - { path: ^/login            ,roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/registro         ,roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/perfil           ,roles: ROLE_USUARIO }     
+        - { path: ^/extranet/*       ,roles: ROLE_USUARIO }     
      
     providers:
         chain_provider:

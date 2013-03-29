@@ -20,6 +20,10 @@ contacto:
     requirements:
         _method:  GET|POST
         
+usuario_registro:
+    pattern:    /registro/{codigo}
+    defaults:   { _controller: InicioBundle:Sitio:registro , codigo:null}    
+    
 usuario_login:
     pattern:    /login
     defaults:   { _controller: InicioBundle:Sitio:login }
@@ -39,11 +43,10 @@ usuario_perfilx:
     pattern:    /perfilx
     defaults:   { _controller: InicioBundle:Sitio:perfilx }         
     
-usuario_registro:
-    pattern:    /registro/{codigo}
-    defaults:   { _controller: InicioBundle:Sitio:registro , codigo:null}    
-    
 portada:
     pattern:    /
     defaults:   { _controller: InicioBundle:Sitio:portada }       
     
+extranet_portada:
+    pattern:    /extranet
+    defaults:   { _controller: InicioBundle:Extranet:portada }    
