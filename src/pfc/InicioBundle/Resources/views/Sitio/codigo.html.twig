@@ -1,6 +1,6 @@
 {% extends '::frontend.html.twig' %}
 
-{% block title 'Activar Cuenta' %}
+{% block title 'Código' %}
     
 {% block article %}
     
@@ -8,14 +8,14 @@
         <div class="flash-message">{{ flashMessage }}</div>
     {% endfor %}    
         
-    <h2>Introducir código para activar la cuenta.</h2> 
+    <h2>Introducir código.</h2> 
     
-    <form action="{{ path('pagina_estatica',{ 'pagina': 'activar' }) }}" method="post" {{ form_enctype(form) }}>
+    <form action="{{ path('pagina_estatica',{ 'pagina': 'codigo' }) }}" method="post" {{ form_enctype(form) }}>
         
         {{ form_row(form.codigo, {'label': 'Código:'}) }}
         {{ form_rest(form) }}
             
-        <input class="boton" type="submit" value="Activar Cuenta" />        
+        <input class="boton" type="submit" value="Aceptar" />        
     </form>
         
 {% endblock article %}

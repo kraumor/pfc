@@ -227,14 +227,14 @@ Contraseña: (sólo usted la sabe)
                                     <div align="left" class="article-content ">
                                         <multiline label="Description">...pero le queda un último paso para que su cuenta esté totalmente operativa.</multiline>
                                         <br /><br />
-                                        <multiline label="Description">En el apartado <a href="{{ app.request.host }}{{ path('pagina_estatica', {'pagina':'activar'}) }}?{{ codigo }}">ACTIVAR CUENTA</a> debe introducir el siguiente código:</multiline>
+                                        <multiline label="Description"><a href="{{ app.request.host }}{{ path('pagina_estatica', {'pagina':'codigo'}) }}?{{ codigo }}">ACTIVAR LA CUENTA</a></multiline>
                                         <br /><br />
                                     </div>
                                 </td>
                             </tr>
                             <tr><td class="w580" width="580" height="10">
                             <div  style="width:600px;word-wrap: break-word;">
-                            {{ codigo }}
+                            
                             </div>
                             
                             
@@ -263,7 +263,8 @@ Contraseña: (sólo usted la sabe)
         <td class="w580 h0" width="360" height="30"></td><td class="w0" width="60"></td><td class="w0" width="160"></td><td class="w30" width="30"></td></tr>
         <tr>
             <td class="w30" width="30"></td>
-            <td class="w580" width="360" valign="top">SALUDOS
+            <td class="w580" width="360" valign="top">
+                 SALUDOS
             <span class="hide"><p id="permission-reminder" align="left" class="footer-content-left"><span></span></p></span>
             
             </td>

@@ -28,9 +28,12 @@ class SitioController extends Controller {
         if(file_exists($plantilla)){
 
             switch ($pagina){
-                case "activar":
+                case "codigo":
                     $codigo=$this->getRequest()->getQueryString();
-                    $respuesta=$this->forward('InicioBundle:Sitio:activarCuenta',array('codigo' => $codigo));
+                    $respuesta=$this->forward('InicioBundle:Sitio:codigoCuenta',array('codigo' => $codigo));
+                    break;
+                case "restablecer":
+                    $respuesta=$this->forward('InicioBundle:Sitio:restablecer');
                     break;
                 default:
                     $respuesta=$this->render('InicioBundle:Sitio:'.$pagina.'.html.twig');
@@ -45,7 +48,7 @@ class SitioController extends Controller {
     /**
      * Activa la cuenta recien registrada mediante el código generado al finalizar el registro
      */
-    public function activarCuentaAction($codigo=null) {
+    public function codigoCuentaAction($codigo=null) {
 
         $defaultData=array('codigo' => $codigo);
         $form=$this->createFormBuilder($defaultData)
@@ -66,11 +69,13 @@ class SitioController extends Controller {
         }
 
         if($codigo){
+            
+            $accion=substr($codigo,0,1);
+            $codigo=substr($codigo,1);
 
             //desencripta cadena    
             $codigo=urldecode(trim($codigo));
             $codigo=base64_decode($codigo);
-            $x2=$codigo;
             $clave=substr($codigo,0,2);
             $datos=substr($codigo,2);
             $datos=$this->desencriptar($datos,$clave);
@@ -90,33 +95,111 @@ class SitioController extends Controller {
             $b2=\DateTime::createFromFormat($formato,$b1);      // \Datetime
             //busca usuario en BBDD
             $em=$this->getDoctrine()->getManager();
-            //$usuario = $em->getRepository('InicioBundle:Usuario')->findUsuarioRegistrado($a,$b2,$c);
-            $usuario=$em->getRepository('InicioBundle:Usuario')->findOneBy(array('id' => $a,'fechaBaja' => $b2,'password' => $c));
-            //$arr=array($a,$b2,$c);
-            //return new Response('REPOSITORY<pre>'.print_r($usuario, true) . '</pre>');
-            //activa la cuenta borrando fechaBaja
-            if($usuario){
-                $usuario->setFechaBaja(null);
-                $em->persist($usuario);
-                $em->flush();
+            switch ($accion){
+                case 'A':
+                    //$usuario = $em->getRepository('InicioBundle:Usuario')->findUsuarioRegistrado($a,$b2,$c);
+                    $usuario=$em->getRepository('InicioBundle:Usuario')->findOneBy(array('id' => $a,'fechaBaja' => $b2,'password' => $c));
+                    if($usuario){
+                        //activa la cuenta borrando fechaBaja
+                        $usuario->setFechaBaja(null);
+                        $em->persist($usuario);
+                        $em->flush();
 
+                        $respuesta=$this->redirect($this->generateUrl('portada'));
+                    }
+                    else{
+                        throw $this->createNotFoundException('Código ya usado.');
+                    }
+                    break;
+                case 'R':
+                    $usuario=$em->getRepository('InicioBundle:Usuario')->findOneBy(array('id' => $a,'fechaAlta' => $b2,'password' => $c));
+                    if($usuario && is_null($usuario->getFechaBaja())){
+
+                        $respuesta=$this->redirect($this->generateUrl('portada'));
+                    }
+                    else{
+                        throw $this->createNotFoundException('Restablecimiento de contraseña no permitido.');
+                    }
+                    break;
+                default:
+                    $usuario=false;
+            }
+
+            if($usuario){
                 //loguea al usuario
                 $token=new UsernamePasswordToken($usuario,$usuario->getPassword(),'chain_provider',$usuario->getRoles());
                 $this->container->get('security.context')->setToken($token);
-
-                $respuesta=$this->redirect($this->generateUrl('portada'));
             }
             else{
-                throw $this->createNotFoundException('Código ya usado.');
+                throw $this->createNotFoundException('Error.');
             }
         }
         else{
-            $respuesta=$this->render('InicioBundle:Sitio:activar.html.twig',array(
+            $respuesta=$this->render('InicioBundle:Sitio:codigo.html.twig',array(
                 'codigo' => $codigo
                 ,'form' => $form->createView()
             ));
         }
         return $respuesta;
+    }
+
+    public function restablecerAction() {
+
+        $form=$this->createFormBuilder()
+                ->add('email','email')
+                ->getForm();
+        
+        $request=$this->getRequest();
+
+        if($request->getMethod()=='POST'){
+            $form->bind($request);
+            if($form->isValid()){
+                $datos=$form->getData('email');
+                $email=$datos['email'];
+                
+                $em=$this->getDoctrine()->getManager();
+                $usuario=$em->getRepository('InicioBundle:Usuario')->findOneBy(array('email' => $email));
+                
+//                return new response('<pre>'.print_r($usuario,true).'</pre>');
+                if($usuario){
+                    //encripta datos para generar el codigo
+                    $datos=array($usuario->getId(),$usuario->getFechaAlta()->getTimestamp(),$usuario->getPassword());
+                    $datos=implode("·",$datos);  //53·1364228174·yaXjIN9tWkSD58+esrjqCEXRI+bHnkj9OZ63MHveEEmKO0jFGfOXX1Um6mo3dse/YTio2hKS4PuCXmMEKyL4sQ==
+                    $clave=substr($datos,-10,2);
+                    $codigo=$clave.$this->encriptar($datos,$clave);
+                    $codigo=base64_encode($codigo);
+                    $codigo=urlencode($codigo);   //TUWPv8TO5kUoAEICtrrfm6S0kzQBXbcMdALBRt3Nl4kwTRBgH6kijnhPVaOIifOoG06szxlW1%2FxZpToMPYOuY3H777NPMutQOz7nx6E9lZQ2%2BX0qkpaYwK3iv9xGcedOJ7witOztuCr5La5EQXtK86Pl8SYpulFQXSbVot8yOfCcbg%3D%3D
+                    $codigo='R'.$codigo;
+
+                    //envia el email confirmacion con el codigo
+                    $message=\Swift_Message::newInstance()
+                            ->setSubject('Petición de restablecimiento de contraseña')
+                            ->setFrom(array($this->container->getParameter('pfc_inicio.emails.contacto') => $this->container->getParameter('pfc_inicio.proyecto')))
+                            ->setTo($email)
+                            ->setBody($this->renderView('InicioBundle:Sitio:restablecerEmail.html.twig',array(
+                                'proyecto' => $this->container->getParameter('pfc_inicio.proyecto')
+                                ,'codigo' => $codigo
+                            )),'text/html');
+                    $this->get('mailer')->send($message);
+
+                    //mensaje flash
+                    $this->get('session')->getFlashBag()->add('info',
+                            //$datos.
+                            'Se le ha enviado un correo para que pueda restablecerla.'
+                            .$codigo
+                    );    
+                }
+            }
+            else{
+                throw $this->createNotFoundException('Formulario no válido.');
+            }
+        }    
+        $respuesta=$this->render('InicioBundle:Sitio:restablecer.html.twig',array(
+            'form' => $form->createView()
+            ,'link' => $this->getRequest()->getBaseUrl().'/sitio/codigo?'
+            ,'codigo' => ' '
+        ));
+        return $respuesta;        
     }
 
     public function contactoAction() {
@@ -193,17 +276,16 @@ class SitioController extends Controller {
                 $passwordOriginal=$formulario->getData()->getPassword();
 
                 $formulario->bind($peticion);
-                
+
                 //pendi:error si contraseñas difieren salta error operacion
                 if($formulario->isValid()){
-                    if (null == $usuario->getPassword()) {
+                    if(null==$usuario->getPassword()){
                         $usuario->setPassword($passwordOriginal);
                     }
-                    else {
-                        $encoder = $this->get('security.encoder_factory')->getEncoder($usuario);
-                        $passwordCodificado = $encoder->encodePassword(
-                            $usuario->getPassword(),
-                            $usuario->getSalt()
+                    else{
+                        $encoder=$this->get('security.encoder_factory')->getEncoder($usuario);
+                        $passwordCodificado=$encoder->encodePassword(
+                                $usuario->getPassword(),$usuario->getSalt()
                         );
                         $usuario->setPassword($passwordCodificado);
                     }
@@ -261,7 +343,7 @@ class SitioController extends Controller {
                     ,'avatar' => $this->getAvatar(20)
         ));
     }
-    
+
     public function cajaAction() {
         $request=$this->getRequest();
         $session=$request->getSession();
@@ -318,6 +400,7 @@ class SitioController extends Controller {
                 $codigo=$clave.$this->encriptar($datos,$clave);
                 $codigo=base64_encode($codigo);
                 $codigo=urlencode($codigo);   //TUWPv8TO5kUoAEICtrrfm6S0kzQBXbcMdALBRt3Nl4kwTRBgH6kijnhPVaOIifOoG06szxlW1%2FxZpToMPYOuY3H777NPMutQOz7nx6E9lZQ2%2BX0qkpaYwK3iv9xGcedOJ7witOztuCr5La5EQXtK86Pl8SYpulFQXSbVot8yOfCcbg%3D%3D
+                $codigo='A'.$codigo;
                 //envia el email confirmacion con el codigo
                 $message=\Swift_Message::newInstance()
                         ->setSubject('Registro cuenta en PFC')
@@ -343,7 +426,7 @@ class SitioController extends Controller {
 
         return $this->render('InicioBundle:Sitio:registro.html.twig',array(
                     'formulario' => $formulario->createView()
-                    ,'link' => $this->getRequest()->getBaseUrl().'/sitio/activar?'
+                    ,'link' => $this->getRequest()->getBaseUrl().'/sitio/codigo?'
                     ,'codigo' => $codigo
         ));
     }

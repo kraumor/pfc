@@ -1,0 +1,27 @@
+{% extends '::frontend.html.twig' %}
+ 
+{% block title 'Restablecer' %}
+
+{% block article %}
+    <h2>Restablecer contraseña</h2>
+
+    {% for flashMessage in app.session.flashbag.get('info') %}
+        <div class="flash-message">{{ flashMessage }}</div>
+        {% if codigo is not null %}
+            <a href="{{ link~codigo }}"><h3>RESTABLECER CONTRASEÑA</h3></a>
+        {% endif %}
+    {% endfor %}   
+ 
+    <form action="{{ path('pagina_estatica',{ 'pagina': 'restablecer' }) }}" method="post" {{ form_enctype(form) }}>
+        
+        {{ form_errors(form) }}
+        {{ form_rest(form) }}
+        
+        <input type="submit"  value="Enviar" />
+    </form>
+{% endblock %}
+ 
+{% block aside %}
+    <a class="boton" href="{{ path('usuario_registro') }}">Regístrate</a>
+{% endblock %}
+    
