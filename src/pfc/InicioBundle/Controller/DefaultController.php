@@ -5,6 +5,7 @@ namespace pfc\InicioBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use pfc\InicioBundle\Entity\Usuario;
+use Symfony\Component\Finder\Finder;
 
 class DefaultController extends Controller {
 
@@ -40,6 +41,45 @@ class DefaultController extends Controller {
             throw $this->createNotFoundException('No se ha encontrado la página solicitada');
         }
     }
+    
+
+    /**
+     * Muestra el avatar (Gravatar) del usuario autenticado
+     * usar gravatarbundle en vez de esta funcion
+     */
+    public function getAvatar($size=80) {
+        //https://es.gravatar.com/site/implement/images/
+
+        $default_avatar=urldecode($this->getRequest()->getUriForPath($this->container->getParameter('pfc_inicio.default_avatar')));
+
+        $d_keywords=array(
+            '0' => $default_avatar
+            ,'1' => '404'          // do not load any image if none is associated with the email hash, instead return an HTTP 404 (File Not Found) response
+            ,'2' => 'mm'           // (mystery-man) a simple, cartoon-style silhouetted outline of a person (does not vary by email hash)
+            ,'3' => 'identicon'    // a geometric pattern based on an email hash
+            ,'4' => 'monsterid'    // a generated 'monster' with different colors, faces, etc
+            ,'5' => 'wavatar'      // generated faces with differing features and backgrounds
+            ,'6' => 'retro'        // awesome generated, 8-bit arcade-style pixelated faces
+            ,'7' => 'blank'        // a transparent PNG image (border added to HTML below for demonstration purposes)
+        );
+
+        $avatar=null;
+
+        if($this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')){
+
+            //$usuario = $this->get('security.context')->getToken()->getUser();
+            $usuario=$this->getUser();
+
+            $gravatarUrl=$this->container->getParameter('pfc_inicio.gravatarUrl').'/avatar/';
+            $gravatarHash=md5(strtolower(trim($usuario->getEmail())));    //$gravatarHash = '205e460b479e2e5b48aec07710c08d50'; 
+            $parametros='?';
+            //pendi: comprobar q con 0 se vea la imagen por defecto
+            $parametros.='d='.$d_keywords['3'];
+            $parametros.=($size==80) ? null : '&s='.$size;
+            $avatar=$gravatarUrl.$gravatarHash.$parametros;
+        }
+        return $avatar;
+    }    
 
     public function x0Action($name) {
         $x=new \DateTime;
@@ -71,9 +111,16 @@ class DefaultController extends Controller {
     }
 
     public function x1Action() {
+        
+//        $finder = 'new Finder()'
+//        $finder->files()->in(__DIR__.'../../');
+$finder=array(1,2,3,4);
 
-
-        $respuesta = $this->render('InicioBundle:Default:x1.html.twig',array('x' => 'adios'));
+        $respuesta = $this->render('InicioBundle:Default:x1.html.twig',array(
+                'x' => 'adios'
+                ,'finder' => $finder
+            
+            ));
 
         return $respuesta;
     }

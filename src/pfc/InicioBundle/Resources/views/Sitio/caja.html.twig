@@ -4,7 +4,7 @@
     <nav>
         <ul>
             <li><a href="{{ path('usuario_logout')  }}">Cerrar</a></li>
-            <li><img src="{{ avatar }}" /></li>
+            <li><img src="{{ gravatar(app.user.username, 35, 'g', 'identicon') }}" /></li>
             <li><a href="{{ path('usuario_perfil')  }}"><b>{{ app.user }}</b></a></li>
         </ul>
     </nav>

@@ -2,7 +2,6 @@
 
 namespace pfc\InicioBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use pfc\InicioBundle\Entity\Contacto;
 use pfc\InicioBundle\Entity\Usuario;
@@ -304,8 +303,7 @@ class SitioController extends Controller {
         }
         //peticion GET: mostrar
         return $this->render('InicioBundle:Sitio:perfil.html.twig',array(
-                    'avatar' => $this->getAvatar()
-                    ,'gravatarUrl' => $this->container->getParameter('pfc_inicio.gravatarUrl')
+                     'gravatarUrl' => $this->container->getParameter('pfc_inicio.gravatarUrl')
                     ,'usuario' => $usuario
                     ,'formulario' => $formulario->createView()
                     ,'operacion' => rand(9,990).'+'.rand(1,9)
@@ -340,7 +338,6 @@ class SitioController extends Controller {
         return $this->render('InicioBundle:Sitio:cajaLogin.html.twig',array(
                     'last_username' => $session->get(SecurityContext::LAST_USERNAME)
                     ,'error' => $error
-                    ,'avatar' => $this->getAvatar(20)
         ));
     }
 
@@ -354,7 +351,6 @@ class SitioController extends Controller {
         return $this->render('InicioBundle:Sitio:caja.html.twig',array(
                     'last_username' => $session->get(SecurityContext::LAST_USERNAME)
                     ,'error' => $error
-                    ,'avatar' => $this->getAvatar(35)
         ));
     }
 
@@ -429,43 +425,6 @@ class SitioController extends Controller {
                     ,'link' => $this->getRequest()->getBaseUrl().'/sitio/codigo?'
                     ,'codigo' => $codigo
         ));
-    }
-
-    /**
-     * Muestra el avatar (Gravatar) del usuario autenticado
-     */
-    public function getAvatar($size=80) {
-        //https://es.gravatar.com/site/implement/images/
-
-        $default_avatar=urldecode($this->getRequest()->getUriForPath($this->container->getParameter('pfc_inicio.default_avatar')));
-
-        $d_keywords=array(
-            '0' => $default_avatar
-            ,'1' => '404'          // do not load any image if none is associated with the email hash, instead return an HTTP 404 (File Not Found) response
-            ,'2' => 'mm'           // (mystery-man) a simple, cartoon-style silhouetted outline of a person (does not vary by email hash)
-            ,'3' => 'identicon'    // a geometric pattern based on an email hash
-            ,'4' => 'monsterid'    // a generated 'monster' with different colors, faces, etc
-            ,'5' => 'wavatar'      // generated faces with differing features and backgrounds
-            ,'6' => 'retro'        // awesome generated, 8-bit arcade-style pixelated faces
-            ,'7' => 'blank'        // a transparent PNG image (border added to HTML below for demonstration purposes)
-        );
-
-        $avatar=null;
-
-        if($this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')){
-
-            //$usuario = $this->get('security.context')->getToken()->getUser();
-            $usuario=$this->getUser();
-
-            $gravatarUrl=$this->container->getParameter('pfc_inicio.gravatarUrl').'/avatar/';
-            $gravatarHash=md5(strtolower(trim($usuario->getEmail())));    //$gravatarHash = '205e460b479e2e5b48aec07710c08d50'; 
-            $parametros='?';
-            //pendi: comprobar q con 0 se vea la imagen por defecto
-            $parametros.='d='.$d_keywords['3'];
-            $parametros.=($size==80) ? null : '&s='.$size;
-            $avatar=$gravatarUrl.$gravatarHash.$parametros;
-        }
-        return $avatar;
     }
 
     function encriptar($cadena,$clave="una clave secreta") {

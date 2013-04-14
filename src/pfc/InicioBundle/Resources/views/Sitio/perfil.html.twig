@@ -42,7 +42,7 @@
     <hr />
     
     
-    <div><p><a href="{{ gravatarUrl }}" title="cambie su avatar en Gravatar.com"><img src="{{ avatar }}" /></a></p></div>
+    <div><p><a href="{{ gravatarUrl }}" title="cambie su avatar en Gravatar.com"><img src="{{ gravatar(usuario.email, 80, 'g', 'identicon') }}" /></a></p></div>
     <div><p><label>Email           </label>{{ usuario.email            }}</p></div>
     <div><p><label>Fecha alta      </label>{{ usuario.fechaAlta       | date('d/m/Y')      }}</p></div>
     <div><p><label>Conexiones      </label>{{ usuario.conexiones       }}</p></div>
