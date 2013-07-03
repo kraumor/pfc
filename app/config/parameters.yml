@@ -1,14 +1,15 @@
+# This file is auto-generated during the composer install
 parameters:
-    database_driver:    pdo_mysql
-    database_host:      127.0.0.1
-    database_port:      null
-    database_name:      pfc
-    database_user:      pfc
-    database_password:  pfc
-    mailer_transport:   gmail 
-    mailer_host:        ~
-    mailer_user:        gmailUser
-    mailer_password:    gmailPass
-    locale:             es
-    secret:             a4ea89d5ba977c385318f28e23739444
-    database_path:      null
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: pfc
+    database_user: pfc
+    database_password: pfc
+    mailer_transport: gmail
+    mailer_host: null
+    mailer_user: gmailUser
+    mailer_password: gmailPass
+    locale: es
+    secret: a4ea89d5ba977c385318f28e23739444
+    database_path: null
