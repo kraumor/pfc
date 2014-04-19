@@ -333,6 +333,7 @@ class ViajeController extends Controller {
         $v['d03']=$this->get03ZonaHoraria($d['lat'],$d['lon']);
         $v['d04']=$this->get04Tiempo($d['lat'],$d['lon']);
         $v['d05']=$this->get05Lugares($d['lat'],$d['lon']);
+        $v['d06']=$this->get06Divisas();
 
         return $v;
     }    
@@ -532,6 +533,32 @@ class ViajeController extends Controller {
         }           
         }
 
+        return !is_null($res['res']) ? $res : null;
+    }
+    
+    /**
+     * Devuelve lugares cercanos
+     */
+    public function get06Divisas() {
+        
+        $res['txt']='Cambio de divisas';
+        $res['res']=null;
+        
+        $url="http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
+        
+        $xml_response=simplexml_load_file($url);
+        
+        if ($xml_response){
+
+            foreach($xml_response->Cube->Cube as $v){
+                $res['res']['date']=(string) $v['time'];        
+            }
+            foreach($xml_response->Cube->Cube->Cube as $v){
+                $res['res']['rates'][(string) $v['currency']]=(string) $v['rate'];              
+            }              
+        }           
+        asort($res['res']['rates']);
+        
         return !is_null($res['res']) ? $res : null;
     }
 
