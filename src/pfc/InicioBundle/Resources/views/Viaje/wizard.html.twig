@@ -69,8 +69,8 @@
         <span style="float:left;display:block;margin-right:3em;width:10em;">{{ data['d03']['res']['datetime']|date('d - m - Y') }}</span>
         <span style="float:left;display:block;margin-right:3em;width:10em;">{{ data['d03']['res']['datetime']|date('H : i : s') }}</span>
         <span style="float:left;display:block;margin-right:3em;width:10em;">offset: {{ data['d03']['res']['offset'] }}</span>
-        {% endif %}{% endif %}
         <p style="clear:left;color:lightgrey;font-size:8px;text-align:right;">Fuente:World Weather Online</p>
+        {% endif %}{% endif %}
         </div>
   
         <div style="border:0px blue solid;">
@@ -81,8 +81,8 @@
         <a href="https://maps.google.de/maps?q={{data['d00']['res']['lat']}},{{data['d00']['res']['lon']}}" target="_blank" title="ver en Google Maps" style="text-decoration:none;color:grey;">
             {{data['d00']['res']['lat']}},{{data['d00']['res']['lon']}}
         </a>
+        <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:OpenStreetMap</p>                
         {% endif %}{% endif %}
-        <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:OpenStreetMap</p>        
         </div>
 
         <div style="border:0px blue solid;">
@@ -94,9 +94,9 @@
             {% endif %}
             &gt;
             <span style="background-color:{{color}};width:auto;display:inline-block;">{{p}}</span>
-        {% endfor %}   
+        {% endfor %}
+        <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:GeoNames</p>   
         {% endif %}{% endif %} 
-        <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:GeoNames</p>
         </div>
 
         <div style="border:0px blue solid;">
@@ -153,9 +153,9 @@
             <span title="Humedad"       style="margin-right:1em;">Humedad:    {{data['d04']['res']['current']['humidity']}}  </span>
             <span title="Visibilidad"   style="margin-right:1em;">Visibilidad:{{data['d04']['res']['current']['visibility']}}</span>
             <span title="Nubes"         style="margin-right:1em;">Nubes:      {{data['d04']['res']['current']['cloudcover']}}</span>
-        </p>        
+        </p>
+        <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:World Weather Online</p>        
         {% endif %}{% endif %}
-        <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:World Weather Online</p>
         </div>
 
         <div style="border:0px blue solid;float:left;">
@@ -170,9 +170,9 @@
                 {% endfor %}                     
             </ul>
         </div>
-        {% endfor %}   
-        {% endif %}{% endif %} 
-        <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:GeoNames</p>
+        {% endfor %}  
+        <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:GeoNames</p>        
+        {% endif %}{% endif %}
         </div>
         
         <div style="clear:both;"></div>
@@ -188,23 +188,39 @@
         </div>
         <div style="float:left;margin-top:1em;font-size:0.8em;text-align:left;color:grey;">
             Cambios oficiales de divisas a Euros el {{data['d06']['res']['date']|date('d-m-Y')}}. (1 EUR; = )
-        </div>        
+        </div>
+        <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:BCE.</p>        
         {% endif %}{% endif %}
         </div>        
-        <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:BCE.</p>        
-        
+                
         <div style="clear:both;"></div>
         
+        <div style="border:1px blue solid;">
+        {% if data['d07'] is defined  %}{% if data['d07'] is not null  %}
+        <h2>{{data['d07']['txt']}}</h2>
+        <dl>
+        {% for p in data['d07']['res'] %}
+            <dt>{{p['title']}}</dt>
+            <dd>
+                {% if p['thumbnailImg'] is not empty %}
+                <span><img src="{{p['thumbnailImg']}}"  style="float:left;"/></span>  
+                {% endif %}    
+                <span>{{p['summary']}}</span>  
+            </dd>
+        {% endfor %}   
+        </dl>
+        <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:GeoNames</p>
+        {% endif %}{% endif %} 
+        </div>        
         
         
         
         
         
         
-        
-          
+           
   {# 
- <hr /><pre style="font-size:0.75em;border:1px red dashed;">{{dump(data)}}</pre>   
+<hr /><pre style="font-size:0.75em;border:1px red dashed;">{{dump(data)}}</pre>  
         {% if data|length > 2 %}
         Data mes gran de 2.
         {% else %}          

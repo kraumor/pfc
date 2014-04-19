@@ -334,6 +334,7 @@ class ViajeController extends Controller {
         $v['d04']=$this->get04Tiempo($d['lat'],$d['lon']);
         $v['d05']=$this->get05Lugares($d['lat'],$d['lon']);
         $v['d06']=$this->get06Divisas();
+        $v['d07']=$this->get07Wikipedia1($d['lat'],$d['lon'],$d['ciudad']);
 
         return $v;
     }    
@@ -537,7 +538,7 @@ class ViajeController extends Controller {
     }
     
     /**
-     * Devuelve lugares cercanos
+     * Devuelve divisas
      */
     public function get06Divisas() {
         
@@ -562,6 +563,47 @@ class ViajeController extends Controller {
         return !is_null($res['res']) ? $res : null;
     }
 
+    /**
+     * Devuelve resultados wikipedia 1
+     */
+    public function get07Wikipedia1($lat,$lon,$ciudad) {
+        
+        $res['txt']='Articulos cercanos';
+        $res['res']=null;
+        
+      //$p0='q='.$ciutat;
+        $p0='username=pfc185';
+        $p1='lat='.$lat;
+        $p2='lng='.$lon;
+        $p3='maxRows=10';
+        $p4='radius=10';  //km
+        $p5='lang=es';
+        $params=implode('&', array($p0,$p1,$p2,$p3,$p4,$p5));
+        $url="http://api.geonames.org/findNearbyWikipedia?".$params;       
+
+        $ch=curl_init();  //ch:curl_handle
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_HEADER,0);        
+        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,2);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        $xml_response = curl_exec($ch);
+        curl_close($ch);
+        
+        if ($xml_response){
+            $xml = new \SimpleXMLElement($xml_response);
+            foreach($xml->xpath('//entry') as $v){
+                $res['res'][]=array(
+                         'title'              =>  (string) $v->title
+                        ,'wikipediaUrl'       =>  (string) $v->wikipediaUrl
+                        ,'thumbnailImg'       =>  (string) $v->thumbnailImg                        
+                        ,'summary'            =>  (string) $v->summary  
+                      //,'leve'               =>  levenshtein($ciudad,(string) $v->title)                        
+                        );          
+            }
+        }
+        
+        return !is_null($res['res']) ? $res : null;
+    }
     /**
      * Finds and displays a Viaje entity.
      *
