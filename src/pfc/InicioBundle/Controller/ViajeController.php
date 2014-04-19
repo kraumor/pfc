@@ -336,6 +336,7 @@ class ViajeController extends Controller {
         $v['d06']=$this->get06Divisas();
         $v['d07']=$this->get07Wikipedia1($d['lat'],$d['lon'],$d['ciudad']);
         $v['d08']=$this->get08Wikipedia2($d['ciudad']);
+        $v['d09']=$this->get09Wikitravel($d['ciudad']);
 
         return $v;
     }    
@@ -569,7 +570,7 @@ class ViajeController extends Controller {
      */
     public function get07Wikipedia1($lat,$lon,$ciudad) {
         
-        $res['txt']='Articulos cercanos';
+        $res['txt']='Wikipedia (articulos cercanos)';
         $res['res']=null;
         
       //$p0='q='.$ciudad;
@@ -611,7 +612,7 @@ class ViajeController extends Controller {
      */
     public function get08Wikipedia2($ciudad) {
         
-        $res['txt']='Articulos relacionados';
+        $res['txt']='Wikipedia (articulos relacionados)';
         $res['res']=null;
         
         $p0='action=query';
@@ -623,6 +624,49 @@ class ViajeController extends Controller {
         $p6='gsrsearch='.urlencode($ciudad);
         $params=implode('&', array($p0,$p1,$p2,$p3,$p4,$p5,$p6));
         $url="http://es.wikipedia.org/w/api.php?".$params;     
+
+        $ch=curl_init();  //ch:curl_handle
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_HEADER,0);        
+        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,2);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        $xml_response = curl_exec($ch);
+        curl_close($ch); 
+        
+        if ($xml_response){
+            $xml = new \SimpleXMLElement($xml_response);
+            foreach($xml->xpath('//page') as $v){
+                $leve=levenshtein($ciudad,(string) $v['title']);
+                $res['res'][$leve]=array(
+                         'title'             =>  (string) $v['title']
+                        ,'fullurl'           =>  (string) $v['fullurl']
+                        ,'pageid'            =>  (string) $v['pageid']        
+                      //,'leve'               =>  levenshtein($ciudad,(string) $v['title'])                        
+                        );          
+            }
+        }
+        ksort($res['res']);
+        
+        return !is_null($res['res']) ? $res : null;
+    }
+
+    /**
+     * Devuelve resultados wikitravel
+     */
+    public function get09Wikitravel($ciudad) {
+        
+        $res['txt']='Wikitravel';
+        $res['res']=null;
+        
+        $p0='action=query';
+        $p1='generator=search';
+        $p2='format=xml';
+        $p3='srlimit=20';
+        $p4='prop=info';
+        $p5='inprop=url';
+        $p6='gsrsearch='.urlencode($ciudad);
+        $params=implode('&', array($p0,$p1,$p2,$p3,$p4,$p5,$p6));
+        $url="http://wikitravel.org/wiki/es/api.php?".$params;    
 
         $ch=curl_init();  //ch:curl_handle
         curl_setopt($ch,CURLOPT_URL,$url);

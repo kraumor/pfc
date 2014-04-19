@@ -200,7 +200,7 @@
         <h2>{{data['d07']['txt']}}</h2>
         <dl>
         {% for p in data['d07']['res'] %}
-            <dt>{{p['title']}}</dt>
+            <dt><a href="{{p['wikipediaUrl']}}" target="_blank" style="text-decoration:none;">{{p['title']}}</a></dt>
             <dd>
                 {% if p['thumbnailImg'] is not empty %}
                 <span><img src="{{p['thumbnailImg']}}"  style="float:left;"/></span>  
@@ -218,10 +218,22 @@
         <h2>{{data['d08']['txt']}}</h2>
         <ul style="list-style:none;">
         {% for p in data['d08']['res'] %}
-            <li>{{p['title']}}</li>
+            <li><a href="{{p['fullurl']}}" target="_blank" style="text-decoration:none;">{{p['title']}}</a></li>
         {% endfor %}   
         </ul>
         <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:Wikipedia</p>
+        {% endif %}{% endif %} 
+        </div>             
+        
+        <div style="border:0px blue solid;">
+        {% if data['d09'] is defined  %}{% if data['d09'] is not null  %}
+        <h2>{{data['d09']['txt']}}</h2>
+        <ul style="list-style:none;">
+        {% for p in data['d09']['res'] %}
+            <li><a href="{{p['fullurl']}}" target="_blank" style="text-decoration:none;">{{p['title']}}</a></li>
+        {% endfor %}   
+        </ul>
+        <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:Wikitravel</p>
         {% endif %}{% endif %} 
         </div>             
         
