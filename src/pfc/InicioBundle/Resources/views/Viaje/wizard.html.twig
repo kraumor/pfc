@@ -104,7 +104,7 @@
             <span title="Nubes"         style="margin-right:1em;">Nubes:      {{data['d04']['res']['current']['cloudcover']}}</span>
         </p>
         <p>
-        <table>  
+        <table style="text-align:center;">  
         <tr>
             <th>Reciente</th>
             <th colspan="4">Previsión</th>
@@ -153,8 +153,35 @@
         {% endif %}{% endif %}
         </div>
 
-
-            
+        <div style="border:1px blue solid;float:left;">
+        {% if data['d05'] is defined  %}{% if data['d05'] is not null  %}
+        <h2>{{data['d05']['txt']}}</h2>
+        {% for pk,pv in data['d05']['res'] %}  
+        <div style="border:0px red solid;width:21.5em;float:left;">
+            <label>Con más de {{pk}} habitantes:</label>
+            <ul style="list-style:none;">
+                {% for lug in pv %}  
+                <li>{{lug['dis']|number_format(0, '.')}} km - {{lug['lug']}}</li>
+                {% endfor %}                     
+            </ul>
+        </div>
+        {% endfor %}   
+        {% endif %}{% endif %}        
+        </div>
+        
+        
+        <div style="clear:both;"></div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
  <hr /><pre style="font-size:0.75em;border:1px red dashed;">{{dump(data)}}</pre>             
   {# 
 

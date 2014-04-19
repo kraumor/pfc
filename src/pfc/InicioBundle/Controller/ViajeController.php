@@ -332,6 +332,7 @@ class ViajeController extends Controller {
         $v['d02']=$this->get02Jerarquia($d['lat'],$d['lon']);
         $v['d03']=$this->get03ZonaHoraria($d['lat'],$d['lon']);
         $v['d04']=$this->get04Tiempo($d['lat'],$d['lon']);
+        $v['d05']=$this->get05Lugares($d['lat'],$d['lon']);
 
         return $v;
     }    
@@ -428,6 +429,7 @@ class ViajeController extends Controller {
         
         return !is_null($res['res']) ? $res : null;
     }
+    
     /**
      * Devuelve previsión meteorológica
      */
@@ -486,6 +488,50 @@ class ViajeController extends Controller {
             }
         }
         
+        return !is_null($res['res']) ? $res : null;
+    }
+    
+    /**
+     * Devuelve lugares cercanos
+     */
+    public function get05Lugares($lat,$lon) {
+        
+        $res['txt']='Lugares cercanos';
+        $res['res']=null;
+        
+        for($i=500;$i<=15000;$i=$i+14500){
+       //$p0='q='.$ciutat;
+        $p0='username=pfc185';
+        $p1='lat='.$lat;
+        $p2='lng='.$lon;
+        $p3='maxRows=20';
+        $p4='radius=100';  //km
+        $p5='lang=es';
+        $p6='cities=cities'.$i;     //100,1000,5000,15000
+        $params=implode('&', array($p0,$p1,$p2,$p3,$p4,$p5,$p6));
+        $url="http://api.geonames.org/findNearbyPlaceName?".$params;  
+
+        $ch=curl_init();  //ch:curl_handle
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_HEADER,0);        
+        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,2);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        $xml_response = curl_exec($ch);
+        curl_close($ch);
+        
+        if ($xml_response){
+            $xml = new \SimpleXMLElement($xml_response);
+            foreach($xml->xpath('//geoname') as $v){
+                $res['res'][$i][]=array(
+                      'lug'     =>(string) $v->name
+                     ,'dis'     =>(float)  $v->distance                        
+                   //,'lat'     =>(float)  $v->lat
+                   //,'lon'     =>(float)  $v->lng
+                    );          
+            }
+        }           
+        }
+
         return !is_null($res['res']) ? $res : null;
     }
 
