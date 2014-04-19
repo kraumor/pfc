@@ -103,7 +103,7 @@ class ViajeController extends Controller {
                     $places=$this->getWizard1($ciudad);
 
                     $respuesta=$this->render('InicioBundle:Viaje:wizard.html.twig',array(
-                        'op'        => $op
+                         'op'       => $op
                         ,'ciudad'   => $ciudad
                         ,'places'   => $places
                     ));                          
@@ -335,6 +335,7 @@ class ViajeController extends Controller {
         $v['d05']=$this->get05Lugares($d['lat'],$d['lon']);
         $v['d06']=$this->get06Divisas();
         $v['d07']=$this->get07Wikipedia1($d['lat'],$d['lon'],$d['ciudad']);
+        $v['d08']=$this->get08Wikipedia2($d['ciudad']);
 
         return $v;
     }    
@@ -404,7 +405,7 @@ class ViajeController extends Controller {
         $res['txt']='Zona Horaria';
         $res['res']=null;
         
-      //$p0='q='.$ciutat;
+      //$p0='q='.$ciudad;
         $p0='q='.$lat.','.$lon;
         $p1='format=xml';
         $p2='key=ambbk6wet7ntteuufxx7nka9';
@@ -440,7 +441,7 @@ class ViajeController extends Controller {
         $res['txt']='Meteorología';
         $res['res']=null;
         
-      //$p0='q='.$ciutat;
+      //$p0='q='.$ciudad;
         $p0='q='.$lat.','.$lon;
         $p1='format=xml';
         $p2='num_of_days=4';    // Changes the number of day forecast you need.
@@ -502,7 +503,7 @@ class ViajeController extends Controller {
         $res['res']=null;
         
         for($i=500;$i<=15000;$i=$i+14500){
-       //$p0='q='.$ciutat;
+       //$p0='q='.$ciudad;
         $p0='username=pfc185';
         $p1='lat='.$lat;
         $p2='lng='.$lon;
@@ -571,7 +572,7 @@ class ViajeController extends Controller {
         $res['txt']='Articulos cercanos';
         $res['res']=null;
         
-      //$p0='q='.$ciutat;
+      //$p0='q='.$ciudad;
         $p0='username=pfc185';
         $p1='lat='.$lat;
         $p2='lng='.$lon;
@@ -604,6 +605,50 @@ class ViajeController extends Controller {
         
         return !is_null($res['res']) ? $res : null;
     }
+
+    /**
+     * Devuelve resultados wikipedia 2
+     */
+    public function get08Wikipedia2($ciudad) {
+        
+        $res['txt']='Articulos relacionados';
+        $res['res']=null;
+        
+        $p0='action=query';
+        $p1='generator=search';
+        $p2='format=xml';
+        $p3='srlimit=20';
+        $p4='prop=info';
+        $p5='inprop=url';
+        $p6='gsrsearch='.urlencode($ciudad);
+        $params=implode('&', array($p0,$p1,$p2,$p3,$p4,$p5,$p6));
+        $url="http://es.wikipedia.org/w/api.php?".$params;     
+
+        $ch=curl_init();  //ch:curl_handle
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_HEADER,0);        
+        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,2);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        $xml_response = curl_exec($ch);
+        curl_close($ch); 
+        
+        if ($xml_response){
+            $xml = new \SimpleXMLElement($xml_response);
+            foreach($xml->xpath('//page') as $v){
+                $leve=levenshtein($ciudad,(string) $v['title']);
+                $res['res'][$leve]=array(
+                         'title'             =>  (string) $v['title']
+                        ,'fullurl'           =>  (string) $v['fullurl']
+                        ,'pageid'            =>  (string) $v['pageid']        
+                      //,'leve'               =>  levenshtein($ciudad,(string) $v['title'])                        
+                        );          
+            }
+        }
+        ksort($res['res']);
+        
+        return !is_null($res['res']) ? $res : null;
+    }
+    
     /**
      * Finds and displays a Viaje entity.
      *
