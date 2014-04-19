@@ -10,6 +10,10 @@ viaje_nuevo:
     pattern:      /nuevo
     defaults:     { _controller: "InicioBundle:Viaje:nuevo" }
 
+viaje_wizard:
+    pattern:      /wizard
+    defaults:     { _controller: "InicioBundle:Viaje:wizard" }
+
 viaje_crear:
     pattern:      /crear
     defaults:     { _controller: "InicioBundle:Viaje:crear" }

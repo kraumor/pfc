@@ -1,0 +1,287 @@
+{% extends '::frontend.html.twig' %}
+
+{% block title 'Wizard Viaje' %} 
+
+{% block article -%}
+    <h1>Wizard viaje</h1>
+
+    {% if op is defined %}
+<br />OP:_____{{op}}    
+<hr />
+
+    {% if op == 0 %}
+
+        <form action="{{ path('viaje_wizard') }}" method="post">
+          <p>Nombre de la ciudad a buscar:</p>
+          <p>
+             <input type="text"   name="ciudad" value="{{ ciudad }}" style="width:600px;height:1.5em;font-size:2em;" />
+             <input type="hidden" name="op"     value="0" />
+             <input type="submit"               value="Buscar" style="height:3em;width:5em;"/>
+          </p>
+       </form>              
+        {% if ciudad %}        
+        <h2>Elegir una ciudad de las siguientes propuestas (desambiguación):   </h2>
+
+        {% if places|length > 0 %}
+            {% for p0 in places %}
+            {% for p1 in p0 %}
+                {% if p1.res|length > 0 %}
+                <ol><b>{{p1.txt}}</b>
+                    {% for p2 in p1.res %}
+                        {% set lat  = p2.lat|number_format(2, '.') %}
+                        {% set lon  = p2.lon|number_format(2, '.') %}
+                        {% set name = p2.name %}
+                        {% set prm = '?op=1&lat='~lat~'&lon='~lon~'&ciutat='~ciudad~'&q='~name %}
+                        <li>
+                            <a href="{{prm}}" style="text-decoration:none;">
+                                <span title="Latitud" style="text-align:right;background-color:lightcyan;width:4em;display:inline-block;">
+                                {{ lat }}
+                                </span>
+                            </a>                                    
+                            <a href="{{prm}}" style="text-decoration:none;">
+                                <span title="Longitud" style="text-align:right;background-color:lightcyan;width:4em;display:inline-block;">
+                                {{ lon }}
+                                </span>
+                            </a>                                    
+
+                            <a href="{{prm}}" style="text-decoration:none;">
+                            <span title="Nombre" style="width:auto;display:inline-block;">{{ name }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}  
+                    </ol>
+                {% endif %}    
+            {% endfor %}
+            {% endfor %}
+            <div id="miMapa" style="width:700px;height:700px;border:.1em cyan solid;" ></div>
+        {% else %}          
+        Ningún resultado.
+        {% endif %}            
+        {% endif %}            
+        
+    {% elseif op == 1 %}
+
+        <h1>{{data['d00']['res']['q']}}</h1>     
+   
+        <div style="border:1px blue solid;">
+        {% if data['d03'] is defined  %}{% if data['d03'] is not null  %}      
+        <h2>{{data['d03']['txt']}}</h2>
+        {{ data['d03']['res']['datetime']|date('d-m-Y H:i:s') }}
+        offset:{{ data['d03']['res']['offset'] }}
+        {% endif %}{% endif %}
+        </div>
+  
+        <div style="border:1px blue solid;">
+        {% if data['d01'] is defined  %}{% if data['d01'] is not null  %}      
+        <h2>{{data['d01']['txt']}}</h2>
+        <img src="{{ data['d01']['res'] }}" width="600" height="400" alt="OpenStreetMap" />
+        Coordenadas:
+        <a href="https://maps.google.de/maps?q={{data['d00']['res']['lat']}},{{data['d00']['res']['lon']}}" target="_blank" title="ver en Google Maps" style="text-decoration:none;color:grey;">
+            {{data['d00']['res']['lat']}},{{data['d00']['res']['lon']}}
+        </a>
+        {% endif %}{% endif %}
+        </div>
+
+        <div style="border:1px blue solid;">
+        {% if data['d02'] is defined  %}{% if data['d02'] is not null  %}
+        <h2>{{data['d02']['txt']}}</h2>
+        {% for p in data['d02']['res'] %}    
+            {% if loop.index0 is even %}    {% set color = 'lightblue' %}
+            {% else %}                      {% set color = 'lightpink' %}
+            {% endif %}
+            &gt;
+            <span style="background-color:{{color}};width:auto;display:inline-block;">{{p}}</span>
+        {% endfor %}   
+        {% endif %}{% endif %}        
+        </div>
+
+        <div style="border:1px blue solid;">
+        {% if data['d04'] is defined  %}{% if data['d04'] is not null  %}
+        <h2>{{data['d04']['txt']}}</h2>
+        <p style="font-size:0.8em;text-align:left;color:grey;">* Reciente:
+            <span title="Humedad"       style="margin-right:1em;">Humedad:    {{data['d04']['res']['current']['humidity']}}  </span>
+            <span title="Visibilidad"   style="margin-right:1em;">Visibilidad:{{data['d04']['res']['current']['visibility']}}</span>
+            <span title="Nubes"         style="margin-right:1em;">Nubes:      {{data['d04']['res']['current']['cloudcover']}}</span>
+        </p>
+        <p>
+        <table>  
+        <tr>
+            <th>Reciente</th>
+            <th colspan="4">Previsión</th>
+        </tr>
+        {% for f in 1..6 %}
+        <tr>
+            {% for c in -1..data['d04']['res']['forecast']|length -1  %}
+            <td>
+            {% if loop.first %} 
+                <b>
+                {% if     f==1 %} <span title="Fecha">{{data['d04']['res']['current']['observation_time']}}   </span>
+                {% elseif f==2 %} <span title="Imagen"><img src="{{data['d04']['res']['current']['weatherIconUrl']}}" />   </span>
+                {% elseif f==3 %} <span title="Descripción">{{data['d04']['res']['current']['weatherDesc']}}</span>
+                {% elseif f==4 %} <span title="Temperatura">{{data['d04']['res']['current']['temp_C']}} &ordm;C</span>
+                {% elseif f==5 %} <span title="Precipitación">{{data['d04']['res']['current']['precipMM']}} mm</span>
+                {% elseif f==6 %} <span title="Viento (velocidad, dirección)">
+                                    {{data['d04']['res']['current']['windspeedKmph']}} km/h,&nbsp;
+                                    {{data['d04']['res']['current']['winddirDegree']}} &ordm;
+                                    {{data['d04']['res']['current']['winddir16Point']}}
+                                  </span>
+                {% endif %} 
+                </b>
+            {% else %}  
+                {% set ff = loop.index0 - 1 %}
+                {% if     f==1 %} <span title="Fecha">{{data['d04']['res']['forecast'][ff]['date']|date('d-m-Y')}}      </span>
+                {% elseif f==2 %} <span title="Imagen"><img src="{{data['d04']['res']['forecast'][ff]['weatherIconUrl']}}" />   </span>
+                {% elseif f==3 %} <span title="Descripción">{{data['d04']['res']['forecast'][ff]['weatherDesc']}}</span>
+                {% elseif f==4 %} <span title="Temperatura">
+                                    <span style="color:blue;">{{data['d04']['res']['forecast'][ff]['tempMinC']}}</span> &ordm;C &nbsp; 
+                                    <span style="color:red;">{{data['d04']['res']['forecast']['0']['tempMaxC']}}</span> &ordm;C
+                                  </span>
+                {% elseif f==5 %} <span title="Precipitación">{{data['d04']['res']['forecast'][ff]['precipMM']}} mm</span>
+                {% elseif f==6 %} <span title="Viento (velocidad, dirección)">
+                                    {{data['d04']['res']['forecast'][ff]['windspeedKmph']}} km/h,&nbsp;
+                                    {{data['d04']['res']['forecast'][ff]['winddirDegree']}} &ordm;
+                                    {{data['d04']['res']['forecast'][ff]['winddir16Point']}}
+                                  </span>
+                {% endif %}        
+            {% endif %}        
+            </td>
+            {% endfor %}        
+        </tr>
+        {% endfor %}
+        </table>
+        </p>       
+        {% endif %}{% endif %}
+        </div>
+
+
+            
+ <hr /><pre style="font-size:0.75em;border:1px red dashed;">{{dump(data)}}</pre>             
+  {# 
+
+        {% if data|length > 2 %}
+        Data mes gran de 2.
+        {% else %}          
+        Ningún resultado.
+        {% endif %}        
+  #}   
+        
+        
+        
+      
+
+           
+
+    {% endif %}
+            
+    {% endif %}    
+
+    
+
+    
+    
+    
+    
+    
+    
+{# 
+
+
+#}    
+    
+    
+    
+
+{% endblock %}
+            
+{% block aside %}
+    <ul class="record_actions">
+        <li><a href="{{ path('viaje') }}"        >volver  </a></li>
+        <li><a href="{{ path('viaje_wizard') }}" >RECARGAR</a></li>
+    </ul>   
+{% endblock %} 
+            
+{% block javascripts %}
+    {{ parent() }}
+            
+    {% if op is defined %}
+    {% if op == 0 %}            
+    <script type="text/javascript"  src="http://www.openlayers.org/api/OpenLayers.js"></script>  
+    <script type="text/javascript">                                                            
+    //http://harrywood.co.uk/maps/examples/openlayers/simple-marker.html
+    //http://www.openlayers.org/dev/examples/markers.html
+    //http://wiki.openstreetmap.org/wiki/OpenLayers_Marker_Example
+
+     var mapa        = new OpenLayers.Map("miMapa");   
+
+     mapa.addControl(new OpenLayers.Control.LayerSwitcher(true));                             
+     mapa.addControl(new OpenLayers.Control.ScaleLine());       
+    //mapa.addControl(new OpenLayers.Control.Permalink());
+    //mapa.addControl(new OpenLayers.Control.Permalink('permalink'));
+    //mapa.addControl(new OpenLayers.Control.MousePosition({ numDigits: 2 }));                 
+    //mapa.addControl(new OpenLayers.Control.PanZoomBar());     
+
+     var markers = new OpenLayers.Layer.Markers( "Markers" );
+
+     var layerBase   = new OpenLayers.Layer.OSM("Simple OSM Map");
+     mapa.addLayer(layerBase);  
+
+     var lat        = 0;
+     var lon        = 0;
+     var zoom       = 0;
+     
+     var lonLat1      = new OpenLayers.LonLat(lon,lat).transform(new OpenLayers.Projection("EPSG:4326"),mapa.getProjectionObject());
+     var marcador1    = new OpenLayers.Marker(lonLat1);
+     
+     var size     = new OpenLayers.Size(20,20);
+   //var offset   = new OpenLayers.Pixel(-(size.w/2), -size.h);     
+   //var icon     = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
+
+    {% set i  = 0 %}             
+    {% if places|length > 0 %}
+        {% for p0 in places %}
+        {% for p1 in p0 %}
+            {% if p1.res|length > 0 %}
+                {% for p2 in p1.res %}
+                    {% set i = i + 1 %}
+                    {% set lat  = p2.lat %}
+                    {% set lon  = p2.lon %}
+                    {% set name = p2.name %}
+                    {% set prm = '?op=1&lat='~lat~'&lon='~lon~'&ciutat='~ciudad~'&q='~name %}
+                    var lonLat{{i}}   = new OpenLayers.LonLat({{lon}},{{lat}}).transform(new OpenLayers.Projection("EPSG:4326"),mapa.getProjectionObject());
+                    var marcador{{i}} = new OpenLayers.Marker(lonLat{{i}});
+                    markers.addMarker(marcador{{i}});
+                {% endfor %}  
+            {% endif %}    
+        {% endfor %}
+        {% endfor %}
+    {% endif %}      
+
+    {% set i  = 0 %}    
+    {% if places|length > 0 %}
+        {% for p0 in places %}
+        {% for p1 in p0 %}
+            {% if p1.res|length > 0 %}
+                {% for p2 in p1.res %}
+                    {% set i  = i + 1 %}  
+                    {% set lat  = p2.lat %}
+                    {% set lon  = p2.lon %}
+                    {% set name = p2.name %}
+                    {% set prm = '?op=1&lat='~lat~'&lon='~lon~'&ciutat='~ciudad~'&q='~name %}
+                    marcador{{i}}.events.register("click", marcador{{i}}, function(e){
+                    text='<a href="{{prm}}" width="20" height="2">{{name}}</a>';
+                    popup = new OpenLayers.Popup.FramedCloud("chicken",lonLat{{i}},size,text,null, true);
+                    mapa.addPopup(popup);});
+                {% endfor %}  
+            {% endif %}    
+        {% endfor %}
+        {% endfor %}
+    {% endif %}     
+
+     mapa.setCenter (lonLat1, zoom);
+
+     mapa.addLayer(markers);
+
+    </script>    
+    {% endif %}   
+    {% endif %}
+{% endblock %}            
