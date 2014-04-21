@@ -8,7 +8,7 @@
     <p>{{ entity.nombre }}</p>
     <p>{{ entity.fecha|date('d-m-Y H:i:s') }}</p>
     #}
-    <h1>Viaje</h1>
+    <p><h1>Viaje</h1></p>
 
     <table class="record_properties">
         <tbody>
@@ -93,8 +93,8 @@
             {% elseif f==2 %} <span title="Imagen"><img src="{{data[ser]['res']['forecast'][ff]['weatherIconUrl']}}" /></span>
             {% elseif f==3 %} <span title="Descripción">    {{data[ser]['res']['forecast'][ff]['weatherDesc']}}</span>
             {% elseif f==4 %} <span title="Temperatura">
-                                &darr;<span style="color:blue;">  {{data[ser]['res']['forecast'][ff]['tempMinC']}}</span> &ordm;C &nbsp;
-                                &uarr;<span style="color:red;">   {{data[ser]['res']['forecast'][ff]['tempMaxC']}}</span> &ordm;C
+                                &darr;<span style="color:blue;" title="Temp. mín">  {{data[ser]['res']['forecast'][ff]['tempMinC']}}</span> &ordm;C &nbsp;
+                                &uarr;<span style="color:red;"  title="Temp. máx">   {{data[ser]['res']['forecast'][ff]['tempMaxC']}}</span> &ordm;C
                               </span>
             {% elseif f==5 %} <span title="Precipitación">{{data[ser]['res']['forecast'][ff]['precipMM']}} mm</span>
             {% elseif f==6 %} <span title="Viento (velocidad, dirección)">
@@ -162,7 +162,7 @@
     <dl>
     {% for p in data[ser]['res'] %}
         <dt><a href="{{p['wikipediaUrl']}}" target="_blank" style="text-decoration:none;">{{p['title']}}</a></dt>
-        <dd>
+        <dd style="height:5em;">
             {% if p['thumbnailImg'] is not empty %}
             <span><img src="{{p['thumbnailImg']}}"  style="float:left;"/></span>  
             {% endif %}    
@@ -205,10 +205,11 @@
 
 {% endblock %}
 {% block aside %}
-    <ul class="record_actions">
-        <li><a href="{{ path('viaje') }}"        >mis viajes</a></li>    
-        <li>
-            <a href="{{ path('viaje_editar', { 'id': entity.id }) }}">Editar</a>
-        </li>     
-    </ul>   
+    {{ parent() }}
+    <section id="login">
+        <a href="{{ path('viaje_editar',  { 'id': entity.id }) }}" >editar</a>
+    </section>    
+    <section id="login">
+        <a href="{{ path('viaje_opciones',  { 'id': entity.id }) }}" >opciones</a>
+    </section>    
 {% endblock %} 

@@ -2,43 +2,91 @@
 
 {% block title 'Viajes' %}
 
-{% block article -%}
-    <h1>Lista de Viajes</h1>
+{% block stylesheets %}
+    {{ parent() }}
 
-    <ul>
-        <li>
-            <a href="{{ path('viaje_nuevo') }}">Crear viaje</a>
-        </li>
-    </ul>
+<style>
+#one-column-emphasis
+{
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 18px;
+	margin: 20 0 0 10px;
+	width: 700px;
+	text-align: left;
+	border-collapse: collapse;
+        border:0px solid;
+}
+#one-column-emphasis th
+{
+	font-size: 14px;
+	font-weight: normal;
+	padding: 12px 15px;
+	color: #039;
+}
+#one-column-emphasis td
+{
+	padding: 10px 15px;
+	color: #669;
+	border-top: 1px solid #e8edff;
+}
+#one-column-emphasis tr:hover td
+{
+	color: #339;
+	background: #eff2ff;
+}
+.linkeven   {background-color: lightyellow;}
+.col-nombre {font-weight:bold;width:340px;vertical-align:middle}
+</style>
+
+<link href="{{ asset('bundles/inicio/css/checkbox.css') }}" type="text/css" rel="stylesheet" />
+
+
+{% endblock %}   
+
+{% block article -%}
+    <p><h1>Lista de Viajes</h1></p>
+
+    <form action="{{ path('viaje_nuevo') }}" method="post" >
+        <button type="submit" class="boton" style="float:right;margin-top:-2.5em;">Crear viaje</button>
+    </form>
     
-    {% for entity in entities %}
-        <table class="records_list">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nombre</th>
-                    <th>Fecha</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ loop.revindex }}</td>
-                    <td>{{ entity.nombre }}</td>
-                    <td>{% if entity.fecha %}{{ entity.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('viaje_editar', { 'id': entity.id }) }}">Editar</a>
-                        </li>                        
-                        <li>
-                            <a href="{{ path('viaje_mostrar', { 'id': entity.id }) }}">Mostrar</a>
-                        </li>
-                    </ul>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    {% endfor %}
+
+    <table class="records_list" id="one-column-emphasis">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Fecha</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}                     
+            <tr class="link{{ cycle(['odd', 'even'], loop.index0) }}">
+                <td>{{ loop.revindex }}</td>
+                <td class="col-nombre">
+                    <a href="{{ path('viaje_mostrar', { 'id': entity.id }) }}" target="_blank" title="mostrar" style="border:0px solid;">
+                    {{ entity.nombre }}
+                    </a>
+                </td>
+                <td>{% if entity.fecha %}{{ entity.fecha|date('d-m-Y H:i') }}{% endif %}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('viaje_editar', { 'id': entity.id }) }}" >Editar</a>
+                    </li>                        
+                    <li>
+                        <a href="{{ path('viaje_opciones', { 'id': entity.id }) }}" >Opciones</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('viaje_mostrar', { 'id': entity.id }) }}" >Mostrar</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}                
+        </tbody>
+    </table>
+
 
 {% endblock %}

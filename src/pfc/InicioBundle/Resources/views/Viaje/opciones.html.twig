@@ -7,13 +7,7 @@
 
 <style>
 form label{ width:500px;    font-weight:normal;}        
-form ul{    list-style:none;}     
-
-form input[type="radio"]{
-    width:10px;height:10px;
-    color:deeppink;
-    background-color:lightyellow;
-}
+form ul{    list-style:none;}
 </style>
 
 <link href="{{ asset('bundles/inicio/css/checkbox.css') }}" type="text/css" rel="stylesheet" />
@@ -22,17 +16,20 @@ form input[type="radio"]{
 {% endblock %}   
 
 {% block article -%}
-    <h1>Opciones viaje</h1>
-
+    <p><h1>Opciones viaje: {{ entity.nombre }}</h1></p>
+      
     <form action="{{ path('viaje_opciones', { 'id': entity.id }) }}" method="post">
       <p>Nombre de la ciudad a buscar:</p>
+        {% if opciones['s0']['ciudad'] is defined %}
+            {{ opciones['s0']['ciudad'] }}            
+        {% endif %}       
       <p>
          {% if ciudad is defined %}  {% set texto = ciudad %}            
-         {% else %}                  {% set texto = entity.nombre %}
+         {% else %}                  {% set texto = '' %}
          {% endif %} 
-         <input type="text"   name="ciudad" value="{{texto}}" style="width:600px;height:1.5em;font-size:2em;" />
+         <input type="text"   name="ciudad" value="{{texto}}" style="width:580px;height:1.5em;font-size:2em;" />
          <input type="hidden" name="acc"    value="b" />
-         <input type="submit"               value="Buscar" style="height:3em;width:5em;"/>
+         <input type="submit"               value="Buscar" class="boton"/>
       </p>
     </form>  
     
@@ -125,7 +122,7 @@ form input[type="radio"]{
                         <input type="checkbox" name="s{{vs['id']}}" id="Check{{i}}" value="{{vs['id']}}" {{checked}} />
                         <label for="Check{{i}}">{{vs['id']}} - {{vs['nom']}}</label>
                     </li>
-                {% endfor %}                
+                {% endfor %} 
             </ul>
             </div>            
         {% else %}
@@ -135,7 +132,7 @@ form input[type="radio"]{
     
         <input type="hidden" name="ciudad" value="{{ciudad}}" />
         <input type="hidden" name="acc"    value="g" />
-        <input type="submit"               value="Guardar opciones" style="height:3em;width:20em;"/>
+        <input type="submit"               value="Guardar opciones" class="boton" style="height:3em;width:39em;margint-left:20em;"/>
         </form>
 
         {% endif %}  
@@ -144,32 +141,21 @@ form input[type="radio"]{
     {% endif %}
     
 
-   
 
 {% endblock %}
             
 {% block aside %}
-    <ul class="record_actions">
-        <li><a href="{{ path('viaje') }}"        >mis viajes</a></li>
-        <li><a href="{{ path('viaje_mostrar', { 'id': entity.id }) }}" >mostrar</a></li>
-        <li><a href="{{ path('viaje_editar',  { 'id': entity.id }) }}" >editar</a></li>
-    </ul>   
+    {{ parent() }}
+    <section id="login">
+        <a href="{{ path('viaje_editar',  { 'id': entity.id }) }}" >editar</a>
+    </section>    
+    <section id="login">
+        <a href="{{ path('viaje_mostrar', { 'id': entity.id }) }}" >mostrar</a>
+    </section>
 {% endblock %} 
             
  {% block javascripts %}
     {{ parent() }}
-            
-    {#        
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script type="text/javascript" src="simple-expand.js"></script>
-    
-    <script type="text/javascript">
-        $(function () {
-            $('.expander').simpleexpand();
-            prettyPrint();
-        });
-    </script>       
-    #}
         
     {% if acc is defined and places is defined %}
     {% if acc == 'b' %}         
@@ -269,7 +255,6 @@ form input[type="radio"]{
                         checkedClass:   'jquery-tick-on'
                 });
         });
-    </script>    
+    </script>     
 
-    
 {% endblock %}          

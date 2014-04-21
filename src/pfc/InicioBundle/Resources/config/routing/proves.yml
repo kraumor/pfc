@@ -4,6 +4,7 @@ proves:
     pattern:      /p/{pag}
     defaults:     { _controller: "InicioBundle:Default:index" , pag:index}
     
-viajex:
-    pattern:      /viajex
-    defaults:     { _controller: "InicioBundle:Default:viajex" }      
+viajeOO:
+    pattern:      /viajeOO
+    defaults:     { _controller: "InicioBundle:Default:viajeOO" }      
+    requirements: { _method: post|get }    

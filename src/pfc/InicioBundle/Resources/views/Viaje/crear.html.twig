@@ -3,19 +3,13 @@
 {% block title 'Crear Viaje' %}
 
 {% block article -%}
-    <h1>Crear viaje</h1>
+    <p><h1>Crear viaje</h1></p>
 
     <form action="{{ path('viaje_crear') }}" method="post" {{ form_enctype(form) }}>
         {{ form_widget(form) }}
         <p>
-            <button type="submit">Crear</button>
+            <button type="submit" class="boton">Crear</button>
         </p>
     </form>
 
-    <ul class="record_actions">
-        <li>
-            <a href="{{ path('viaje') }}">volver</a>
-        </li>
-    </ul>
 {% endblock %}
-{% block aside %}{% endblock %}

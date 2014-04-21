@@ -125,7 +125,7 @@ $finder=array(1,2,3,4);
         return $respuesta;
     }
     
-    public function viajexAction() {
+    public function viajeOOAction() {
 
         $em=$this->getDoctrine()->getManager();
 
@@ -134,7 +134,7 @@ $finder=array(1,2,3,4);
 //        $viajes=$em->getRepository('InicioBundle:Usuario')->findViajesRecientes($usuario->getId());
         $viajes=$em->getRepository('InicioBundle:Viaje')->findAll();
 
-        return $this->render('InicioBundle:Default:viajex.html.twig',array(
+        return $this->render('InicioBundle:Default:viajeOO.html.twig',array(
                     'viajes' => $viajes
         ));
     }

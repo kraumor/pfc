@@ -2,37 +2,44 @@
 
 {% block title 'Editar Viaje' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+<style>
+#boton_1{margin-top:1em;float:left;}        
+#boton_2{margin-top:1em;float:right;}        
+</style>
+{% endblock %}  
+
 {% block article -%}
-    <h1>Editar viaje</h1>
+    <p><h1>Editar viaje</h1></p>
 
     <form action="{{ path('viaje_actualizar', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
         <input type="hidden" name="_method" value="PUT" />
         {{ form_widget(edit_form) }}
-        <button type="submit">Guardar</button>
+        <button type="submit" class="boton" id="boton_1">Guardar</button>
     </form>
 
     <form action="{{ path('viaje_borrar', { 'id': entity.id }) }}" method="post">
         <input type="hidden" name="_method" value="DELETE" />
         {{ form_widget(delete_form) }}
-        <button type="submit">Eliminar</button>
+        <button type="submit" class="boton" id="boton_2">Eliminar</button>
     </form>    
-    
-    <form action="{{ path('viaje_opciones', { 'id': entity.id }) }}" method="post" {#{{ form_enctype(edit_form) }}#}>
-{#
-        <input type="hidden" name="_method" value="PUT" />
-
-        {{ form_widget(edit_form) }}
-
-#}
+    {#
+    <form action="{{ path('viaje_opciones', { 'id': entity.id }) }}" method="post" >
         <button type="submit">Opciones</button>
-    </form>    
+    </form>
+    
     <form action="{{ path('viaje_mostrar', { 'id': entity.id }) }}" method="post" >
         <button type="submit">Mostrar</button>
     </form>    
-
+    #}
 {% endblock %}
 {% block aside %}
-    <ul class="record_actions">
-        <li><a href="{{ path('viaje') }}"        >mis viajes</a></li>      
-    </ul>   
-{% endblock %} 
+    {{ parent() }}
+    <section id="login">
+        <a href="{{ path('viaje_opciones',  { 'id': entity.id }) }}" >opciones</a>
+    </section>       
+    <section id="login">
+        <a href="{{ path('viaje_mostrar',  { 'id': entity.id }) }}" >mostrar</a>
+    </section>     
+{% endblock %}     

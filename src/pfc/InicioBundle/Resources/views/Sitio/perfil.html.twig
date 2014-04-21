@@ -3,7 +3,7 @@
 {% block title 'Perfil' %}
     
 {% block article %}
-    <h1>{{ block('title')                               }}</h1>
+    <p><h1>{{ block('title') }}</h1></p>
     
     {% for mensaje in app.session.flashbag.get('info1') %}
         <p class="flash-message">{{ mensaje }}</p>
