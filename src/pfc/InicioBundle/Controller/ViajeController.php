@@ -107,19 +107,14 @@ class ViajeController extends Controller {
         $opciones=$entity->getOpciones();
         $opciones=unserialize($opciones);
         
-        
         $request=$this->getRequest();      
 
         if($request->getMethod()== 'POST' ){
-            echo 'POST';
-//            echo '<pre>'.print_r($request,true).'</pre>';
-//              $x=$request;
    
             $ciudad=$request->get('ciudad');
             $accion=$request->get('acc');
             switch($accion){
                 case 'b':
-                    echo 'BUSCAR';
                     $places=$this->getPlaces($ciudad);
                     $servicios=$this->getServicios();
 
@@ -134,11 +129,8 @@ class ViajeController extends Controller {
                     return $respuesta;
                     break;
                 case 'g':
-                    echo 'GUARDAR';
-
                     $aux0=null;
                     foreach($request->request->all() as $k => $v){
-                        //echo '<br />+-+'.$k.'-'.$v;
                         $aux0[$k]=$v;
                     }
 
@@ -163,13 +155,10 @@ class ViajeController extends Controller {
                                 }                                             
                             }
                             else{
-                                $aux[$par]=null/*$v*/;     
+                                $aux[$par]=null;     
                             }
                         }
                     }
-
-                    echo '<pre>AUX:'.print_r($aux,true).'</pre>';
-
                     if( !isset($aux['s0']) ){
                         $respuesta=$this->render('InicioBundle:Viaje:opciones.html.twig',array(
                                             'entity'    => $entity
@@ -207,124 +196,21 @@ class ViajeController extends Controller {
                         
                     break;
             }
-            
-                    
-                    
-
-         
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-echo 'aa';
-             $respuesta=$this->render('InicioBundle:Viaje:opciones.html.twig',array(
-                                'entity'    => $entity
-                               ,'opciones'  => $opciones
-                               ,'ciudad'    => $opciones['s0']['ciudad']
-                               ,'acc'       => 'b'
-                               ,'servicios' => $this->getServicios()
+            $respuesta=$this->render('InicioBundle:Viaje:opciones.html.twig',array(
+                               'entity'    => $entity
+                              ,'opciones'  => $opciones
+                              ,'ciudad'    => $opciones['s0']['ciudad']
+                              ,'acc'       => 'b'
+                              ,'servicios' => $this->getServicios()
             ));            
-            
-            
-            
-          
         }
         else{
-            echo 'No post';
-            echo '<pre>OP:'.print_r($opciones,true).'</pre>';
             $respuesta=$this->render('InicioBundle:Viaje:opciones.html.twig',array(
                                 'entity'    => $entity
                                ,'opciones'  => $opciones
             )); 
         }
-        
-        
-        
-        
-        
-        //return $this->redirect($this->generateUrl('viaje_opciones',array('id' => $entity->getId())));      
-        
         return $respuesta;
-        
-    }
-
-    /**
-     * Displays the wizard to collect options for a new Viaje entity.
-     *
-     */
-    public function wizardAction() {
-
-        $request=$this->getRequest();      
-
-        if($request->getMethod()== ('POST' || 'GET')){            
-            
-            $op     =$request->get('op');
-            $ciudad =$request->get('ciudad');
-            $x=$request;
-                    
-            switch ($op){
-                case 0:
-                    $places=$this->getWizard1($ciudad);
-                    $servicios=$this->getServicios();
-
-                    $respuesta=$this->render('InicioBundle:Viaje:wizard.html.twig',array(
-                         'op'           => $op
-                        ,'ciudad'       => $ciudad
-                        ,'places'       => $places
-                        ,'servicios'    => $servicios
-                        ,'x' => $x   
-                    ));                          
-                    break;
-                case 1:
-                    $lat    =$request->get('lat');
-                    $lon    =$request->get('lon');
-                    $q      =$request->get('q');
-                    $dades=array(
-                                 'ciudad'    => $ciudad
-                                ,'lat'       => $lat
-                                ,'lon'       => $lon
-                                ,'q'         => $q
-                                );     
-                    
-                    $data   =null;                    
-                    $data=$this->getWizard2($dades);
-                    
-                    $respuesta=$this->render('InicioBundle:Viaje:wizard.html.twig',array(
-                        'op'        => $op
-                       ,'data'      => $data
-                    ));                          
-                    break;                 
-                default:
-                    $respuesta=$this->render('InicioBundle:Viaje:wizard.html.twig'); 
-            }        
-        }     
-        else{
-            $respuesta=$this->render('InicioBundle:Viaje:wizard.html.twig',array(
-                 'op'       => 0
-                ,'ciudad'   => null
-                ,'places'   => null
-            ));    
-        }
-        
-
- 
-        return $respuesta;
-
-//        
-//        echo '++++'.$peticion;
-//        return $this->render('InicioBundle:Viaje:wizard.html.twig',array(
-//                    'entity' => $entity,
-//                    'form' => $form->createView(),
-//        ));
     }
 
     /**
@@ -336,9 +222,9 @@ echo 'aa';
         $ser=null;
         
         $s=null;
-        $s[]=array('dis'=> 1 ,'id'=> 1  ,'nom'=> 'Mapa' );
-        $s[]=array('dis'=> 1 ,'id'=> 2  ,'nom'=> 'Jerarquía administrativa' );
-        $s[]=array('dis'=> 1 ,'id'=> 3  ,'nom'=> 'Zona horaria' );
+        $s[]=array('dis'=> 1 ,'id'=> 1  ,'nom'=> 'Zona horaria' );
+        $s[]=array('dis'=> 1 ,'id'=> 2  ,'nom'=> 'Mapa' );
+        $s[]=array('dis'=> 1 ,'id'=> 3  ,'nom'=> 'Jerarquía administrativa' );
         $s[]=array('dis'=> 1 ,'id'=> 4  ,'nom'=> 'Tiempo' );
         $s[]=array('dis'=> 1 ,'id'=> 5  ,'nom'=> 'Lugares' );
         $s[]=array('dis'=> 1 ,'id'=> 6  ,'nom'=> 'Divisas' );
@@ -354,6 +240,7 @@ echo 'aa';
 
         return $ser;
     }
+    
     /**
      * Busca el text en diferentes servicios web y devuelve los resultados
      * encontrados con sus coordenadas.
@@ -373,25 +260,7 @@ echo 'aa';
 
         return $places;
     }
-    /**
-     * Busca el text en diferentes servicios web y devuelve los resultados
-     * encontrados con sus coordenadas.
-     *
-     */
-    public function getWizard1($text) {
-        
-        $places=null;
-        
-        $p1=$this->getPlacesOSM('osm',$text);
-        $p2=$this->getPlacesWWO('wwo',$text);
-        $p3=$this->getPlacesGEO('geo',$text);
-        
-        for($i=1;$i<=3;$i++){
-            if(!is_null(${'p'.$i})){$places[]=${'p'.$i};}
-        }
-
-        return $places;
-    }
+    
     /**
      * Devuelve array de resultados
      *
@@ -404,6 +273,7 @@ echo 'aa';
                      ,'name'        =>$c3                     
                      );
     }    
+    
     /**
      * Busca el text en el servicio web y devuelve los resultados
      * encontrados con sus coordenadas.
@@ -439,12 +309,6 @@ echo 'aa';
                         ,(string)   $v['display_name']
                         );
                         // 'place_id'    =>(int)$v['place_id']
-//                $res['osm']['res'][]=array(
-//                   // 'place_id'    =>(int)$v['place_id']
-//                      'lat'         =>(float)$v['lat']
-//                     ,'lon'         =>(float)$v['lon']
-//                     ,'name'        =>(string)($v['display_name'])                       
-//                     );
             }
         }
         return !is_null($res[$t]['res']) ? $res : null;
@@ -535,15 +399,13 @@ echo 'aa';
         return !is_null($res[$t]['res']) ? $res : null;
     }
     /**
-     * Wizard2
+     * GetDatos
      *
      */
     public function getDatos($opciones) {
         
         $d=$opciones;
         $aux=null;
-        
-        //echo '<pre>D:'.print_r($d,true).'</pre>';
         
         if(!is_null($d) && count($d)>1 ){
             
@@ -575,39 +437,9 @@ echo 'aa';
                 }
             }    
         
-        }
-        //echo '<pre>V:'.print_r($aux,true).'</pre>';
-        
+        }        
         return $aux;
-    }    
-    
-    /**
-     * Wizard2
-     *
-     */
-    public function getWizard2($d) {
-        
-        $v=null;
-        
-        $v['d00']['res']=array(
-                                'ciudad'    => $d['ciudad']
-                               ,'lat'       => $d['lat']
-                               ,'lon'       => $d['lon']
-                               ,'q'         => $d['q']
-                            );     
-
-      //$v['d01']=$this->get01ZonaHoraria($d['lat'],$d['lon']);
-      //$v['d02']=$this->get02Mapa($d['lat'],$d['lon']);
-      //$v['d03']=$this->get03Jerarquia($d['lat'],$d['lon']);
-      //$v['d04']=$this->get04Tiempo($d['lat'],$d['lon']);
-      //$v['d05']=$this->get05Lugares($d['lat'],$d['lon']);
-      //$v['d06']=$this->get06Divisas();
-      //$v['d07']=$this->get07Wikipedia1($d['lat'],$d['lon'],$d['ciudad']);
-      //$v['d08']=$this->get08Wikipedia2($d['ciudad']);
-      //$v['d09']=$this->get09Wikitravel($d['ciudad']);
-        
-        return $v;
-    }    
+    }
 
     /**
      * Devuelve zona horaria
@@ -984,37 +816,17 @@ echo 'aa';
 
         $opciones=$entity->getOpciones();
         $opciones=unserialize($opciones);
-                      
+
         $data=$this->getDatos($opciones);
-        
-//        return $this->render('InicioBundle:Viaje:mostrar.html.twig',array(
-//                     'entity'       => $entity
-//                    ,'delete_form'  => $deleteForm->createView()
-//                    ,'data'         => $data
-//                ));
-//        $respuesta=$this->render('InicioBundle:Viaje:opciones.html.twig',array(
-//             'entity'       => $entity
-//            ,'acc'          => $accion
-//            ,'ciudad'       => $ciudad
-//            ,'places'       => $places
-//            ,'servicios'    => $servicios
-//            ,'opciones'     => $opciones
-//        ));       
+             
         if($data){
             $respuesta=$this->render('InicioBundle:Viaje:mostrar.html.twig',array(
                          'entity'       => $entity
                         ,'delete_form'  => $deleteForm->createView()
                         ,'data'         => $data
                     ));
-            //$respuesta=$this->forward('InicioBundle:Viaje:mostrar',array('id' => $id));
         }
         else{
-//            $respuesta=$this->render('InicioBundle:Viaje:mostrar.html.twig',array(
-//                         'entity'       => $entity
-//                        ,'delete_form'  => $deleteForm->createView()
-//                        ,'data'         => $data
-//                    ));            
-           //$respuesta=$this->forward('InicioBundle:Viaje:mostrar',array('entity'       => $entity,'id' => $id));
             $respuesta=$this->forward('InicioBundle:Viaje:opciones',array('id' => $id));
         }
         

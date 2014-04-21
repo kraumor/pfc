@@ -2,24 +2,32 @@
 
 {% block title 'Opciones Viaje' %} 
 
+{% block stylesheets %}
+    {{ parent() }}
 
+<style>
+form label{ width:500px;    font-weight:normal;}        
+form ul{    list-style:none;}     
+
+form input[type="radio"]{
+    width:10px;height:10px;
+    color:deeppink;
+    background-color:lightyellow;
+}
+</style>
+
+<link href="{{ asset('bundles/inicio/css/checkbox.css') }}" type="text/css" rel="stylesheet" />
+
+
+{% endblock %}   
 
 {% block article -%}
-    <h1>Opciones viaje</h1>{{ entity.id }}
+    <h1>Opciones viaje</h1>
 
     <form action="{{ path('viaje_opciones', { 'id': entity.id }) }}" method="post">
       <p>Nombre de la ciudad a buscar:</p>
       <p>
-         {% if ciudad is defined %}
-            {% set texto = ciudad %}            
-              {#
-
-            {% if ciudad is empty %} {% set texto = opciones['s0']['ciudad'] %}
-            {% else %}               {% set texto = ciudad %}
-            {% endif %} 
-#}
-
-
+         {% if ciudad is defined %}  {% set texto = ciudad %}            
          {% else %}                  {% set texto = entity.nombre %}
          {% endif %} 
          <input type="text"   name="ciudad" value="{{texto}}" style="width:600px;height:1.5em;font-size:2em;" />
@@ -54,25 +62,19 @@
                         {% set lat  = p2.lat|number_format(2, '.') %}
                         {% set lon  = p2.lon|number_format(2, '.') %}
                         {% set name = p2.name %}
-                        {% set prm = '?op=1&lat='~lat~'&lon='~lon~'&ciudad='~ciudad~'&q='~name %}
                         <li value="{{cont}}" id="s{{sel}}-{{cont}}">
                             <input type="radio"  name="s{{sel}}"                  value="{{cont}}" />
                             <input type="hidden" name="s{{sel}}-{{cont}}_lat"     value="{{lat}}" />
                             <input type="hidden" name="s{{sel}}-{{cont}}_lon"     value="{{lon}}" />
-                            <a href="{{prm}}" style="text-decoration:none;">
-                                <span title="Latitud" style="text-align:right;background-color:lightcyan;width:4em;display:inline-block;">
-                                {{ lat }}
-                                </span>
-                            </a>                                    
-                            <a href="{{prm}}" style="text-decoration:none;">
-                                <span title="Longitud" style="text-align:right;background-color:lightcyan;width:4em;display:inline-block;">
-                                {{ lon }}
-                                </span>
-                            </a>                                    
-
-                            <a href="{{prm}}" style="text-decoration:none;">
-                            <span title="Nombre" style="width:auto;display:inline-block;">{{ name }}</span>
-                            </a>
+                            <span title="Latitud" style="text-align:right;background-color:lightcyan;width:4em;display:inline-block;">
+                            {{ lat }}
+                            </span>
+                            <span title="Longitud" style="text-align:right;background-color:lightcyan;width:4em;display:inline-block;">
+                            {{ lon }}
+                            </span>
+                            <span title="Nombre" style="width:auto;display:inline-block;">
+                            {{ name }}
+                            </span>
                         </li>
                         {% set cont = cont + 1 %}
                     {% endfor %}  
@@ -107,13 +109,6 @@
         </ol>
     
     
-    
-    
-    
-    
-    
-    
-    
         {% if servicios is defined and opciones['s0']['ciudad'] is defined %}
         {% if servicios %}
             <h2>Consultar información de:</h2>
@@ -145,7 +140,6 @@
 
         {% endif %}  
     
-        {{dump(opciones)}}
     {% endif %}
     {% endif %}
     
@@ -158,8 +152,124 @@
     <ul class="record_actions">
         <li><a href="{{ path('viaje') }}"        >mis viajes</a></li>
         <li><a href="{{ path('viaje_mostrar', { 'id': entity.id }) }}" >mostrar</a></li>
-        <li><a href="{{ path('viaje_editar', { 'id': entity.id }) }}" >editar</a></li>
+        <li><a href="{{ path('viaje_editar',  { 'id': entity.id }) }}" >editar</a></li>
     </ul>   
 {% endblock %} 
             
+ {% block javascripts %}
+    {{ parent() }}
+            
+    {#        
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="simple-expand.js"></script>
+    
+    <script type="text/javascript">
+        $(function () {
+            $('.expander').simpleexpand();
+            prettyPrint();
+        });
+    </script>       
+    #}
         
+    {% if acc is defined and places is defined %}
+    {% if acc == 'b' %}         
+    <script type="text/javascript"  src="http://www.openlayers.org/api/OpenLayers.js"></script>  
+    <script type="text/javascript">                                                            
+    //http://harrywood.co.uk/maps/examples/openlayers/simple-marker.html
+    //http://www.openlayers.org/dev/examples/markers.html
+    //http://wiki.openstreetmap.org/wiki/OpenLayers_Marker_Example
+
+     var mapa        = new OpenLayers.Map("miMapa");   
+
+     mapa.addControl(new OpenLayers.Control.LayerSwitcher(true));                             
+     mapa.addControl(new OpenLayers.Control.ScaleLine());       
+    //mapa.addControl(new OpenLayers.Control.Permalink());
+    //mapa.addControl(new OpenLayers.Control.Permalink('permalink'));
+    //mapa.addControl(new OpenLayers.Control.MousePosition({ numDigits: 2 }));                 
+    //mapa.addControl(new OpenLayers.Control.PanZoomBar());     
+
+     var markers = new OpenLayers.Layer.Markers( "Markers" );
+
+     var layerBase   = new OpenLayers.Layer.OSM("Simple OSM Map");
+     mapa.addLayer(layerBase);  
+
+     var lat        = 0;
+     var lon        = 0;
+     var zoom       = 0;
+     
+     var lonLat1      = new OpenLayers.LonLat(lon,lat).transform(new OpenLayers.Projection("EPSG:4326"),mapa.getProjectionObject());
+     var marcador1    = new OpenLayers.Marker(lonLat1);
+     
+     var size     = new OpenLayers.Size(20,20);
+   //var offset   = new OpenLayers.Pixel(-(size.w/2), -size.h);     
+   //var icon     = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
+            
+    {% set i  = 0 %}             
+    {% if places|length > 0 %}
+        {% for p0 in places %}
+        {% for p1 in p0 %}
+            {% if p1.res|length > 0 %}
+                {% for p2 in p1.res %}
+                    {% set i = i + 1 %}
+                    {% set lat  = p2.lat %}
+                    {% set lon  = p2.lon %}
+                    {% set name = p2.name %}
+                    var lonLat{{i}}   = new OpenLayers.LonLat({{lon}},{{lat}}).transform(new OpenLayers.Projection("EPSG:4326"),mapa.getProjectionObject());
+                    var marcador{{i}} = new OpenLayers.Marker(lonLat{{i}});
+                    markers.addMarker(marcador{{i}});
+                {% endfor %}  
+            {% endif %}    
+        {% endfor %}
+        {% endfor %}
+    {% endif %}      
+
+    {% set i  = 0 %}    
+    {% if places|length > 0 %}
+        {% for p0 in places %}
+        {% for p1 in p0 %}
+            {% if p1.res|length > 0 %}
+                {% for p2 in p1.res %}
+                    {% set i  = i + 1 %}  
+                    {% set lat  = p2.lat %}
+                    {% set lon  = p2.lon %}
+                    {% set name = p2.name %}
+                    marcador{{i}}.events.register("click", marcador{{i}}, function(e){
+                    text='<a href="#s0-{{i}}" width="20" height="2">{{name}}</a>';
+                    popup = new OpenLayers.Popup.FramedCloud("chicken",lonLat{{i}},size,text,null, true);
+                    mapa.addPopup(popup);});
+                {% endfor %}  
+            {% endif %}    
+        {% endfor %}
+        {% endfor %}
+    {% endif %}     
+
+     mapa.setCenter (lonLat1, zoom);
+
+     mapa.addLayer(markers);
+
+    </script>    
+    {% endif %}   
+    {% endif %}
+    
+    
+   
+    <script src="{{ asset('bundles/inicio/js/checkbox/jquery-1.9.1.min.js')    }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/inicio/js/checkbox/jquery-checkbox-2.0.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+                $('#demo1 input').checkbox();
+
+                $('#demo2 input').checkbox({
+                        className:      'jquery-switch',
+                        checkedClass:   'jquery-switch-on'
+                });
+
+                $('#demo3 input').checkbox({
+                        className:      'jquery-tick',
+                        checkedClass:   'jquery-tick-on'
+                });
+        });
+    </script>    
+
+    
+{% endblock %}          
