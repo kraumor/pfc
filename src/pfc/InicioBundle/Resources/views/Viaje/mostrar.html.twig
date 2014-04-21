@@ -3,39 +3,210 @@
 {% block title 'Mostrar Viaje' %}
 
 {% block article -%}
+    {#
+    <p>{{ entity.id }}</p>
+    <p>{{ entity.nombre }}</p>
+    <p>{{ entity.fecha|date('d-m-Y H:i:s') }}</p>
+    #}
     <h1>Viaje</h1>
 
     <table class="record_properties">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Nombre</th>
-                <td>{{ entity.nombre }}</td>
-            </tr>
-            <tr>
-                <th>Fecha</th>
-                <td>{{ entity.fecha|date('Y-m-d H:i:s') }}</td>
+                <th>{{ entity.nombre }}</th>
             </tr>
         </tbody>
     </table>
+    
+    <h1>{{data['s0']['res']['ciudad']}}</h1>
+    
+{% for k,v in data %}
+    {% set ser = k %}
+    
+    {% if ser == 's1' and data[ser] is defined  %}{% if data[ser] is not null %}
+    <div style="border:0px blue solid;">
+    <h2>{{data[ser]['txt']}}</h2>
+    <span style="float:left;display:block;margin-right:3em;width:10em;">{{ data[ser]['res']['datetime']|date('d - m - Y') }}</span>
+    <span style="float:left;display:block;margin-right:3em;width:10em;">{{ data[ser]['res']['datetime']|date('H : i : s') }}</span>
+    <span style="float:left;display:block;margin-right:3em;width:10em;">offset: {{ data[ser]['res']['offset'] }}</span>
+    <p style="clear:left;color:lightgrey;font-size:8px;text-align:right;">Fuente:World Weather Online</p>
+    </div>
+    {% endif %}{% endif %}
+       
+    {% if ser == 's2' and data[ser] is defined  %}{% if data[ser] is not null %}
+    <div style="border:0px blue solid;">
+    <h2>{{data[ser]['txt']}}</h2>
+    <img src="{{ data[ser]['res'] }}" width="600" height="400" alt="OpenStreetMap" />
+    Coordenadas:
+    <a href="https://maps.google.de/maps?q={{data['s0']['res']['lat']}},{{data['s0']['res']['lon']}}" target="_blank" title="ver en Google Maps" style="text-decoration:none;color:grey;">
+    {{data['s0']['res']['lat']}},{{data['s0']['res']['lon']}}
+    </a>
+    <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:OpenStreetMap</p>                
+    </div>
+    {% endif %}{% endif %} 
+    
+    {% if ser == 's3' and data[ser] is defined  %}{% if data[ser] is not null %}
+    <div style="border:0px blue solid;">
+    <h2>{{data[ser]['txt']}}</h2>
+    {% for p in data[ser]['res'] %}    
+        {% if loop.index0 is even %}    {% set color = 'lightblue' %}
+        {% else %}                      {% set color = 'lightpink' %}
+        {% endif %}
+        &gt;
+        <span style="background-color:{{color}};width:auto;display:inline-block;">{{p}}</span>
+    {% endfor %}
+    <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:GeoNames</p>   
+    </div>
+    {% endif %}{% endif %} 
+    
+    {% if ser == 's4' and data[ser] is defined  %}{% if data[ser] is not null %}
+    <div style="border:0px blue solid;">
+    <h2>{{data[ser]['txt']}}</h2>
+    <p>
+    <table style="text-align:center;">  
+    <tr>
+        <th>Reciente</th>
+        <th colspan="4">Previsión</th>
+    </tr>
+    {% for f in 1..6 %}
+    <tr>
+        {% for c in -1..data[ser]['res']['forecast']|length -1  %}
+        <td>
+        {% if loop.first %} 
+            <b>
+            {% if     f==1 %} <span title="Fecha">          {{data[ser]['res']['current']['observation_time']}}</span>
+            {% elseif f==2 %} <span title="Imagen"><img src="{{data[ser]['res']['current']['weatherIconUrl']}}" /></span>
+            {% elseif f==3 %} <span title="Descripción">    {{data[ser]['res']['current']['weatherDesc']}}</span>
+            {% elseif f==4 %} <span title="Temperatura">    {{data[ser]['res']['current']['temp_C']}} &ordm;C</span>
+            {% elseif f==5 %} <span title="Precipitación">  {{data[ser]['res']['current']['precipMM']}} mm</span>
+            {% elseif f==6 %} <span title="Viento (velocidad, dirección)">
+                                {{data[ser]['res']['current']['windspeedKmph']}} km/h,&nbsp;
+                                {{data[ser]['res']['current']['winddirDegree']}} &ordm;
+                                {{data[ser]['res']['current']['winddir16Point']}}
+                              </span>
+            {% endif %} 
+            </b>
+        {% else %}  
+            {% set ff = loop.index0 - 1 %}
+            {% if     f==1 %} <span title="Fecha">          {{data[ser]['res']['forecast'][ff]['date']|date('d-m-Y')}}</span>
+            {% elseif f==2 %} <span title="Imagen"><img src="{{data[ser]['res']['forecast'][ff]['weatherIconUrl']}}" /></span>
+            {% elseif f==3 %} <span title="Descripción">    {{data[ser]['res']['forecast'][ff]['weatherDesc']}}</span>
+            {% elseif f==4 %} <span title="Temperatura">
+                                &darr;<span style="color:blue;">  {{data[ser]['res']['forecast'][ff]['tempMinC']}}</span> &ordm;C &nbsp;
+                                &uarr;<span style="color:red;">   {{data[ser]['res']['forecast'][ff]['tempMaxC']}}</span> &ordm;C
+                              </span>
+            {% elseif f==5 %} <span title="Precipitación">{{data[ser]['res']['forecast'][ff]['precipMM']}} mm</span>
+            {% elseif f==6 %} <span title="Viento (velocidad, dirección)">
+                                {{data[ser]['res']['forecast'][ff]['windspeedKmph']}} km/h,&nbsp;
+                                {{data[ser]['res']['forecast'][ff]['winddirDegree']}} &ordm;
+                                {{data[ser]['res']['forecast'][ff]['winddir16Point']}}
+                              </span>
+            {% endif %}        
+        {% endif %}        
+        </td>
+        {% endfor %}        
+    </tr>
+    {% endfor %}
+    </table>
+    </p>    
+    <p style="font-size:0.8em;text-align:left;color:grey;">* Reciente:
+        <span title="Humedad"       style="margin-right:1em;">Humedad:    {{data[ser]['res']['current']['humidity']}}  </span>
+        <span title="Visibilidad"   style="margin-right:1em;">Visibilidad:{{data[ser]['res']['current']['visibility']}}</span>
+        <span title="Nubes"         style="margin-right:1em;">Nubes:      {{data[ser]['res']['current']['cloudcover']}}</span>
+    </p>
+    <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:World Weather Online</p>        
+    </div>
+    {% endif %}{% endif %} 
+    
+    {% if ser == 's5' and data[ser] is defined  %}{% if data[ser] is not null %}
+    <div style="border:0px blue solid;float:left;">
+    <h2>{{data[ser]['txt']}}</h2>
+    {% for pk,pv in data[ser]['res'] %}  
+    <div style="border:0px red solid;width:21.5em;float:left;">
+        <label>Con más de {{pk}} habitantes:</label>
+        <ul style="list-style:none;">
+            {% for lug in pv %}  
+            <li>{{lug['dis']|number_format(0, '.')}} km - {{lug['lug']}}</li>
+            {% endfor %}                     
+        </ul>
+    </div>
+    {% endfor %}  
+    <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:GeoNames</p>        
+    </div>
+    {% endif %}{% endif %} 
+    
+    <div style="clear:both;"></div>
 
+    {% if ser == 's6' and data[ser] is defined  %}{% if data[ser] is not null %}
+    <div style="border:0px blue solid;float:left;">
+    <h2>{{data[ser]['txt']}}</h2>
+    <div style="float:left;">
+        {% for pk,pv in data[ser]['res']['rates'] %}  
+          {#<p style="float:left;margin:30px -30px 20px 1px;border:1px transparent solid;-webkit-transform: rotate(-25deg);"><b>{{pk}}</b> {{pv}}</p>#} 
+            <p style="width:5em;float:left;margin:0px -4px 3px 8px;border:1px lightgrey dashed;-webkit-transform: rotate(0deg);"><b>{{pk}}</b> &nbsp;{{pv}}</p>
+        {% endfor %}           
+    </div>
+    <div style="float:left;margin-top:1em;font-size:0.8em;text-align:left;color:grey;">
+        Cambios oficiales de divisas a Euros el {{data[ser]['res']['date']|date('d-m-Y')}}. (1 EUR = )
+    </div>
+    <p style="clear:both;color:lightgrey;font-size:8px;text-align:right;">Fuente:BCE.</p>        
+    </div>
+    {% endif %}{% endif %}      
+
+    <div style="clear:both;"></div>    
+    
+    {% if ser == 's7' and data[ser] is defined  %}{% if data[ser] is not null %}
+    <div style="border:0px blue solid;">
+    <h2>{{data[ser]['txt']}}</h2>
+    <dl>
+    {% for p in data[ser]['res'] %}
+        <dt><a href="{{p['wikipediaUrl']}}" target="_blank" style="text-decoration:none;">{{p['title']}}</a></dt>
+        <dd>
+            {% if p['thumbnailImg'] is not empty %}
+            <span><img src="{{p['thumbnailImg']}}"  style="float:left;"/></span>  
+            {% endif %}    
+            <span>{{p['summary']}}</span>  
+        </dd>
+    {% endfor %}   
+    </dl>
+    <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:GeoNames</p>
+    </div>
+    {% endif %}{% endif %}        
+
+    {% if ser == 's8' and data[ser] is defined  %}{% if data[ser] is not null %}
+    <div style="border:0px blue solid;">
+    <h2>{{data[ser]['txt']}}</h2>
+    <ul style="list-style:none;">
+    {% for p in data[ser]['res'] %}
+        <li><a href="{{p['fullurl']}}" target="_blank" style="text-decoration:none;">{{p['title']}}</a></li>
+    {% endfor %}   
+    </ul>
+    <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:Wikipedia</p>
+    </div>
+    {% endif %}{% endif %}             
+
+    {% if ser == 's9' and data[ser] is defined  %}{% if data[ser] is not null %}
+    <div style="border:0px blue solid;">
+    <h2>{{data[ser]['txt']}}</h2>
+    <ul style="list-style:none;">
+    {% for p in data[ser]['res'] %}
+        <li><a href="{{p['fullurl']}}" target="_blank" style="text-decoration:none;">{{p['title']}}</a></li>
+    {% endfor %}   
+    </ul>
+    <p style="color:lightgrey;font-size:8px;text-align:right;">Fuente:Wikitravel</p>
+    </div>
+    {% endif %}{% endif %}  
+    
+{% endfor %}        
+    
+{#<pre>{{ dump(data) }}</pre>#}
+
+{% endblock %}
+{% block aside %}
     <ul class="record_actions">
-        <li>
-            <a href="{{ path('viaje') }}">volver</a>
-        </li>
+        <li><a href="{{ path('viaje') }}"        >mis viajes</a></li>    
         <li>
             <a href="{{ path('viaje_editar', { 'id': entity.id }) }}">Editar</a>
-        </li>
-        <li>
-            <form action="{{ path('viaje_borrar', { 'id': entity.id }) }}" method="post">
-                <input type="hidden" name="_method" value="DELETE" />
-                {{ form_widget(delete_form) }}
-                <button type="submit">Borrar</button>
-            </form>
-        </li>
-    </ul>
-{% endblock %}
-{% block aside %}{% endblock %}
+        </li>     
+    </ul>   
+{% endblock %} 

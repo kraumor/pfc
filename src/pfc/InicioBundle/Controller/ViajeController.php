@@ -86,6 +86,176 @@ class ViajeController extends Controller {
     }
 
     /**
+     * Opciones
+     *
+     */
+    public function opcionesAction($id) {
+        
+        $em=$this->getDoctrine()->getManager();
+
+        $entity=$em->getRepository('InicioBundle:Viaje')->find($id);
+
+        //comprueba permiso ACL
+        if(false===$this->get('security.context')->isGranted('EDIT',$entity)){
+            throw new AccessDeniedException();
+        }
+
+        if(!$entity){
+            throw $this->createNotFoundException('Viaje no encontrado.');
+        }          
+        
+        $opciones=$entity->getOpciones();
+        $opciones=unserialize($opciones);
+        
+        
+        $request=$this->getRequest();      
+
+        if($request->getMethod()== 'POST' ){
+//            echo '<pre>'.print_r($request,true).'</pre>';
+//              $x=$request;
+   
+            $ciudad=$request->get('ciudad');
+            $accion=$request->get('acc');
+            switch($accion){
+                case 'b':
+                    echo 'BUSCAR';
+                    $places=$this->getPlaces($ciudad);
+                    $servicios=$this->getServicios();
+
+                    $respuesta=$this->render('InicioBundle:Viaje:opciones.html.twig',array(
+                         'entity'       => $entity
+                        ,'acc'          => $accion
+                        ,'ciudad'       => $ciudad
+                        ,'places'       => $places
+                        ,'servicios'    => $servicios
+                        ,'opciones'     => $opciones
+                    ));                          
+                    return $respuesta;
+                    break;
+                case 'g':
+                    echo 'GUARDAR';
+
+                    $aux0=null;
+                    foreach($request->request->all() as $k => $v){
+                        //echo '<br />+-+'.$k.'-'.$v;
+                        $aux0[$k]=$v;
+                    }
+
+                    $aux=null;
+                    for($i=0;$i<=9;$i++){
+                        $par='s'.$i;
+                        if(isset($aux0[$par])){
+                            $v=$aux0[$par];
+                            if($i==0){
+                                $klat=$par.'-'.$v.'_lat';
+                                $klon=$par.'-'.$v.'_lon';
+                                $vlat=$aux0[$klat];
+                                $vlon=$aux0[$klon];
+                                if(is_numeric($vlat) && is_numeric($vlon)
+                                   && ($vlat > -90  && $vlat < 90 )
+                                   && ($vlon > -180 && $vlat < 180)       ){
+                                    $aux[$par]=array(
+                                                'ciudad'=>$ciudad
+                                                ,'lat'  =>$aux0[$klat]
+                                                ,'lon'  =>$aux0[$klon]
+                                                );   
+                                }                                             
+                            }
+                            else{
+                                $aux[$par]=null/*$v*/;     
+                            }
+                        }
+                    }
+
+                    echo '<pre>AUX:'.print_r($aux,true).'</pre>';
+
+                    if( !isset($aux['s0']) ){
+                        $respuesta=$this->render('InicioBundle:Viaje:opciones.html.twig',array(
+                            'id' => $id   
+                        ));       
+                    }
+                    else{
+                        //guardar  opciones ($aux) en BBDD
+                        $opciones=serialize($aux);
+                        $entity->setOpciones($opciones);
+                        $em=$this->getDoctrine()->getManager();
+                        $em->persist($entity);
+                        $em->flush();
+
+                        //recuperar
+                        
+                        $entity=$em->getRepository('InicioBundle:Viaje')->find($id);
+                        $opciones=null;
+                        $opciones=$entity->getOpciones();
+                        $opciones=unserialize($opciones);    
+                        $places=$this->getPlaces($ciudad);
+                        $servicios=$this->getServicios();
+                    }
+            
+                    $respuesta=$this->render('InicioBundle:Viaje:opciones.html.twig',array(
+                         'entity'       => $entity
+                        ,'acc'          => 'b'
+                        ,'ciudad'       => $ciudad
+                        ,'places'       => $places
+                        ,'servicios'    => $servicios
+                        ,'opciones'     => $opciones
+                    ));                          
+                    return $respuesta;
+                    
+                    
+                    
+                    
+                    
+                    
+                    break;
+            }
+            
+                    
+                    
+
+         
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+             $respuesta=$this->render('InicioBundle:Viaje:opciones.html.twig',array(
+                                'entity'    => $entity
+                               ,'opciones'  => $opciones
+            ));            
+            
+            
+            
+          
+        }
+        else{
+            //echo '<pre>OP:'.print_r($opciones,true).'</pre>';
+            $respuesta=$this->render('InicioBundle:Viaje:opciones.html.twig',array(
+                                'entity'    => $entity
+                               ,'opciones'  => $opciones
+            )); 
+        }
+        
+        
+        
+        
+        
+        //return $this->redirect($this->generateUrl('viaje_opciones',array('id' => $entity->getId())));      
+        
+        return $respuesta;
+        
+    }
+
+    /**
      * Displays the wizard to collect options for a new Viaje entity.
      *
      */
@@ -97,15 +267,19 @@ class ViajeController extends Controller {
             
             $op     =$request->get('op');
             $ciudad =$request->get('ciudad');
-            
+            $x=$request;
+                    
             switch ($op){
                 case 0:
                     $places=$this->getWizard1($ciudad);
+                    $servicios=$this->getServicios();
 
                     $respuesta=$this->render('InicioBundle:Viaje:wizard.html.twig',array(
-                         'op'       => $op
-                        ,'ciudad'   => $ciudad
-                        ,'places'   => $places
+                         'op'           => $op
+                        ,'ciudad'       => $ciudad
+                        ,'places'       => $places
+                        ,'servicios'    => $servicios
+                        ,'x' => $x   
                     ));                          
                     break;
                 case 1:
@@ -151,6 +325,52 @@ class ViajeController extends Controller {
 //        ));
     }
 
+    /**
+     * Lista servicios disponibles
+     *
+     */
+    public function getServicios() {
+        
+        $ser=null;
+        
+        $s=null;
+        $s[]=array('dis'=> 1 ,'id'=> 1  ,'nom'=> 'Mapa' );
+        $s[]=array('dis'=> 1 ,'id'=> 2  ,'nom'=> 'Jerarquía administrativa' );
+        $s[]=array('dis'=> 1 ,'id'=> 3  ,'nom'=> 'Zona horaria' );
+        $s[]=array('dis'=> 1 ,'id'=> 4  ,'nom'=> 'Tiempo' );
+        $s[]=array('dis'=> 1 ,'id'=> 5  ,'nom'=> 'Lugares' );
+        $s[]=array('dis'=> 1 ,'id'=> 6  ,'nom'=> 'Divisas' );
+        $s[]=array('dis'=> 1 ,'id'=> 7  ,'nom'=> 'Wikipedia (articulos cercanos)' );
+        $s[]=array('dis'=> 1 ,'id'=> 8  ,'nom'=> 'Wikipedia (articulos relacionados)' );
+        $s[]=array('dis'=> 1 ,'id'=> 9  ,'nom'=> 'Wikitravel' );
+        
+        foreach($s as $ss){
+            if($ss['dis']){$ser[$ss['id']]=$ss;}
+            
+        }
+        ksort($ser);
+
+        return $ser;
+    }
+    /**
+     * Busca el text en diferentes servicios web y devuelve los resultados
+     * encontrados con sus coordenadas.
+     *
+     */
+    public function getPlaces($text) {
+        
+        $places=null;
+        
+        $p1=$this->getPlacesOSM('osm',$text);
+        $p2=$this->getPlacesWWO('wwo',$text);
+        $p3=$this->getPlacesGEO('geo',$text);
+        
+        for($i=1;$i<=3;$i++){
+            if(!is_null(${'p'.$i})){$places[]=${'p'.$i};}
+        }
+
+        return $places;
+    }
     /**
      * Busca el text en diferentes servicios web y devuelve los resultados
      * encontrados con sus coordenadas.
@@ -316,6 +536,53 @@ class ViajeController extends Controller {
      * Wizard2
      *
      */
+    public function getDatos($opciones) {
+        
+        $d=$opciones;
+        $aux=null;
+        
+        //echo '<pre>D:'.print_r($d,true).'</pre>';
+        
+        if(!is_null($d) && count($d)>1 ){
+            
+            $ciudad =$d['s0']['ciudad'];
+            $lat    =$d['s0']['lat'];
+            $lon    =$d['s0']['lon'];
+
+            foreach($d as $k => $v){
+                if(strcmp($k,'s0')==0){
+                    $aux[$k]['res']=array(
+                                         'ciudad'    => $ciudad
+                                        ,'lat'       => $lat
+                                        ,'lon'       => $lon
+                                        );                   
+                }
+                else{
+                    switch ($k) {
+                        case 's1':$aux1=$this->get01ZonaHoraria($lat,$lon);       break;
+                        case 's2':$aux1=$this->get02Mapa($lat,$lon);              break;
+                        case 's3':$aux1=$this->get03Jerarquia($lat,$lon);         break;
+                        case 's4':$aux1=$this->get04Tiempo($lat,$lon);            break;
+                        case 's5':$aux1=$this->get05Lugares($lat,$lon);           break;
+                        case 's6':$aux1=$this->get06Divisas();                    break;
+                        case 's7':$aux1=$this->get07Wikipedia1($lat,$lon,$ciudad);break;
+                        case 's8':$aux1=$this->get08Wikipedia2($ciudad);          break;
+                        case 's9':$aux1=$this->get09Wikitravel($ciudad);          break;
+                    }
+                    $aux[$k]=$aux1;
+                }
+            }    
+        
+        }
+        //echo '<pre>V:'.print_r($aux,true).'</pre>';
+        
+        return $aux;
+    }    
+    
+    /**
+     * Wizard2
+     *
+     */
     public function getWizard2($d) {
         
         $v=null;
@@ -327,81 +594,23 @@ class ViajeController extends Controller {
                                ,'q'         => $d['q']
                             );     
 
-
-        $v['d01']=$this->get01Mapa($d['lat'],$d['lon']);
-        $v['d02']=$this->get02Jerarquia($d['lat'],$d['lon']);
-        $v['d03']=$this->get03ZonaHoraria($d['lat'],$d['lon']);
-        $v['d04']=$this->get04Tiempo($d['lat'],$d['lon']);
-        $v['d05']=$this->get05Lugares($d['lat'],$d['lon']);
-        $v['d06']=$this->get06Divisas();
-        $v['d07']=$this->get07Wikipedia1($d['lat'],$d['lon'],$d['ciudad']);
-        $v['d08']=$this->get08Wikipedia2($d['ciudad']);
-        $v['d09']=$this->get09Wikitravel($d['ciudad']);
-
+      //$v['d01']=$this->get01ZonaHoraria($d['lat'],$d['lon']);
+      //$v['d02']=$this->get02Mapa($d['lat'],$d['lon']);
+      //$v['d03']=$this->get03Jerarquia($d['lat'],$d['lon']);
+      //$v['d04']=$this->get04Tiempo($d['lat'],$d['lon']);
+      //$v['d05']=$this->get05Lugares($d['lat'],$d['lon']);
+      //$v['d06']=$this->get06Divisas();
+      //$v['d07']=$this->get07Wikipedia1($d['lat'],$d['lon'],$d['ciudad']);
+      //$v['d08']=$this->get08Wikipedia2($d['ciudad']);
+      //$v['d09']=$this->get09Wikitravel($d['ciudad']);
+        
         return $v;
     }    
-    
-    /**
-     * Devuelve imagen
-     */
-    public function get01Mapa($lat,$lon) {
-        
-        $res['txt']='Mapa';
-        
-        $p0='mlat='.$lat;
-        $p1='mlon='.$lon;
-        $p2='z=7';
-        $p3='w=600';
-        $p4='h=400';
-        $p5='mode=Export';
-        $p6='show=1';
-        $params=implode('&', array($p0,$p1,$p2,$p3,$p4,$p5,$p6));
-        $url="http://ojw.dev.openstreetmap.org/StaticMap/?".$params;
-        //<img src="http://ojw.dev.openstreetmap.org/StaticMap/?mlat={{lat}}&mlon={{lon}}&z=0&show_icon_list=11&w=300&h=200&mode=Export&show=1" width="480" height="300" alt="OpenStreetMap" />
-        $res['res']=$url;
-        
-        return !is_null($res['res']) ? $res : null;
-    }
-    /**
-     * Devuelve jerarquia administrativa
-     */
-    public function get02Jerarquia($lat,$lon) {
-        
-        $res['txt']='Jerarquía Administrativa';
-        $res['res']=null;
-        
-        $p0='username=pfc185';
-        $p1='lat='.$lat;
-        $p2='lng='.$lon;
-        $p3='lang=es';
-        $params=implode('&', array($p0,$p1,$p2,$p3));
-        $url="http://api.geonames.org/extendedFindNearby?".$params;
-        //$url="http://api.geonames.org/findNearby?".$params;
-
-        $ch=curl_init();  //ch:curl_handle
-        curl_setopt($ch,CURLOPT_URL,$url);
-        curl_setopt($ch,CURLOPT_HEADER,0);        
-        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,2);
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-        $xml_response = curl_exec($ch);
-        curl_close($ch);
-        
-        if ($xml_response){
-            $xml = new \SimpleXMLElement($xml_response);
-            foreach($xml->xpath('//name') as $v){
-                $res['res'][]=(
-                         (string) $v
-                        );          
-            }
-        }
-        
-        return !is_null($res['res']) ? $res : null;
-    }
 
     /**
      * Devuelve zona horaria
      */
-    public function get03ZonaHoraria($lat,$lon) {
+    public function get01ZonaHoraria($lat,$lon) {
         
         $res['txt']='Zona Horaria';
         $res['res']=null;
@@ -427,6 +636,63 @@ class ViajeController extends Controller {
                 $res['res']=array(
                          'datetime' =>(string) $v->localtime
                         ,'offset'   =>(float)  $v->utcOffset
+                        );          
+            }
+        }
+        
+        return !is_null($res['res']) ? $res : null;
+    }
+    
+    /**
+     * Devuelve imagen
+     */
+    public function get02Mapa($lat,$lon) {
+        
+        $res['txt']='Mapa';
+        
+        $p0='mlat='.$lat;
+        $p1='mlon='.$lon;
+        $p2='z=7';
+        $p3='w=600';
+        $p4='h=400';
+        $p5='mode=Export';
+        $p6='show=1';
+        $params=implode('&', array($p0,$p1,$p2,$p3,$p4,$p5,$p6));
+        $url="http://ojw.dev.openstreetmap.org/StaticMap/?".$params;
+        //<img src="http://ojw.dev.openstreetmap.org/StaticMap/?mlat={{lat}}&mlon={{lon}}&z=0&show_icon_list=11&w=300&h=200&mode=Export&show=1" width="480" height="300" alt="OpenStreetMap" />
+        $res['res']=$url;
+        
+        return !is_null($res['res']) ? $res : null;
+    }
+    /**
+     * Devuelve jerarquia administrativa
+     */
+    public function get03Jerarquia($lat,$lon) {
+        
+        $res['txt']='Jerarquía Administrativa';
+        $res['res']=null;
+        
+        $p0='username=pfc185';
+        $p1='lat='.$lat;
+        $p2='lng='.$lon;
+        $p3='lang=es';
+        $params=implode('&', array($p0,$p1,$p2,$p3));
+        $url="http://api.geonames.org/extendedFindNearby?".$params;
+        //$url="http://api.geonames.org/findNearby?".$params;
+
+        $ch=curl_init();  //ch:curl_handle
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_HEADER,0);        
+        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,2);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        $xml_response = curl_exec($ch);
+        curl_close($ch);
+        
+        if ($xml_response){
+            $xml = new \SimpleXMLElement($xml_response);
+            foreach($xml->xpath('//name') as $v){
+                $res['res'][]=(
+                         (string) $v
                         );          
             }
         }
@@ -714,9 +980,16 @@ class ViajeController extends Controller {
 
         $deleteForm=$this->createDeleteForm($id);
 
+        $opciones=$entity->getOpciones();
+        $opciones=unserialize($opciones);
+                      
+        $data=$this->getDatos($opciones);
+        
         return $this->render('InicioBundle:Viaje:mostrar.html.twig',array(
-                    'entity' => $entity,
-                    'delete_form' => $deleteForm->createView(),));
+                     'entity'       => $entity
+                    ,'delete_form'  => $deleteForm->createView()
+                    ,'data'         => $data
+                ));
     }
 
     /**

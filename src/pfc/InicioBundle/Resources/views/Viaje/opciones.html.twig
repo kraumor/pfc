@@ -1,0 +1,147 @@
+{% extends '::frontend.html.twig' %}
+
+{% block title 'Opciones Viaje' %} 
+
+
+
+{% block article -%}
+    <h1>Opciones viaje</h1>{{ entity.id }}
+
+    <form action="{{ path('viaje_opciones', { 'id': entity.id }) }}" method="post">
+      <p>Nombre de la ciudad a buscar:</p>
+      <p>
+         {% if ciudad is defined %}
+            {% if ciudad is empty %} {% set texto = opciones['s0']['ciudad'] %}
+            {% else %}               {% set texto = ciudad %}
+            {% endif %} 
+         {% else %}                  {% set texto = opciones['s0']['ciudad'] %}
+         {% endif %} 
+         <input type="text"   name="ciudad" value="{{texto}}" style="width:600px;height:1.5em;font-size:2em;" />
+         <input type="hidden" name="acc"    value="b" />
+         <input type="submit"               value="Buscar" style="height:3em;width:5em;"/>
+      </p>
+    </form>  
+    
+    {% if acc is defined%}
+    {% if acc == 'b' %}
+    
+    
+    
+    
+        {% if ciudad %}      
+    
+        <form action="{{ path('viaje_opciones', { 'id': entity.id }) }}" method="post">
+        {% set cont  = 1 %}   
+        {% set sel   = 0 %}
+        {% if places|length > 0 %}  
+            <h2>Elegir una ciudad de las siguientes propuestas (desambiguación):   </h2>
+            <p id="miMapa" style="margin-top:1em;width:680px;height:500px;border:1px cyan solid;" ></p>
+            <ol>
+            {% for p0 in places %}  
+            {% for p1 in p0 %}
+                {% if p1.res|length > 0 %}
+                    <p><b>{{p1.txt}}</b></p>
+                    {% for p2 in p1.res %}
+                        {% set lat  = p2.lat|number_format(2, '.') %}
+                        {% set lon  = p2.lon|number_format(2, '.') %}
+                        {% set name = p2.name %}
+                        {% set prm = '?op=1&lat='~lat~'&lon='~lon~'&ciudad='~ciudad~'&q='~name %}
+                        <li value="{{cont}}" id="s{{sel}}-{{cont}}">
+                            <input type="radio"  name="s{{sel}}"                  value="{{cont}}" />
+                            <input type="hidden" name="s{{sel}}-{{cont}}_lat"     value="{{lat}}" />
+                            <input type="hidden" name="s{{sel}}-{{cont}}_lon"     value="{{lon}}" />
+                            <a href="{{prm}}" style="text-decoration:none;">
+                                <span title="Latitud" style="text-align:right;background-color:lightcyan;width:4em;display:inline-block;">
+                                {{ lat }}
+                                </span>
+                            </a>                                    
+                            <a href="{{prm}}" style="text-decoration:none;">
+                                <span title="Longitud" style="text-align:right;background-color:lightcyan;width:4em;display:inline-block;">
+                                {{ lon }}
+                                </span>
+                            </a>                                    
+
+                            <a href="{{prm}}" style="text-decoration:none;">
+                            <span title="Nombre" style="width:auto;display:inline-block;">{{ name }}</span>
+                            </a>
+                        </li>
+                        {% set cont = cont + 1 %}
+                    {% endfor %}  
+                {% endif %}    
+            {% endfor %}
+            {% endfor %}
+        {% else %}          
+        <p style="color:red;">Ningún resultado.</p>
+        <ol>
+        {% endif %}
+                
+        <p>Indicar coordenadas geográficas:</p>
+        <li value="{{cont}}" id="s{{sel}}-{{cont}}">
+            {% set lati = opciones['s0']['lat'] %}
+            {% set long = opciones['s0']['lon'] %}
+            {% if (lati or long) is empty %} {% set checked = '' %}
+            {% else %}                       {% set checked = 'checked="checked"' %}
+            {% endif %} 
+            <input type="radio"  name="s{{sel}}"                  value="{{cont}}"  {{checked}} />
+            <input type="text"   name="s{{sel}}-{{cont}}_lat"     value="{{lati}}" style="width:4em;" title="Latitud"/>
+            <input type="text"   name="s{{sel}}-{{cont}}_lon"     value="{{long}}" style="width:4em;" title="Longitud"/>
+            latitud y longitud en formato decimal.
+        </li>
+        </ol>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        {% if servicios is defined %}
+        {% if servicios %}
+            <h2>Consultar información de:</h2>
+            <div class="wrapper-demo">
+            <ul id="demo2">
+                {% for ks,vs in servicios %}
+                    {% set checked = 'checked="checked"' %}
+                    {% set i       = loop.index %}
+                    {% set key = 's'~ks %}
+                    {% if opciones[key] is defined  %} {% set checked = 'checked="checked"' %}
+                    {% else %}                         {% set checked = '' %}
+                    {% endif %}
+                    <li>
+                        <input type="checkbox" name="s{{vs['id']}}" id="Check{{i}}" value="{{vs['id']}}" {{checked}} />
+                        <label for="Check{{i}}">{{vs['id']}} - {{vs['nom']}}</label>
+                    </li>
+                {% endfor %}                
+            </ul>
+            </div>            
+        {% else %}
+            <p style="color:red;">Ningún servicio disponible.</p>
+        {% endif %}
+        {% endif %}    
+    
+        <input type="hidden" name="ciudad" value="{{ciudad}}" />
+        <input type="hidden" name="acc"    value="g" />
+        <input type="submit"               value="Guardar opciones" style="height:3em;width:20em;"/>
+        </form>
+
+        {% endif %}  
+    
+        {{dump(opciones)}}
+    {% endif %}
+    {% endif %}
+    
+
+   
+
+{% endblock %}
+            
+{% block aside %}
+    <ul class="record_actions">
+        <li><a href="{{ path('viaje') }}"        >mis viajes</a></li>
+        <li><a href="{{ path('viaje_opciones', { 'id': entity.id }) }}" >RECARGAR</a></li>
+    </ul>   
+{% endblock %} 
+            
+        

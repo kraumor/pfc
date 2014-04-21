@@ -28,13 +28,13 @@ class ViajeFixtures extends AbstractFixture implements OrderedFixtureInterface, 
     public function load(ObjectManager $manager) {
 
         $viajes=array(
-            array('nombre' => 'viatge11','fecha' => '2002-05-11 11:11:11','usuario_id' => '1')
-            ,array('nombre' => 'viatge21','fecha' => '2002-03-11 11:11:11','usuario_id' => '2')
-            ,array('nombre' => 'viatge22','fecha' => '2002-02-11 11:11:11','usuario_id' => '2')
-            ,array('nombre' => 'viatge31','fecha' => '2002-04-11 11:11:11','usuario_id' => '3')
-            ,array('nombre' => 'viatge32','fecha' => '2002-05-11 11:11:11','usuario_id' => '3')
-            ,array('nombre' => 'viatge33','fecha' => '2002-01-11 11:11:11','usuario_id' => '3')
-            ,array('nombre' => 'viatge41','fecha' => '2002-06-11 11:11:11','usuario_id' => '4')
+             array('nombre' => 'viatge11','fecha' => '2002-05-11 11:11:11','usuario_id' => '1','opciones'=>'')
+            ,array('nombre' => 'viatge21','fecha' => '2002-03-11 11:11:11','usuario_id' => '2','opciones'=>'')
+            ,array('nombre' => 'viatge22','fecha' => '2002-02-11 11:11:11','usuario_id' => '2','opciones'=>'')
+            ,array('nombre' => 'viatge31','fecha' => '2002-04-11 11:11:11','usuario_id' => '3','opciones'=>'')
+            ,array('nombre' => 'viatge32','fecha' => '2002-05-11 11:11:11','usuario_id' => '3','opciones'=>'')
+            ,array('nombre' => 'viatge33','fecha' => '2002-01-11 11:11:11','usuario_id' => '3','opciones'=>'')
+            ,array('nombre' => 'viatge41','fecha' => '2002-06-11 11:11:11','usuario_id' => '4','opciones'=>'')
         );
 
         foreach($viajes as $v){
@@ -46,6 +46,7 @@ class ViajeFixtures extends AbstractFixture implements OrderedFixtureInterface, 
             $viaje->setNombre($v['nombre'])
                     ->setFecha(new \DateTime($v['fecha']))
                     ->setUsuario($usuario)
+                    ->setOpciones($v['opciones'])
             ;
 
             $manager->persist($viaje);

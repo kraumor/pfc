@@ -8,22 +8,33 @@
     <form action="{{ path('viaje_actualizar', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
         <input type="hidden" name="_method" value="PUT" />
         {{ form_widget(edit_form) }}
-        <p>
-            <button type="submit">Editar</button>
-        </p>
+        <button type="submit">Guardar</button>
     </form>
 
-    <ul class="record_actions">
-        <li>
-            <a href="{{ path('viaje') }}">volver</a>
-        </li>
-        <li>
-            <form action="{{ path('viaje_borrar', { 'id': entity.id }) }}" method="post">
-                <input type="hidden" name="_method" value="DELETE" />
-                {{ form_widget(delete_form) }}
-                <button type="submit">Borrar</button>
-            </form>
-        </li>
-    </ul>
+    <form action="{{ path('viaje_borrar', { 'id': entity.id }) }}" method="post">
+        <input type="hidden" name="_method" value="DELETE" />
+        {{ form_widget(delete_form) }}
+        <button type="submit">Eliminar</button>
+    </form>    
+    
+    <form action="{{ path('viaje_opciones', { 'id': entity.id }) }}" method="post" {#{{ form_enctype(edit_form) }}#}>
+{#
+        <input type="hidden" name="_method" value="PUT" />
+
+        {{ form_widget(edit_form) }}
+
+#}
+        <button type="submit">Opciones</button>
+    </form>    
+
+    <pre>
+    {{entity.id}}
+    {{entity.nombre}}
+    {{entity.opciones}}
+    </pre>
 {% endblock %}
-{% block aside %}{% endblock %}
+{% block aside %}
+    <ul class="record_actions">
+        <li><a href="{{ path('viaje') }}"        >mis viajes</a></li>      
+    </ul>   
+{% endblock %} 

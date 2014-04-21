@@ -45,6 +45,12 @@ class Viaje
      */
     protected $usuario;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="opciones", type="string", length=10000)
+     */
+    protected $opciones;
 
     /**
      * Get id
@@ -123,6 +129,29 @@ class Viaje
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Set opciones
+     *
+     * @param string $opciones
+     * @return Viaje
+     */
+    public function setOpciones($opciones)
+    {
+        $this->opciones = $opciones;
+    
+        return $this;
+    }
+
+    /**
+     * Get opciones
+     *
+     * @return string 
+     */
+    public function getOpciones()
+    {
+        return $this->opciones;
     }
     
     public function __construct()
