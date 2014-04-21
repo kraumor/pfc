@@ -111,6 +111,7 @@ class ViajeController extends Controller {
         $request=$this->getRequest();      
 
         if($request->getMethod()== 'POST' ){
+            echo 'POST';
 //            echo '<pre>'.print_r($request,true).'</pre>';
 //              $x=$request;
    
@@ -171,8 +172,11 @@ class ViajeController extends Controller {
 
                     if( !isset($aux['s0']) ){
                         $respuesta=$this->render('InicioBundle:Viaje:opciones.html.twig',array(
-                            'id' => $id   
-                        ));       
+                                            'entity'    => $entity
+                                           ,'opciones'  => $opciones
+                                           ,'ciudad'    => $ciudad
+                        ));
+                        return $respuesta;
                     }
                     else{
                         //guardar  opciones ($aux) en BBDD
@@ -182,8 +186,7 @@ class ViajeController extends Controller {
                         $em->persist($entity);
                         $em->flush();
 
-                        //recuperar
-                        
+                        //recuperar     
                         $entity=$em->getRepository('InicioBundle:Viaje')->find($id);
                         $opciones=null;
                         $opciones=$entity->getOpciones();
@@ -201,12 +204,7 @@ class ViajeController extends Controller {
                         ,'opciones'     => $opciones
                     ));                          
                     return $respuesta;
-                    
-                    
-                    
-                    
-                    
-                    
+                        
                     break;
             }
             
@@ -227,10 +225,13 @@ class ViajeController extends Controller {
             
             
             
-
+echo 'aa';
              $respuesta=$this->render('InicioBundle:Viaje:opciones.html.twig',array(
                                 'entity'    => $entity
                                ,'opciones'  => $opciones
+                               ,'ciudad'    => $opciones['s0']['ciudad']
+                               ,'acc'       => 'b'
+                               ,'servicios' => $this->getServicios()
             ));            
             
             
@@ -238,7 +239,8 @@ class ViajeController extends Controller {
           
         }
         else{
-            //echo '<pre>OP:'.print_r($opciones,true).'</pre>';
+            echo 'No post';
+            echo '<pre>OP:'.print_r($opciones,true).'</pre>';
             $respuesta=$this->render('InicioBundle:Viaje:opciones.html.twig',array(
                                 'entity'    => $entity
                                ,'opciones'  => $opciones
@@ -348,7 +350,7 @@ class ViajeController extends Controller {
             if($ss['dis']){$ser[$ss['id']]=$ss;}
             
         }
-        ksort($ser);
+        if(isset($ser)){ksort($ser);}
 
         return $ser;
     }
@@ -824,9 +826,9 @@ class ViajeController extends Controller {
             }
             foreach($xml_response->Cube->Cube->Cube as $v){
                 $res['res']['rates'][(string) $v['currency']]=(string) $v['rate'];              
-            }              
+            }   
+            if(isset($res['res']['rates'])){asort($res['res']['rates']);}            
         }           
-        asort($res['res']['rates']);
         
         return !is_null($res['res']) ? $res : null;
     }
@@ -910,8 +912,8 @@ class ViajeController extends Controller {
                       //,'leve'               =>  levenshtein($ciudad,(string) $v['title'])                        
                         );          
             }
+            if(isset($res['res'])){ksort($res['res']);}            
         }
-        ksort($res['res']);
         
         return !is_null($res['res']) ? $res : null;
     }
@@ -953,8 +955,8 @@ class ViajeController extends Controller {
                       //,'leve'               =>  levenshtein($ciudad,(string) $v['title'])                        
                         );          
             }
+            if(isset($res['res'])){ksort($res['res']);}
         }
-        ksort($res['res']);
         
         return !is_null($res['res']) ? $res : null;
     }
@@ -985,11 +987,38 @@ class ViajeController extends Controller {
                       
         $data=$this->getDatos($opciones);
         
-        return $this->render('InicioBundle:Viaje:mostrar.html.twig',array(
-                     'entity'       => $entity
-                    ,'delete_form'  => $deleteForm->createView()
-                    ,'data'         => $data
-                ));
+//        return $this->render('InicioBundle:Viaje:mostrar.html.twig',array(
+//                     'entity'       => $entity
+//                    ,'delete_form'  => $deleteForm->createView()
+//                    ,'data'         => $data
+//                ));
+//        $respuesta=$this->render('InicioBundle:Viaje:opciones.html.twig',array(
+//             'entity'       => $entity
+//            ,'acc'          => $accion
+//            ,'ciudad'       => $ciudad
+//            ,'places'       => $places
+//            ,'servicios'    => $servicios
+//            ,'opciones'     => $opciones
+//        ));       
+        if($data){
+            $respuesta=$this->render('InicioBundle:Viaje:mostrar.html.twig',array(
+                         'entity'       => $entity
+                        ,'delete_form'  => $deleteForm->createView()
+                        ,'data'         => $data
+                    ));
+            //$respuesta=$this->forward('InicioBundle:Viaje:mostrar',array('id' => $id));
+        }
+        else{
+//            $respuesta=$this->render('InicioBundle:Viaje:mostrar.html.twig',array(
+//                         'entity'       => $entity
+//                        ,'delete_form'  => $deleteForm->createView()
+//                        ,'data'         => $data
+//                    ));            
+           //$respuesta=$this->forward('InicioBundle:Viaje:mostrar',array('entity'       => $entity,'id' => $id));
+            $respuesta=$this->forward('InicioBundle:Viaje:opciones',array('id' => $id));
+        }
+        
+        return $respuesta;
     }
 
     /**

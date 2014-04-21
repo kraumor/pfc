@@ -48,7 +48,7 @@ class Viaje
     /**
      * @var string
      *
-     * @ORM\Column(name="opciones", type="string", length=10000)
+     * @ORM\Column(name="opciones", type="string", length=10000, nullable=true)
      */
     protected $opciones;
 

@@ -17,9 +17,10 @@
             </tr>
         </tbody>
     </table>
+{% if data is defined %}    
+    <h4>Palabra buscada: {{data['s0']['res']['ciudad']}}</h4>
     
-    <h1>{{data['s0']['res']['ciudad']}}</h1>
-    
+
 {% for k,v in data %}
     {% set ser = k %}
     
@@ -198,6 +199,7 @@
     {% endif %}{% endif %}  
     
 {% endfor %}        
+{% endif %}        
     
 {#<pre>{{ dump(data) }}</pre>#}
 

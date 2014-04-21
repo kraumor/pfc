@@ -11,10 +11,16 @@
       <p>Nombre de la ciudad a buscar:</p>
       <p>
          {% if ciudad is defined %}
+            {% set texto = ciudad %}            
+              {#
+
             {% if ciudad is empty %} {% set texto = opciones['s0']['ciudad'] %}
             {% else %}               {% set texto = ciudad %}
             {% endif %} 
-         {% else %}                  {% set texto = opciones['s0']['ciudad'] %}
+#}
+
+
+         {% else %}                  {% set texto = entity.nombre %}
          {% endif %} 
          <input type="text"   name="ciudad" value="{{texto}}" style="width:600px;height:1.5em;font-size:2em;" />
          <input type="hidden" name="acc"    value="b" />
@@ -22,17 +28,20 @@
       </p>
     </form>  
     
-    {% if acc is defined%}
+    {% if acc is defined %}
     {% if acc == 'b' %}
     
     
     
     
-        {% if ciudad %}      
+        {% if ciudad %}
+         
     
         <form action="{{ path('viaje_opciones', { 'id': entity.id }) }}" method="post">
         {% set cont  = 1 %}   
         {% set sel   = 0 %}
+                
+        {% if places is defined %}  
         {% if places|length > 0 %}  
             <h2>Elegir una ciudad de las siguientes propuestas (desambiguación):   </h2>
             <p id="miMapa" style="margin-top:1em;width:680px;height:500px;border:1px cyan solid;" ></p>
@@ -74,17 +83,25 @@
         <p style="color:red;">Ningún resultado.</p>
         <ol>
         {% endif %}
+        {% else %}
+        <ol>
+        {% endif %}
                 
         <p>Indicar coordenadas geográficas:</p>
         <li value="{{cont}}" id="s{{sel}}-{{cont}}">
-            {% set lati = opciones['s0']['lat'] %}
-            {% set long = opciones['s0']['lon'] %}
+            {% if opciones['s0'] is defined %}
+                {% set lati = opciones['s0']['lat'] %}
+                {% set long = opciones['s0']['lon'] %}
+            {% else %}
+                {% set lati = '' %}
+                {% set long = '' %}                
+            {% endif %}
             {% if (lati or long) is empty %} {% set checked = '' %}
             {% else %}                       {% set checked = 'checked="checked"' %}
             {% endif %} 
             <input type="radio"  name="s{{sel}}"                  value="{{cont}}"  {{checked}} />
-            <input type="text"   name="s{{sel}}-{{cont}}_lat"     value="{{lati}}" style="width:4em;" title="Latitud"/>
-            <input type="text"   name="s{{sel}}-{{cont}}_lon"     value="{{long}}" style="width:4em;" title="Longitud"/>
+            <input type="text"   name="s{{sel}}-{{cont}}_lat"     value="{{lati}}" style="width:4em;" title="-90 < Latitud < 90"/>
+            <input type="text"   name="s{{sel}}-{{cont}}_lon"     value="{{long}}" style="width:4em;" title="-180 < Longitud < 180"/>
             latitud y longitud en formato decimal.
         </li>
         </ol>
@@ -97,7 +114,7 @@
     
     
     
-        {% if servicios is defined %}
+        {% if servicios is defined and opciones['s0']['ciudad'] is defined %}
         {% if servicios %}
             <h2>Consultar información de:</h2>
             <div class="wrapper-demo">
@@ -140,7 +157,8 @@
 {% block aside %}
     <ul class="record_actions">
         <li><a href="{{ path('viaje') }}"        >mis viajes</a></li>
-        <li><a href="{{ path('viaje_opciones', { 'id': entity.id }) }}" >RECARGAR</a></li>
+        <li><a href="{{ path('viaje_mostrar', { 'id': entity.id }) }}" >mostrar</a></li>
+        <li><a href="{{ path('viaje_editar', { 'id': entity.id }) }}" >editar</a></li>
     </ul>   
 {% endblock %} 
             

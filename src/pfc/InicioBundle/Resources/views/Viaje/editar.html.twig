@@ -26,6 +26,9 @@
 #}
         <button type="submit">Opciones</button>
     </form>    
+    <form action="{{ path('viaje_mostrar', { 'id': entity.id }) }}" method="post" >
+        <button type="submit">Mostrar</button>
+    </form>    
 
     <pre>
     {{entity.id}}
