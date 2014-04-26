@@ -1,0 +1,135 @@
+/* 
+    Document   : checkbox
+    Created on : 20-dec-2013, 17:04:55
+    Author     : usu
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+div.wrapper-demo {
+   padding: 1px;
+   position: relative;
+   margin-bottom: 1em;
+}
+
+a,
+a:active,
+a:visited {
+   color: #4c596e;
+   text-decoration: none;
+   outline: none;
+}
+
+a:hover {
+   color: #4c596e;
+   text-decoration: underline;
+}
+
+div.wrapper-demo ul {
+   border: 1px solid #ccf;
+   background: lightyellow;
+   list-style: none;
+   -moz-border-radius: 10px;
+   border-radius: 10px;
+   margin-bottom: 1px;
+}
+
+div.wrapper-demo ul li {
+   border-bottom: 1px solid #ccf;
+   height: 43px;
+   line-height: 43px;
+   position: relative;
+}
+
+div.wrapper-demo ul li.last {
+   border-bottom: 0px none;
+}
+
+div.wrapper-demo ul li label {
+   display: block;
+   width: auto;
+   height: 43px;
+   color: #000000;
+   font-weight: bold;
+   padding-left: 20px;
+}
+
+div.wrapper-demo ul li input {
+   position: absolute;
+   top: 13px;
+   right: 17px;
+   z-index: 50;
+}
+
+div.checkbox {
+   width: 300px;
+   position: relative;
+   height: 24px;
+   line-height: 24px;
+}
+
+div.wrapper-demo ul li div.jquery-checkbox-wrapper {
+   position: absolute;
+   width: 16px;
+   height: 16px;
+   top: 14px;
+   right: 17px;
+   z-index: 50;
+}
+
+div.wrapper-demo ul li div.jquery-checkbox-wrapper a.jquery-checkbox {
+   background: transparent url('../images/checkbox/checkbox.png') repeat scroll 0px 0px;
+   display: block;
+   width: 16px;
+   height: 16px;
+   cursor: default;
+   outline: none;
+}
+
+div.wrapper-demo ul li div.jquery-checkbox-wrapper a.jquery-checkbox-on {
+   background-position: 16px 0px;
+}
+
+div.wrapper-demo ul li div.jquery-switch-wrapper {
+   position: absolute;
+   width: 94px;
+   height: 27px;
+   top: 8px;
+   right: 17px;
+   z-index: 50;
+}
+
+div.wrapper-demo ul li div.jquery-switch-wrapper a.jquery-switch {
+   background: transparent url('../images/checkbox/switches.png') repeat scroll 0px 27px;
+   display: block;
+   width: 94px;
+   height: 27px;
+   cursor: default;
+   outline: none;
+}
+
+div.wrapper-demo ul li div.jquery-switch-wrapper a.jquery-switch-on {
+   background-position: 0px 0px;
+}
+
+div.wrapper-demo ul li div.jquery-tick-wrapper {
+   position: absolute;
+   width: 13px;
+   height: 13px;
+   top: 15px;
+   right: 17px;
+   z-index: 50;
+}
+
+div.wrapper-demo ul li div.jquery-tick-wrapper a.jquery-tick {
+   background: transparent url('../img/checkbox/check.png') repeat scroll 0px 0px;
+   display: block;
+   width: 13px;
+   height: 13px;
+   cursor: default;
+   outline: none;
+}
+
+div.wrapper-demo ul li div.jquery-tick-wrapper a.jquery-tick-on {
+   background-position: 0px 13px;
+}

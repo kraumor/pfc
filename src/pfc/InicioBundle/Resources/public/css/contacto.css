@@ -1,6 +1,6 @@
 .contacto-aviso { text-align: center; padding: 10px; background: #DFF2BF; border: 1px solid; color: #4F8A10; margin-bottom: 10px; }
-form.contacto { font-size: 16px; border:1px blue solid; background-color: aliceblue;}
-form.contacto div { clear: left; margin-bottom: 10px; border:1px cyan solid;}
+form.contacto { font-size: 16px; border:0px blue solid; background-color: white;}
+form.contacto div { clear: left; margin-bottom: 10px; border:0px cyan solid;}
 form.contacto label { float: left; margin-right: 10px; text-align: right; width: 100px; font-weight: bold; vertical-align: top; padding-top: 10px; }
 form.contacto input[type="text"],
 form.contacto input[type="email"]

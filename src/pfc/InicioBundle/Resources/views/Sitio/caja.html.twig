@@ -3,9 +3,9 @@
 
     <nav>
         <ul>
-            <li><a href="{{ path('usuario_logout')  }}">Cerrar</a></li>
+            <li><a href="{{ path('usuario_logout')  }}" title="Cerrar"><img id="cerrar" src="{{ asset('bundles/inicio/images/cerrar.png') }}" alt="Cerrar"/></a></li>
             <li><img src="{{ gravatar(app.user.username, 35, 'g', 'identicon') }}" /></li>
-            <li><a href="{{ path('usuario_perfil')  }}"><b>{{ app.user }}</b></a></li>
+            <li><a href="{{ path('usuario_perfil')  }}" title="Mi perfil"><b>{{ app.user }}</b></a></li>
         </ul>
     </nav>
     
@@ -14,7 +14,7 @@
 
     <nav>
         <ul>
-            <li><a href="{{ path('usuario_login')  }}">Acceder</a></li>
+            <li><a href="{{ path('usuario_login')  }}" title="Acceder"><img src="{{ asset('bundles/inicio/images/acceder.png') }}" alt="Acceder"/></a></li>
         </ul>
     </nav>
 

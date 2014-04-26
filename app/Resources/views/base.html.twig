@@ -12,11 +12,13 @@
         <div id="contenedor">
             {% block body %}base body{% endblock %}
             <footer>
+                <hr />
                 &copy; {{ 'now'|date('Y') }}
-                <a href="{{ path('pagina_estatica',{'pagina':'sobre'})          }}">Sobre Nosotros          </a>
-                <a href="{{ path('contacto')                                    }}">Contacto                </a>
+                <a href="{{ path('pagina_estatica',{'pagina':'sobre'})          }}" title="Acerca de este sitio">Acerca de   </a>
+                <a href="{{ path('contacto')                                    }}" title="Formulario de contacto">Contacto    </a>
             </footer>           
         </div>
+        <!--
         <div style="float:left;border:2px LightCoral dashed;background-color:linen;margin-bottom:3em;">
             <h3>MAPA</h3>
             <ul style="float:left;width:10em;border:1px green solid;">
@@ -26,6 +28,7 @@
                 <li><a href="{{ path('viajeOO')                                      }}">viajeOO                  </a></li>
             </ul>
         </div>
+        -->
         {% block javascripts %}{% endblock %}
     </body>
 </html>

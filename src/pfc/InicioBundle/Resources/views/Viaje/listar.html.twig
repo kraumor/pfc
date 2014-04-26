@@ -34,7 +34,7 @@
 	color: #339;
 	background: #eff2ff;
 }
-.linkeven   {background-color: lightyellow;}
+.linkeven   {background-color: #EFFEFF;}
 .col-nombre {font-weight:bold;width:340px;vertical-align:middle}
 </style>
 
@@ -51,6 +51,7 @@
     </form>
     
 
+    {% if entities|length > 0 %}
     <table class="records_list" id="one-column-emphasis">
         <thead>
             <tr>
@@ -73,13 +74,13 @@
                 <td>
                 <ul>
                     <li>
-                        <a href="{{ path('viaje_editar', { 'id': entity.id }) }}" >Editar</a>
+                        <a href="{{ path('viaje_editar', { 'id': entity.id }) }}" title="Editar">Editar</a>
                     </li>                        
                     <li>
-                        <a href="{{ path('viaje_opciones', { 'id': entity.id }) }}" >Opciones</a>
+                        <a href="{{ path('viaje_opciones', { 'id': entity.id }) }}" title="Opciones">Opciones</a>
                     </li>
                     <li>
-                        <a href="{{ path('viaje_mostrar', { 'id': entity.id }) }}" >Mostrar</a>
+                        <a href="{{ path('viaje_mostrar', { 'id': entity.id }) }}" title="Mostrar">Mostrar</a>
                     </li>
                 </ul>
                 </td>
@@ -87,6 +88,7 @@
         {% endfor %}                
         </tbody>
     </table>
+    {% endif %}
 
 
 {% endblock %}

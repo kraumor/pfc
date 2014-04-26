@@ -2,6 +2,21 @@
 
 {% block title 'Mostrar Viaje' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+<style>
+@media print {
+aside,footer,#cerrar {display:none;}
+article{width:99%;background-color:white;}
+}
+</style>
+
+<link href="{{ asset('bundles/inicio/css/checkbox.css') }}" type="text/css" rel="stylesheet" />
+
+
+{% endblock %}
+
 {% block article -%}
     {#
     <p>{{ entity.id }}</p>
@@ -12,13 +27,17 @@
 
     <table class="record_properties">
         <tbody>
-            <tr>
+            <tr style="background-color:#CCF;">
                 <th>{{ entity.nombre }}</th>
             </tr>
         </tbody>
     </table>
 {% if data is defined %}    
-    <h4>Palabra buscada: {{data['s0']['res']['ciudad']}}</h4>
+    <div style="margin-bottom:3em;">
+        <span style="float:left;">Palabra buscada: {{data['s0']['res']['ciudad']}}</span>
+        <span style="float:right;text-align:right;font-size:10px;color:grey;">{{ entity.fecha|date('d-m-Y H:i') }}</span>    
+    </div>
+
     
 
 {% for k,v in data %}
@@ -50,8 +69,8 @@
     <div style="border:0px blue solid;">
     <h2>{{data[ser]['txt']}}</h2>
     {% for p in data[ser]['res'] %}    
-        {% if loop.index0 is even %}    {% set color = 'lightblue' %}
-        {% else %}                      {% set color = 'lightpink' %}
+        {% if loop.index0 is even %}    {% set color = '#DDF' %}
+        {% else %}                      {% set color = '#DFF' %}
         {% endif %}
         &gt;
         <span style="background-color:{{color}};width:auto;display:inline-block;">{{p}}</span>
@@ -207,9 +226,12 @@
 {% block aside %}
     {{ parent() }}
     <section id="login">
-        <a href="{{ path('viaje_editar',  { 'id': entity.id }) }}" >editar</a>
+        <a href="{{ path('viaje_editar',  { 'id': entity.id }) }}" >Editar</a>
     </section>    
     <section id="login">
-        <a href="{{ path('viaje_opciones',  { 'id': entity.id }) }}" >opciones</a>
+        <a href="{{ path('viaje_opciones',  { 'id': entity.id }) }}" >Opciones</a>
+    </section>    
+    <section id="login">
+        <a href="#" onclick="window.print();" >Imprimir</a>
     </section>    
 {% endblock %} 

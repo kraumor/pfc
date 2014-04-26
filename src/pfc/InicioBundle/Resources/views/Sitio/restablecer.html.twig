@@ -3,7 +3,7 @@
 {% block title 'Restablecer' %}
 
 {% block article %}
-    <h2>Restablecer contraseña</h2>
+    <p><h2>Restablecer contraseña</h2></p>
 
     {% for flashMessage in app.session.flashbag.get('info') %}
         <div class="flash-message">{{ flashMessage }}</div>
@@ -17,11 +17,11 @@
         {{ form_errors(form) }}
         {{ form_rest(form) }}
         
-        <input type="submit"  value="Enviar" />
+        <input type="submit"  value="Enviar" class="boton"/>
     </form>
 {% endblock %}
  
 {% block aside %}
-    <a class="boton" href="{{ path('usuario_registro') }}">Regístrate</a>
+    <a class="boton" href="{{ path('usuario_registro') }}">Registrarse</a>
 {% endblock %}
     

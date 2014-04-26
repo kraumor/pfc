@@ -26,11 +26,10 @@
 /* ===========================================================================
    Estructura
    ======================================================================== */
-article {border:5px orange solid;
+article {border:0px orange solid;
     float: left;
     padding: 0 10px 0 20px;
     width: 700px;
-
 }
 article > section {
     margin-bottom: 1em;
@@ -40,11 +39,12 @@ section:before, section:after { content: ""; display: table; }
 section:after { clear: both; }
 section {border:0px solid; zoom: 1;}
 
-aside {border:5px salmon solid;
+aside {border:0px salmon solid;
     float: right;
     padding: 0 20px 0 10px;
     width: 200px;
     font-weight:bold;
+    border-left: 10px solid #ccf;
 }
 
 /* ===========================================================================
@@ -52,6 +52,7 @@ aside {border:5px salmon solid;
    ======================================================================== */
 nav ul {
     right: 10px;
+    margin-top:10px;
 }
 nav ul li:last-child {
    float: right;
@@ -80,7 +81,7 @@ aside #login h2 {
     text-align: center;
 }
 aside #login .boton {
-    background-color: #008000;
+    background-color: olive;
     color: #FFF;
     display: block;
     font-size: 24px;

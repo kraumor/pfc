@@ -26,7 +26,7 @@
 /* ===========================================================================
    Estilos básicos
    ======================================================================== */
-body {border:2px yellow solid;
+body {border:0px yellow solid;
     background: WhiteSmoke;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
@@ -50,7 +50,7 @@ dl dd {
 }
 
 h1 { font-size: 21px; margin-top: 0; }
-h2 { font-size: 18px; margin-top: 0; color: #C06; }
+h2 { font-size: 18px; margin-top: 0; color: olive; }
 h3 { font-size: 16px; margin-top: 0; }
 h4 { font-size: 13px; margin-top: 0; }
 
@@ -59,7 +59,7 @@ p {
 }
 
 img {
-    outline: 1px solid lightgrey;
+    outline: 0px solid lightgrey;
 }
 
 span.si { color: #060; }
@@ -184,7 +184,7 @@ form label + ul li + li {
    ======================================================================== */
 a         { color: #2200C1; }
 a:visited { color: #2200C1; }
-a:hover   { color: #C06 !important; }
+a:hover   { color: olive !important; }
 a:active  { position: relative; top: 1px; }
 
 /* ===========================================================================
@@ -192,7 +192,7 @@ a:active  { position: relative; top: 1px; }
    ======================================================================== */
 /* Botón normal */
 .boton, .boton:visited {
-    background: rgb(204,0,102);
+    background: rgb(150,150,50);
     border-bottom: 1px solid rgba(0,0,0, 0.25);
     color: #FFF;
     cursor: pointer;
@@ -214,7 +214,7 @@ a:active  { position: relative; top: 1px; }
     text-shadow: 0 1px 1px #603;
 }
 .boton:hover {
-    background: rgba(205,0,102, 0.8);
+    background: rgba(150,150,50, 0.8);
     color: #FFF !important;
 }
 
@@ -249,7 +249,7 @@ a:active  { position: relative; top: 1px; }
 /* ===========================================================================
    Estructura
    ======================================================================== */
-#contenedor {border:4px LightSkyBlue  solid;
+#contenedor {border:0px LightSkyBlue  solid;
     background: #FFF;
     margin: 0 auto 1em;
     width: 1000px;
@@ -263,14 +263,14 @@ a:active  { position: relative; top: 1px; }
     min-height: 400px;
 }
 
-footer {border:5px green solid;
+footer {border:0px olive solid;
     clear: both;
 }
 
 /* ===========================================================================
    Cabecera y menú de navegación
    ======================================================================== */
-header {border:5px red solid;
+header {border:0px red solid;
     background: grey;
     color: #FFF;
 /*    border-bottom: 1px solid #CCC;*/
@@ -284,7 +284,7 @@ header a, header a:visited {
     text-decoration: none;
 }
 header a:hover {
-    color: #FF0A85 !important;
+    color: lawngreen !important;
 }
 
 header h1 {border:0px solid;
@@ -320,7 +320,7 @@ nav ul li a {border:0px solid;
 /* ===========================================================================
    Zona lateral
    ======================================================================== */
-aside {border:5px blue solid;
+aside {border:0px blue solid;
     font-size: 13px;
 }
 
@@ -358,6 +358,7 @@ footer {
 footer a {
     color: #999;
     padding: 0 1em;
+    text-decoration:none;
 }
 footer:hover a {
     color: #11C;

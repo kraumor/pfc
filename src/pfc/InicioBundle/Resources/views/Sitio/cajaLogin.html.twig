@@ -1,17 +1,18 @@
 {# el usuario está logueado #}
 {% if is_granted('ROLE_USUARIO') %}
 
-    <a href="{{ path('viaje')           }}">mis viajes</a>
+    <a href="{{ path('viaje')           }}">Mis viajes</a>
     
 {# el usuario todavía no ha hecho login #}
 {% else %} 
-    <h2><a href="{{ path('usuario_login')  }}">Acceder</a></h2>
+    {#<h2><a href="{{ path('usuario_login')  }}">Acceder</a></h2>#}
 
     <form action="{{ path('usuario_login_check') }}" method="post">
         {% if error.message is defined %}
             <div>{{ error.message }}</div>
         {% endif %}
-
+            
+        <h2>Acceder</h2>    
         <label for="login_user">Email</label>
         <input id="login_user" type="text" name="_username" value="{{ last_username | default('a@a.a') }}" />
 
@@ -23,6 +24,6 @@
         <input type="checkbox" id="remember_me" name="_remember_me" checked />
         <label for="remember_me">No cerrar sesión</label>    
     </form>
-    
-    <a class="boton" href="{{ path('usuario_registro') }}">Regístrate</a>
+    <hr />
+    <p><a class="boton" href="{{ path('usuario_registro') }}">Registrarse</a></p>
 {% endif %}

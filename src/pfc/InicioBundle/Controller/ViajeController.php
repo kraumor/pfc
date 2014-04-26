@@ -109,7 +109,7 @@ class ViajeController extends Controller {
         
         $request=$this->getRequest();      
 
-        if($request->getMethod()== 'POST' ){
+        if($request->getMethod()== ('POST'||'PUT') ){
    
             $ciudad=$request->get('ciudad');
             $accion=$request->get('acc');

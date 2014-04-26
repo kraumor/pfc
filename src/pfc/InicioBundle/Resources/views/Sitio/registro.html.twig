@@ -3,7 +3,7 @@
 {% block title 'Registro' %}
 
 {% block article %}
-    <h1>{{ block('title')}}</h1>   
+    <p><h2>{{ block('title')}}</h2></p>
     
     {% for flashMessage in app.session.flashbag.get('info') %}
         <div class="flash-message">{{ flashMessage }}</div>
@@ -41,7 +41,7 @@
         {{ form_rest(formulario) }}
 
             
-        <input class="boton" type="submit" value="Registrarme" />
+        <input class="boton" type="submit" value="Registrarse" />
     </form>
 {% endblock article %}
  

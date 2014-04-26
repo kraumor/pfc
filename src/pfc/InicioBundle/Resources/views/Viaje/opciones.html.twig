@@ -16,7 +16,7 @@ form ul{    list-style:none;}
 {% endblock %}   
 
 {% block article -%}
-    <p><h1>Opciones viaje: {{ entity.nombre }}</h1></p>
+    <p><h1>Opciones del viaje: {{ entity.nombre }}</h1></p>
       
     <form action="{{ path('viaje_opciones', { 'id': entity.id }) }}" method="post">
       <p>Nombre de la ciudad a buscar:</p>
@@ -63,10 +63,10 @@ form ul{    list-style:none;}
                             <input type="radio"  name="s{{sel}}"                  value="{{cont}}" />
                             <input type="hidden" name="s{{sel}}-{{cont}}_lat"     value="{{lat}}" />
                             <input type="hidden" name="s{{sel}}-{{cont}}_lon"     value="{{lon}}" />
-                            <span title="Latitud" style="text-align:right;background-color:lightcyan;width:4em;display:inline-block;">
+                            <span title="Latitud" style="text-align:right;background-color:#eef;width:4em;display:inline-block;">
                             {{ lat }}
                             </span>
-                            <span title="Longitud" style="text-align:right;background-color:lightcyan;width:4em;display:inline-block;">
+                            <span title="Longitud" style="text-align:right;background-color:#eef;width:4em;display:inline-block;">
                             {{ lon }}
                             </span>
                             <span title="Nombre" style="width:auto;display:inline-block;">
@@ -120,7 +120,7 @@ form ul{    list-style:none;}
                     {% endif %}
                     <li>
                         <input type="checkbox" name="s{{vs['id']}}" id="Check{{i}}" value="{{vs['id']}}" {{checked}} />
-                        <label for="Check{{i}}">{{vs['id']}} - {{vs['nom']}}</label>
+                        <label for="Check{{i}}">{# {{vs['id']}} - #}{{vs['nom']}}</label>
                     </li>
                 {% endfor %} 
             </ul>
@@ -147,10 +147,10 @@ form ul{    list-style:none;}
 {% block aside %}
     {{ parent() }}
     <section id="login">
-        <a href="{{ path('viaje_editar',  { 'id': entity.id }) }}" >editar</a>
+        <a href="{{ path('viaje_editar',  { 'id': entity.id }) }}" >Editar</a>
     </section>    
     <section id="login">
-        <a href="{{ path('viaje_mostrar', { 'id': entity.id }) }}" >mostrar</a>
+        <a href="{{ path('viaje_mostrar', { 'id': entity.id }) }}" >Mostrar</a>
     </section>
 {% endblock %} 
             

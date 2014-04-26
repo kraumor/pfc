@@ -3,7 +3,7 @@
 {% block title 'Login' %}
 
 {% block article %}
-    <h2>LOGIN</h2>
+    <p><h2>Login</h2></p>
 {#    
     {% if error.message is defined %}
         <div>{{ dump(error) }}</div>
@@ -35,7 +35,7 @@
         <input type="hidden" name="_target_path" value="/account" />
     #}        
         
-        <input type="submit" name="login" value="Acceder" />
+        <input type="submit" name="login" value="Acceder" class="boton"/>
     </form>
         
     <a href="{{ path('pagina_estatica',{ 'pagina': 'restablecer' }) }}">No recuerdo la contraseña.</a>        
@@ -43,5 +43,5 @@
 {% endblock %}
  
 {% block aside %}
-    <a class="boton" href="{{ path('usuario_registro') }}">Regístrate</a>
+    <a class="boton" href="{{ path('usuario_registro') }}">Registrarse</a>
 {% endblock %}
