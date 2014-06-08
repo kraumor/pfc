@@ -6,7 +6,7 @@
     {% for mensaje in app.session.flashbag.get('info') %}
         <p class="info">{{ mensaje }}</p>
     {% endfor %}
-    <img src=""/>
     <p><h1>Mashup de información relacionada a ubicaciones.</h1></p>
+    <p><img src="{{ asset('bundles/inicio/images/skyline.png') }}" style="border:0px solid;margin-top:3em;margin-bottom:-4em;"/></p>
 {% endblock article %}
 

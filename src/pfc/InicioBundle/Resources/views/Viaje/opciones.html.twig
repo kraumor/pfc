@@ -54,7 +54,7 @@ form ul{    list-style:none;}
             {% for p0 in places %}  
             {% for p1 in p0 %}
                 {% if p1.res|length > 0 %}
-                    <p><b>{{p1.txt}}</b></p>
+                    <p><h3>{{p1.txt}}</h3></p>
                     {% for p2 in p1.res %}
                         {% set lat  = p2.lat|number_format(2, '.') %}
                         {% set lon  = p2.lon|number_format(2, '.') %}
@@ -86,7 +86,7 @@ form ul{    list-style:none;}
         <ol>
         {% endif %}
                 
-        <p>Indicar coordenadas geográficas:</p>
+        <p><h3>Indicar coordenadas geográficas manualmente:</h3></p>
         <li value="{{cont}}" id="s{{sel}}-{{cont}}">
             {% if opciones['s0'] is defined %}
                 {% set lati = opciones['s0']['lat'] %}

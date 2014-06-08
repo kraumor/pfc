@@ -1,27 +1,3 @@
-/*
-
--o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
-
-  ____  ___  __  __ _   _ _   _ 
- / ___|/ _ \|  \/  | | | | \ | |
-| |   | | | | |\/| | | | |  \| |
-| |___| |_| | |  | | |_| | |\  |
- \____|\___/|_|  |_|\___/|_| \_|
-
--o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
-
-
-  Objetivo de esta hoja de estilos
-  --------------------------------------------------------------
-   Agrupa todos los estilos comunes de todas las partes del sitio
-   web, tanto públicas como privadas: tipos de letra, tamaños,
-   colores, márgenes, etc.
-
-  Se aplica a
-  --------------------------------------------------------------
-   frontend, backend y extranet
-
-*/
 
 /* ===========================================================================
    Estilos básicos
@@ -202,16 +178,6 @@ a:active  { position: relative; top: 1px; }
     line-height: 1;
     padding: .5em 1em;
     text-decoration: none;
-
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    border-radius: .2em;
-
-    -moz-box-shadow: 0 1px 3px rgba(0,0,0, 0.6);
-    -webkit-box-shadow: 0 1px 3px rgba(0,0,0, 0.6);
-    box-shadow: 0 1px 3px rgba(0,0,0, 0.6);
-
-    text-shadow: 0 1px 1px #603;
 }
 .boton:hover {
     background: rgba(150,150,50, 0.8);

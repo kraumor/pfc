@@ -28,13 +28,11 @@ class ViajeFixtures extends AbstractFixture implements OrderedFixtureInterface, 
     public function load(ObjectManager $manager) {
 
         $viajes=array(
-             array('nombre' => 'viatge11','fecha' => '2002-05-11 11:11:11','usuario_id' => '1','opciones'=>null)
-            ,array('nombre' => 'viatge21','fecha' => '2002-03-11 11:11:11','usuario_id' => '2','opciones'=>null)
-            ,array('nombre' => 'viatge22','fecha' => '2002-02-11 11:11:11','usuario_id' => '2','opciones'=>null)
-            ,array('nombre' => 'viatge31','fecha' => '2002-04-11 11:11:11','usuario_id' => '3','opciones'=>null)
-            ,array('nombre' => 'viatge32','fecha' => '2002-05-11 11:11:11','usuario_id' => '3','opciones'=>null)
-            ,array('nombre' => 'viatge33','fecha' => '2002-01-11 11:11:11','usuario_id' => '3','opciones'=>null)
-            ,array('nombre' => 'viatge41','fecha' => '2002-06-11 11:11:11','usuario_id' => '4','opciones'=>null)
+             array('nombre' => 'Lleida'             ,'fecha' => '2014-05-01 00:00:00','usuario_id' => '1','opciones'=>'a:10:{s:2:"s0";a:3:{s:6:"ciudad";s:6:"Lleida";s:3:"lat";s:5:"41.62";s:3:"lon";s:4:"0.63";}s:2:"s1";N;s:2:"s2";N;s:2:"s3";N;s:2:"s4";N;s:2:"s5";N;s:2:"s6";N;s:2:"s7";N;s:2:"s8";N;s:2:"s9";N;}')
+            ,array('nombre' => 'Andorra la vella'   ,'fecha' => '2014-05-01 00:00:01','usuario_id' => '1','opciones'=>'a:10:{s:2:"s0";a:3:{s:6:"ciudad";s:7:"andorra";s:3:"lat";s:5:"42.51";s:3:"lon";s:4:"1.52";}s:2:"s1";N;s:2:"s2";N;s:2:"s3";N;s:2:"s4";N;s:2:"s5";N;s:2:"s6";N;s:2:"s7";N;s:2:"s8";N;s:2:"s9";N;}')
+            ,array('nombre' => 'Sant Cugat'         ,'fecha' => '2014-05-01 00:00:02','usuario_id' => '1','opciones'=>'a:10:{s:2:"s0";a:3:{s:6:"ciudad";s:10:"Sant Cugat";s:3:"lat";s:5:"41.47";s:3:"lon";s:4:"2.09";}s:2:"s1";N;s:2:"s2";N;s:2:"s3";N;s:2:"s4";N;s:2:"s5";N;s:2:"s6";N;s:2:"s7";N;s:2:"s8";N;s:2:"s9";N;}')
+            ,array('nombre' => 'Frankfurt am Main'  ,'fecha' => '2014-05-01 00:00:03','usuario_id' => '1','opciones'=>'a:10:{s:2:"s0";a:3:{s:6:"ciudad";s:17:"Frankfurt am Main";s:3:"lat";s:5:"50.12";s:3:"lon";s:4:"8.64";}s:2:"s1";N;s:2:"s2";N;s:2:"s3";N;s:2:"s4";N;s:2:"s5";N;s:2:"s6";N;s:2:"s7";N;s:2:"s8";N;s:2:"s9";N;}')
+            ,array('nombre' => 'xxx'                ,'fecha' => '2014-05-01 00:00:04','usuario_id' => '1','opciones'=>null)
         );
 
         foreach($viajes as $v){
