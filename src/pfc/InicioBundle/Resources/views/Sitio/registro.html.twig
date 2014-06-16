@@ -8,7 +8,7 @@
     {% for flashMessage in app.session.flashbag.get('info') %}
         <div class="flash-message">{{ flashMessage }}</div>
         {% if codigo is not null %}
-            <a href="{{ link~codigo }}"><h3>ACTIVAR CUENTA</h3></a>
+            <!--<a href="{{ link~codigo }}"><h3>ACTIVAR CUENTA</h3></a>-->
         {% endif %}
     {% endfor %}    
     

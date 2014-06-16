@@ -9,18 +9,15 @@
         <div>{{ dump(error) }}</div>
     {% endif %}
 #} 
-    {% if error.message is defined %}
-        <div>{{ dump(error) }}</div>
-    {% endif %}
  
     <form action="{{ path('usuario_login_check') }}" method="post">
         <label for="username">Usuario:</label>
-        <input type="text" id="username" name="_username" value="a@a.a" placeholder="email" />
+        <input type="text" id="username" name="_username" value="" placeholder="email" />
         
         <br />
  
         <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="_password" value="a" />
+        <input type="password" id="password" name="_password" value="" />
         
         <br />
         

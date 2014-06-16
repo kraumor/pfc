@@ -32,9 +32,6 @@
     </div>        
     #}
         
-        
-    {#
-    #}
     {{ form_rest(formulario) }}
         
     <input class="boton" type="submit" value="Guardar cambios" />
@@ -43,15 +40,13 @@
     
     
     <div><p><a href="{{ gravatarUrl }}" title="cambie su avatar en Gravatar.com"><img src="{{ gravatar(usuario.email, 80, 'g', 'identicon') }}" /></a></p></div>
-    <div><p><label>Email           </label>{{ usuario.email            }}</p></div>
-    <div><p><label>Fecha alta      </label>{{ usuario.fechaAlta       | date('d/m/Y')      }}</p></div>
-    <div><p><label>Conexiones      </label>{{ usuario.conexiones       }}</p></div>
-    <div><p><label>Última conexión </label>{{ usuario.ultimaConexion | date('d/m/Y H:i:s')  }}</p></div>
+    <div><p><label>Email           </label>{{ usuario.email                                }}</p></div>
+    <div><p><label>Fecha alta      </label>{{ usuario.fechaAlta      | date('d/m/Y')       }}</p></div>
+    <div><p><label>Conexiones      </label>{{ usuario.conexiones                           }}</p></div>
+    <div><p><label>Última conexión </label>{{ usuario.ultimaConexion | date('d/m/Y H:i:s') }}</p></div>
 
-    
     </form>    
-    {#
-    #}
+ 
     <hr />    
     {% for mensaje in app.session.flashbag.get('info2') %}
         <p class="flash-message">{{ mensaje }}</p>

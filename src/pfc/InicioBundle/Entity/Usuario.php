@@ -174,9 +174,9 @@ class Usuario implements UserInterface , AdvancedUserInterface
     public function setSalt()
     {
 //pendi: descomentar para generar salt aleatorio        
-//        $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
 //        $this->salt = md5(time());
-        $this->salt = 'salt';
+//        $this->salt = 'salt';
     
         return $this;
     }

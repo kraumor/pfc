@@ -1,12 +1,9 @@
 {% extends '::frontend.html.twig' %}
  
 {% block title %}viajeOO{% endblock %}
- 
-{#
-#}
 
 {% block article %}
-<h1>Todos tus viajes</h1>
+<p><h1>Todos los viajes</h1></p>
  
 <table>
     <thead>
@@ -20,29 +17,13 @@
  
     <tbody>
         {% for viaje in viajes %}
-        <tr>
-{#
-            <td>{{ viaje.revisada ? 'si' : 'no' }}</td>
- 
-            {% if viaje.revisada %}
-            <td>{{ viaje.fechaPublicacion | localizeddate('medium', 'short') }}</td>
-            <td>{{ viaje.fechaExpiracion  | localizeddate('medium', 'short') }}</td>
-            {% else %}
-            <td colspan="2">Pendiente de revisión</td>
-            {% endif %}
-#}
- 
-            <td title="{{ viaje.id }}">{{ loop.index }}</td>
-            <td>{{ viaje.nombre }}</td>
-            <td>{{ viaje.fecha | date('d/m/Y H:i:s') }}</td>
-            <td>{{ viaje.usuario }}</td>
-
-        </tr>
+            <tr>
+                <td title="{{ viaje.id }}">{{ loop.index }}</td>
+                <td>{{ viaje.nombre }}</td>
+                <td>{{ viaje.fecha | date('d/m/Y H:i:s') }}</td>
+                <td>{{ viaje.usuario }}</td>
+            </tr>
         {% endfor %}
     </tbody>
 </table>
 {% endblock %}
-
-{#
-{% block aside %}aside{% endblock aside %}
-#}

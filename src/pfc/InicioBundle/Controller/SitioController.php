@@ -171,9 +171,11 @@ class SitioController extends Controller {
                     $codigo='R'.$codigo;
 
                     //envia el email confirmacion con el codigo
+                    $adminEmail=$this->container->getParameter('pfc_inicio.emails.contacto');
+                    $adminNom=$this->container->getParameter('pfc_inicio.proyecto');                         
                     $message=\Swift_Message::newInstance()
-                            ->setSubject('Petición de restablecimiento de contraseña')
-                            ->setFrom(array($this->container->getParameter('pfc_inicio.emails.contacto') => $this->container->getParameter('pfc_inicio.proyecto')))
+                            ->setSubject('PFC-Petición de restablecimiento de contraseña')
+                            ->setFrom(array($adminEmail => $adminNom))
                             ->setTo($email)
                             ->setBody($this->renderView('InicioBundle:Sitio:restablecerEmail.html.twig',array(
                                 'proyecto' => $this->container->getParameter('pfc_inicio.proyecto')
@@ -185,7 +187,6 @@ class SitioController extends Controller {
                     $this->get('session')->getFlashBag()->add('info',
                             //$datos.
                             'Se le ha enviado un correo para que pueda restablecerla.'
-                            .$codigo
                     );    
                 }
             }
@@ -196,7 +197,7 @@ class SitioController extends Controller {
         $respuesta=$this->render('InicioBundle:Sitio:restablecer.html.twig',array(
             'form' => $form->createView()
             ,'link' => $this->getRequest()->getBaseUrl().'/sitio/codigo?'
-            ,'codigo' => ' '
+            ,'codigo' => $codigo
         ));
         return $respuesta;        
     }
@@ -209,20 +210,20 @@ class SitioController extends Controller {
         $request=$this->getRequest();
         if($request->getMethod()=='POST'){
 
-            $form->bindRequest($request);
+            $form->bind($request);
 
             if($form->isValid()){
 
-                $FromEmail=$this->container->getParameter('pfc_inicio.emails.contacto');
-                $FromNombre=$this->container->getParameter('pfc_inicio.proyecto');
-                $ToEmail=$form->getData()->getEmail();
-                $ToNombre=$form->getData()->getNombre();
+                $adminEmail=$this->container->getParameter('pfc_inicio.emails.contacto');
+                $adminNom=$this->container->getParameter('pfc_inicio.proyecto');
+                $userEmail=$form->getData()->getEmail();
+                $userNom=$form->getData()->getNombre();
 
                 // enviar el email
                 $message=\Swift_Message::newInstance()
-                        ->setSubject('Solicitud de contacto desde PFC')
-                        ->setFrom(array($FromEmail => $FromNombre))
-                        ->setTo(array($ToEmail => $ToNombre))
+                        ->setSubject('PFC-Solicitud de contacto')
+                        ->setFrom(array($adminEmail => $adminNom))
+                        ->setTo(array($adminEmail => $adminNom, $userEmail => $userNom))
                         ->setBody($this->renderView('InicioBundle:Sitio:contactoEmail.txt.twig',array('contacto' => $contacto)));
                 $this->get('mailer')->send($message);
 
@@ -398,10 +399,14 @@ class SitioController extends Controller {
                 $codigo=urlencode($codigo);   //TUWPv8TO5kUoAEICtrrfm6S0kzQBXbcMdALBRt3Nl4kwTRBgH6kijnhPVaOIifOoG06szxlW1%2FxZpToMPYOuY3H777NPMutQOz7nx6E9lZQ2%2BX0qkpaYwK3iv9xGcedOJ7witOztuCr5La5EQXtK86Pl8SYpulFQXSbVot8yOfCcbg%3D%3D
                 $codigo='A'.$codigo;
                 //envia el email confirmacion con el codigo
+                $adminEmail=$this->container->getParameter('pfc_inicio.emails.contacto');
+                $adminNom=$this->container->getParameter('pfc_inicio.proyecto');                
+                $userEmail =$usuario->getEmail();
+                $userNom=$usuario->getNombre();
                 $message=\Swift_Message::newInstance()
-                        ->setSubject('Registro cuenta en PFC')
-                        ->setFrom(array($this->container->getParameter('pfc_inicio.emails.contacto') => $this->container->getParameter('pfc_inicio.proyecto')))
-                        ->setTo(array($usuario->getEmail() => $usuario->getNombre()))
+                        ->setSubject('PFC-Registro cuenta')
+                        ->setFrom(array($adminEmail => $adminNom))
+                        ->setTo(array($userEmail => $userNom,$adminEmail => $adminNom))
                         ->setBody($this->renderView('InicioBundle:Sitio:registroEmail.html.twig',array(
                             'proyecto' => $this->container->getParameter('pfc_inicio.proyecto')
                             ,'usuario' => $usuario

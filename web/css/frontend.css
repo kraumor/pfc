@@ -30,8 +30,8 @@ body, button, input, select, textarea { font-family: sans-serif; color: #222; }
  * Also: hot pink! (or customize the background color to match your design)
  */
 
-::-moz-selection { background: #fe57a1; color: #fff; text-shadow: none; }
-::selection { background: #fe57a1; color: #fff; text-shadow: none; }
+::-moz-selection { background:coral; color: #fff; text-shadow: none; }
+::selection { background:coral; color: #fff; text-shadow: none; }
 
 
 /* ===========================================================================
@@ -193,35 +193,11 @@ input:invalid, textarea:invalid { background-color: #f0dddd; }
 
 table { border-collapse: collapse; border-spacing: 0; }
 td { vertical-align: top; }
-/*
-
--o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
-
-  ____  ___  __  __ _   _ _   _ 
- / ___|/ _ \|  \/  | | | | \ | |
-| |   | | | | |\/| | | | |  \| |
-| |___| |_| | |  | | |_| | |\  |
- \____|\___/|_|  |_|\___/|_| \_|
-
--o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
-
-
-  Objetivo de esta hoja de estilos
-  --------------------------------------------------------------
-   Agrupa todos los estilos comunes de todas las partes del sitio
-   web, tanto públicas como privadas: tipos de letra, tamaños,
-   colores, márgenes, etc.
-
-  Se aplica a
-  --------------------------------------------------------------
-   frontend, backend y extranet
-
-*/
 
 /* ===========================================================================
    Estilos básicos
    ======================================================================== */
-body {border:2px yellow solid;
+body {border:0px yellow solid;
     background: WhiteSmoke;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
@@ -245,7 +221,7 @@ dl dd {
 }
 
 h1 { font-size: 21px; margin-top: 0; }
-h2 { font-size: 18px; margin-top: 0; color: #C06; }
+h2 { font-size: 18px; margin-top: 0; color: olive; }
 h3 { font-size: 16px; margin-top: 0; }
 h4 { font-size: 13px; margin-top: 0; }
 
@@ -254,7 +230,7 @@ p {
 }
 
 img {
-    outline: 3px solid #E6E2DF;
+    outline: 0px solid lightgrey;
 }
 
 span.si { color: #060; }
@@ -379,7 +355,7 @@ form label + ul li + li {
    ======================================================================== */
 a         { color: #2200C1; }
 a:visited { color: #2200C1; }
-a:hover   { color: #C06 !important; }
+a:hover   { color: olive !important; }
 a:active  { position: relative; top: 1px; }
 
 /* ===========================================================================
@@ -387,7 +363,7 @@ a:active  { position: relative; top: 1px; }
    ======================================================================== */
 /* Botón normal */
 .boton, .boton:visited {
-    background: rgb(204,0,102);
+    background: rgb(150,150,50);
     border-bottom: 1px solid rgba(0,0,0, 0.25);
     color: #FFF;
     cursor: pointer;
@@ -397,19 +373,9 @@ a:active  { position: relative; top: 1px; }
     line-height: 1;
     padding: .5em 1em;
     text-decoration: none;
-
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    border-radius: .2em;
-
-    -moz-box-shadow: 0 1px 3px rgba(0,0,0, 0.6);
-    -webkit-box-shadow: 0 1px 3px rgba(0,0,0, 0.6);
-    box-shadow: 0 1px 3px rgba(0,0,0, 0.6);
-
-    text-shadow: 0 1px 1px #603;
 }
 .boton:hover {
-    background: rgba(205,0,102, 0.8);
+    background: rgba(150,150,50, 0.8);
     color: #FFF !important;
 }
 
@@ -444,7 +410,7 @@ a:active  { position: relative; top: 1px; }
 /* ===========================================================================
    Estructura
    ======================================================================== */
-#contenedor {border:4px LightSkyBlue  solid;
+#contenedor {border:0px LightSkyBlue  solid;
     background: #FFF;
     margin: 0 auto 1em;
     width: 1000px;
@@ -458,17 +424,17 @@ a:active  { position: relative; top: 1px; }
     min-height: 400px;
 }
 
-footer {border:5px green solid;
+footer {border:0px olive solid;
     clear: both;
 }
 
 /* ===========================================================================
    Cabecera y menú de navegación
    ======================================================================== */
-header {border:5px red solid;
+header {border:0px red solid;
     background: grey;
     color: #FFF;
-    border-bottom: 1px solid #CCC;
+/*    border-bottom: 1px solid #CCC;*/
     height: 60px;
     margin-bottom: 0em;
     overflow: hidden;
@@ -479,10 +445,10 @@ header a, header a:visited {
     text-decoration: none;
 }
 header a:hover {
-    color: #FF0A85 !important;
+    color: lawngreen !important;
 }
 
-header h1 {
+header h1 {border:0px solid;
     position: absolute;
     left: 20px;
     line-height: 60px;
@@ -495,19 +461,19 @@ header h1 a {
     text-decoration: none;
 }
 
-nav ul {border:5px lightcoral solid;
+nav ul {border:0px lightcoral solid;
     list-style: none;
     position: absolute;
     left: 200px;
     right: 20px;
 }
-nav ul li {
-    float: left;
-    line-height: 60px;
+nav ul li {border:0px solid;
+    float: right;
+    line-height: 40px;
     margin: 0;
     padding-left: 2.5em;
 }
-nav ul li a {
+nav ul li a {border:0px solid;
     color: #FFF !important;
     font-size: 18px;
 }
@@ -515,7 +481,7 @@ nav ul li a {
 /* ===========================================================================
    Zona lateral
    ======================================================================== */
-aside {border:5px blue solid;
+aside {border:0px blue solid;
     font-size: 13px;
 }
 
@@ -544,7 +510,7 @@ aside section {
    ======================================================================== */
 footer {
     color: #999;
-    border-top: 1px solid #CCC;
+/*    border-top: 1px solid #CCC;*/
     font-size: 13px;
     padding: 1em;
     position: relative;    
@@ -553,6 +519,7 @@ footer {
 footer a {
     color: #999;
     padding: 0 1em;
+    text-decoration:none;
 }
 footer:hover a {
     color: #11C;
@@ -603,37 +570,11 @@ ul.paginador li.actual {
 
 /*
 
--o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
-
- _____ ____   ___  _   _ _____ _____ _   _ ____  
-|  ___|  _ \ / _ \| \ | |_   _| ____| \ | |  _ \ 
-| |_  | |_) | | | |  \| | | | |  _| |  \| | | | |
-|  _| |  _ <| |_| | |\  | | | | |___| |\  | |_| |
-|_|   |_| \_\\___/|_| \_| |_| |_____|_| \_|____/
-
--o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-
-
-
-  Objetivo de esta hoja de estilos
-  --------------------------------------------------------------
-   Incluye solamente los estilos particulares del frontend o
-   parte pública del sitio web. Esto permite aplicar estilos
-   particulares al backend y a la extranet.
-
-  Se aplica a
-  --------------------------------------------------------------
-   frontend
-
 */
-
-/* ===========================================================================
-   Estructura
-   ======================================================================== */
-article {border:5px orange solid;
+article {border:0px orange solid;
     float: left;
     padding: 0 10px 0 20px;
     width: 700px;
-
 }
 article > section {
     margin-bottom: 1em;
@@ -641,25 +582,28 @@ article > section {
 
 section:before, section:after { content: ""; display: table; }
 section:after { clear: both; }
-section {border:1px solid; zoom: 1; }
+section {border:0px solid; zoom: 1;}
 
-aside {border:5px salmon solid;
+aside {border:0px salmon solid;
     float: right;
     padding: 0 20px 0 10px;
     width: 200px;
+    font-weight:bold;
+    border-left: 10px solid #ccf;
 }
 
 /* ===========================================================================
    Cabecera y menú de navegación
    ======================================================================== */
 nav ul {
-    left: 180px;
+    right: 10px;
+    margin-top:10px;
 }
 nav ul li:last-child {
    float: right;
 }
 nav ul li select {
-   max-width: 200px;
+   max-width: 20px;
    font-size: 16px;
 }
 
@@ -682,7 +626,7 @@ aside #login h2 {
     text-align: center;
 }
 aside #login .boton {
-    background-color: #008000;
+    background-color: olive;
     color: #FFF;
     display: block;
     font-size: 24px;
@@ -750,6 +694,7 @@ aside #relacionadas li a {
 aside #condiciones, aside #nosotros {
     color: #444;
 }
+
 
 /* ===========================================================================
    Portada
@@ -837,3 +782,4 @@ form p.ayuda {
     text-align: center;
     width: 50%;
 }
+.flash-message { text-align: center; padding: 10px; background: #ccf9f4; border: 1px solid; color: #4F8A10; margin-bottom: 10px; }
